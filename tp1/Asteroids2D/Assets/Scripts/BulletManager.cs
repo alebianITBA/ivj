@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletManager : MonoBehaviour {
-
-	int BULLET_LIMIT = 10;
-	float BULLET_SPEED = 1000.0f;
-	float TIME_BETWEEN_SHOTS = 100.0f;
+	// CONSTANTS
+	public static int BULLET_LIMIT = 10;
+	public static float BULLET_SPEED = 1000.0f;
+	public static float TIME_BETWEEN_SHOTS = 500.0f;
 
 	Queue<Bullet> bulletPool;
 	public GameObject bulletPrefab;
@@ -31,6 +31,7 @@ public class BulletManager : MonoBehaviour {
 		{
 			GameObject go = GameObject.Instantiate(bulletPrefab) as GameObject;
 			Bullet bul = go.GetComponent<Bullet>();
+			bul.SetManager (this);
 			if (bul == null) {
 				Debug.LogError ("Cannot fint the component Bullet in the bullet prefab.");
 			}
@@ -43,15 +44,20 @@ public class BulletManager : MonoBehaviour {
 
 	public void Shoot(Vector2 pos, Vector3 rot, Vector2 dir)
 	{
-		System.TimeSpan ts = System.DateTime.Now - lastShootTime;
+		System.DateTime now = System.DateTime.Now;
+		System.TimeSpan ts = now - lastShootTime;
 		if (ts.TotalMilliseconds > TIME_BETWEEN_SHOTS && bulletPool.Count > 0)
 		{
 			shootNumber++;
 			lastShootTime = System.DateTime.Now;
 			Bullet bul = bulletPool.Dequeue();
+
+			bul.ShootedAt = now;
+			bul.transform.rotation = transform.rotation;
 			bul.transform.position = pos;
 			bul.transform.Rotate (0, 0, rot.z - 90);
 			bul.gameObject.SetActive(true);
+
 			bul.GetComponent<Rigidbody2D> ().AddForce (dir * BULLET_SPEED);
 		}
 	}
