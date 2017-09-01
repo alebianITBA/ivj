@@ -10,6 +10,7 @@ public class Character : MonoBehaviour {
 	Rigidbody2D rb;
 	Animator animator;
 	public GameObject ShotFireRenderer;
+	public BulletManager bulletManager;
 
 	// Use this for initialization
 	void Start () {
@@ -38,15 +39,21 @@ public class Character : MonoBehaviour {
 		if (Input.GetKey (KeyCode.Space)) {
 			ShotFireRenderer.SetActive (true);
 			animator.SetTrigger("ShootTrigger");
+			bulletManager.Shoot (transform.GetChild(0).position, transform.eulerAngles, direction());
 		}
 	}
 
-	private void applyImpulse()
+	private Vector2 direction()
 	{
 		float angle = transform.localRotation.eulerAngles.z;
 		float x = Mathf.Cos(angle * Mathf.Deg2Rad);
 		float y = Mathf.Sin(angle * Mathf.Deg2Rad);
-		Vector2 forward = new Vector2(x, y);
+		return new Vector2 (x, y);
+	}
+
+	private void applyImpulse()
+	{
+		Vector2 forward = direction();
 		rb.AddForce(forward * VELOCITY);
 	}
 }
