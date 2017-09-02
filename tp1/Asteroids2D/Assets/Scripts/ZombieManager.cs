@@ -8,6 +8,7 @@ public class ZombieManager : MonoBehaviour {
 	public Transform player;
     System.DateTime lastSpawn;
     int spawned = 0;
+	public GameLogic gameLogic;
 
     private Queue<ZombieController> zombiePool;
 
@@ -23,6 +24,7 @@ public class ZombieManager : MonoBehaviour {
         {
             GameObject go = GameObject.Instantiate(zombiePrefab) as GameObject;
             ZombieController zombie = go.GetComponent<ZombieController>();
+			zombie.gameLogic = gameLogic;
             zombie.SetManager(this);
 			zombie.player = player;
             if (zombie == null)

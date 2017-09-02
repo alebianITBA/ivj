@@ -10,6 +10,7 @@ public class ZombieController : MonoBehaviour {
     public System.DateTime died;
 	private bool dead;
 	public Sprite idle;
+	public GameLogic gameLogic;
 
     // Use this for initialization
     void Start () {
@@ -48,6 +49,7 @@ public class ZombieController : MonoBehaviour {
 			animator.SetBool("dead", dead);
             died = System.DateTime.Now;
 			GetComponent<PolygonCollider2D> ().enabled = false;
+			gameLogic.ZombieKilled ();
         }
     }
 }

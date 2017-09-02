@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour {
 	// GLOBAL CONSTANTS
@@ -20,14 +21,28 @@ public class GameLogic : MonoBehaviour {
 	public static int ZOMBIE_AMOUNT = 20;
 	public static double ZOMBIE_TIME_BETWEEN_SPAWNS = 1000.0f;
 	public static float ZOMBIE_SPAWN_DISTANCE = 10.0f;
+	// GAME CONSTANTS
+	public static int SCORE_MULTIPLIER = 10;
+
+	// Game variables
+	public Text scoreText;
+	int zombiesKilled;
 
 	// Use this for initialization
 	void Start () {
-		
+		zombiesKilled = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		scoreText.text = "Score: " + Score ().ToString();
+	}
+
+	public void ZombieKilled() {
+		zombiesKilled++;
+	}
+
+	public int Score() {
+		return zombiesKilled * SCORE_MULTIPLIER;
 	}
 }
