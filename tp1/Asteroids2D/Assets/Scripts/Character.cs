@@ -13,7 +13,6 @@ public class Character : MonoBehaviour {
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
 		animator = GetComponentInChildren<Animator> ();
-		ShotFireRenderer.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -34,7 +33,6 @@ public class Character : MonoBehaviour {
 			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
 		}
 		if (Input.GetKey (KeyCode.Space)) {
-			ShotFireRenderer.SetActive (true);
 			animator.SetTrigger("ShootTrigger");
 			bulletManager.Shoot (transform.GetChild(0).position, transform.eulerAngles, direction());
 		}

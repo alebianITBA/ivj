@@ -297,6 +297,14 @@ Prefab:
       propertyPath: bulletManager
       value: 
       objectReference: {fileID: 2102688580}
+    - target: {fileID: 1841899749555958, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719301680516124, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
   m_IsPrefabParent: 0
