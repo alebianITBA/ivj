@@ -297,95 +297,14 @@ Prefab:
       propertyPath: bulletManager
       value: 
       objectReference: {fileID: 2102688580}
-    - target: {fileID: 1841899749555958, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1719301680516124, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1890447747 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1841899749555958, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
-    type: 2}
-  m_PrefabInternal: {fileID: 231665329}
 --- !u!4 &1890447751 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4647839781808784, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
     type: 2}
   m_PrefabInternal: {fileID: 231665329}
---- !u!60 &1890447752
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1890447747}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.13, y: 2.07}
-    newSize: {x: 2.89, y: 2.24}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.235, y: -0.60499996}
-      - {x: 0.685, y: -0.695}
-      - {x: 0.765, y: -0.66499996}
-      - {x: 0.84499997, y: -0.575}
-      - {x: 0.98499995, y: -0.615}
-      - {x: 1.1949999, y: -0.60499996}
-      - {x: 1.375, y: -0.575}
-      - {x: 1.385, y: -0.53499997}
-      - {x: 1.385, y: -0.435}
-      - {x: 1.3349999, y: -0.39499998}
-      - {x: 0.965, y: -0.375}
-      - {x: 0.945, y: -0.415}
-      - {x: 0.715, y: -0.315}
-      - {x: 0.695, y: -0.255}
-      - {x: 0.575, y: 0.015}
-      - {x: 0.525, y: 0.085}
-      - {x: 0.345, y: 0.235}
-      - {x: 0.185, y: 0.295}
-      - {x: -0.055, y: 0.355}
-      - {x: -0.16499999, y: 0.355}
-      - {x: -0.13499999, y: 0.435}
-      - {x: -0.325, y: 0.625}
-      - {x: -0.525, y: 0.66499996}
-      - {x: -0.695, y: 0.66499996}
-      - {x: -0.815, y: 0.60499996}
-      - {x: -1.0749999, y: 0.45499998}
-      - {x: -1.155, y: 0.36499998}
-      - {x: -1.2149999, y: 0.175}
-      - {x: -1.2149999, y: 0.005}
-      - {x: -1.155, y: -0.13499999}
-      - {x: -1.115, y: -0.16499999}
-      - {x: -1.1949999, y: -0.305}
-      - {x: -1.2149999, y: -0.515}
-      - {x: -1.2149999, y: -0.545}
-      - {x: -1.115, y: -0.715}
-      - {x: -0.965, y: -0.825}
-      - {x: -0.79499996, y: -0.865}
-      - {x: -0.53499997, y: -0.865}
-      - {x: -0.415, y: -0.84499997}
-      - {x: 0.145, y: -0.66499996}
-    - - {x: 0.13499999, y: -0.345}
-      - {x: 0.13499999, y: -0.275}
-      - {x: 0.125, y: -0.175}
-      - {x: 0.375, y: -0.39499998}
 --- !u!1001 &1950523210
 Prefab:
   m_ObjectHideFlags: 0
