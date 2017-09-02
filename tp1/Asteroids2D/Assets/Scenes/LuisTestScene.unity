@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 1183520293516500, guid: 1565c26dce5bf854c83d3c162b0bfaea,
     type: 2}
+  player: {fileID: 1890447751}
 --- !u!1 &27430348
 GameObject:
   m_ObjectHideFlags: 0
