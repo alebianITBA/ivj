@@ -5,6 +5,7 @@ using UnityEngine;
 public class ZombieManager : MonoBehaviour {
 
     public GameObject zombiePrefab;
+	public Transform player;
     System.DateTime lastSpawn;
     int spawned = 0;
 
@@ -23,6 +24,7 @@ public class ZombieManager : MonoBehaviour {
             GameObject go = GameObject.Instantiate(zombiePrefab) as GameObject;
             ZombieController zombie = go.GetComponent<ZombieController>();
             zombie.SetManager(this);
+			zombie.player = player;
             if (zombie == null)
             {
                 Debug.LogError("Cannot fint the component Zombie in the zombie prefab.");
@@ -40,7 +42,7 @@ public class ZombieManager : MonoBehaviour {
             spawned++;
             lastSpawn = System.DateTime.Now;
             ZombieController zombie = zombiePool.Dequeue();
-            zombie.transform.position = new Vector2(0.0f, 0.0f);
+			zombie.transform.position = (Vector2)player.position + getSpawnPosition(GameLogic.ZOMBIE_SPAWN_DISTANCE);
 			zombie.gameObject.SetActive(true);
         }
     }
@@ -52,4 +54,12 @@ public class ZombieManager : MonoBehaviour {
 		zombie.SetAlive();
 		zombie.GetComponent<PolygonCollider2D> ().enabled = true;
     }
+
+	private static Vector2 getSpawnPosition(float distance) {
+		float x = Random.Range (-1.0f, 1.0f);
+		float y = Random.Range (-1.0f, 1.0f);
+
+		Vector2 dir = new Vector2 (x, y);
+		return dir.normalized * distance;
+	}
 }

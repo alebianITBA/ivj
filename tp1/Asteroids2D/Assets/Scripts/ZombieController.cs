@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ZombieController : MonoBehaviour {
-    private GameObject player;
     ZombieManager zombieManager;
     Rigidbody2D rb;
     public Animator animator;
+	public Transform player;
     public System.DateTime died;
 	private bool dead;
 	public Sprite idle;
@@ -36,7 +36,7 @@ public class ZombieController : MonoBehaviour {
             }
             return;
         }
-        Vector2 playerPosition = GameObject.Find("Character").transform.position;
+		Vector2 playerPosition = player.position;
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
 		rb.AddForce(direction.normalized * GameLogic.ZOMBIE_VELOCITY);
