@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour {
 
@@ -50,5 +51,11 @@ public class Character : MonoBehaviour {
 	{
 		Vector2 forward = direction();
 		rb.AddForce(forward * GameLogic.CHARACTER_VELOCITY);
+	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		if (col.gameObject.name == "ZombiePrefab") {
+			SceneManager.LoadScene (2);
+		}
 	}
 }
