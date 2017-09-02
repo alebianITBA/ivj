@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletManager : MonoBehaviour {
-	// CONSTANTS
-	public static int BULLET_LIMIT = 10;
-	public static float BULLET_SPEED = 1000.0f;
-	public static float TIME_BETWEEN_SHOTS = 500.0f;
 
 	Queue<Bullet> bulletPool;
 	public GameObject bulletPrefab;
@@ -27,7 +23,7 @@ public class BulletManager : MonoBehaviour {
 	private void PrecreateObjects()
 	{
 		bulletPool = new Queue<Bullet>();
-		for (int i = 0; i < BULLET_LIMIT; i++)
+		for (int i = 0; i < GameLogic.BULLET_AMOUNT; i++)
 		{
 			GameObject go = GameObject.Instantiate(bulletPrefab) as GameObject;
 			Bullet bul = go.GetComponent<Bullet>();
@@ -46,7 +42,7 @@ public class BulletManager : MonoBehaviour {
 	{
 		System.DateTime now = System.DateTime.Now;
 		System.TimeSpan ts = now - lastShootTime;
-		if (ts.TotalMilliseconds > TIME_BETWEEN_SHOTS && bulletPool.Count > 0)
+		if (ts.TotalMilliseconds > GameLogic.TIME_BETWEEN_SHOTS && bulletPool.Count > 0)
 		{
 			shootNumber++;
 			lastShootTime = System.DateTime.Now;
@@ -58,7 +54,7 @@ public class BulletManager : MonoBehaviour {
 			bul.transform.Rotate (0, 0, rot.z - 90);
 			bul.gameObject.SetActive(true);
 
-			bul.GetComponent<Rigidbody2D> ().AddForce (dir * BULLET_SPEED);
+			bul.GetComponent<Rigidbody2D> ().AddForce (dir * GameLogic.BULLET_SPEED);
 		}
 	}
 

@@ -6,7 +6,6 @@ public class Bullet : MonoBehaviour {
 
 	public System.DateTime ShootedAt;
 	BulletManager bulletManager;
-	float TTL = BulletManager.TIME_BETWEEN_SHOTS * (BulletManager.BULLET_LIMIT - 1);
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +14,7 @@ public class Bullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if ((System.DateTime.Now - ShootedAt).TotalMilliseconds > TTL) {
+		if ((System.DateTime.Now - ShootedAt).TotalMilliseconds > GameLogic.BULLET_TTL) {
 			bulletManager.RecycleBullet (this);
 		}
 	}

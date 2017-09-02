@@ -6,11 +6,9 @@ public class ZombieController : MonoBehaviour {
     private GameObject player;
     ZombieManager zombieManager;
     Rigidbody2D rb;
-    Animator animator;
+    public Animator animator;
     public System.DateTime died;
-    bool dead;
-    float VELOCITY = 10f;
-    float SHOW_BODY = 3000.0f;
+    public bool dead;
 
     // Use this for initialization
     void Start () {
@@ -26,7 +24,7 @@ public class ZombieController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (dead) {
-            if ((System.DateTime.Now - died).TotalMilliseconds > SHOW_BODY) {
+			if ((System.DateTime.Now - died).TotalMilliseconds > GameLogic.ZOMBIE_SHOW_BODY) {
                 zombieManager.RecycleZombie(this);
             }
             return;
@@ -34,15 +32,15 @@ public class ZombieController : MonoBehaviour {
         Vector2 playerPosition = GameObject.Find("Character").transform.position;
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
-        rb.AddForce(direction.normalized * VELOCITY);
+		rb.AddForce(direction.normalized * GameLogic.ZOMBIE_VELOCITY);
     }
 
     void OnCollisionEnter2D(Collision2D col) {
         if (col.gameObject.name == "Bullet") {
-            print("DEAD");
             animator.SetBool("dead", true);
             dead = true;
             died = System.DateTime.Now;
+			GetComponent<PolygonCollider2D> ().enabled = false;
         }
     }
 }

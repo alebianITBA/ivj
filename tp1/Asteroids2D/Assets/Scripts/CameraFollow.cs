@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour {
 
 	public Transform player;
-	private float distance = 1.5f;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +13,6 @@ public class CameraFollow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		 transform.position = new Vector3(player.position.x, player.position.y, player.position.z - distance);
+		transform.position = new Vector3(player.position.x, player.position.y, player.position.z - GameLogic.CAMERA_DISTANCE);
 	}
 }

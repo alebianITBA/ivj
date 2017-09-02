@@ -5,14 +5,10 @@ using UnityEngine;
 public class ZombieManager : MonoBehaviour {
 
     public GameObject zombiePrefab;
-    private int ZOMBIE_LIMIT = 100;
-
     System.DateTime lastSpawn;
     int spawned = 0;
 
     private Queue<ZombieController> zombiePool;
-
-    private double TIME_BETWEEN_SPAWNS = 5000.0f;
 
     // Use this for initialization
     void Start () {
@@ -21,9 +17,8 @@ public class ZombieManager : MonoBehaviour {
 	
     private void PrecreateObjects()
     {
-        print("creating zombie pool");
         zombiePool = new Queue<ZombieController>();
-        for (int i = 0; i < ZOMBIE_LIMIT; i++)
+		for (int i = 0; i < GameLogic.ZOMBIE_AMOUNT; i++)
         {
             GameObject go = GameObject.Instantiate(zombiePrefab) as GameObject;
             ZombieController zombie = go.GetComponent<ZombieController>();
@@ -40,7 +35,7 @@ public class ZombieManager : MonoBehaviour {
     }
     void Update() {
         System.TimeSpan ts = System.DateTime.Now - lastSpawn;
-        if (ts.TotalMilliseconds > TIME_BETWEEN_SPAWNS && zombiePool.Count > 0)
+		if (ts.TotalMilliseconds > GameLogic.ZOMBIE_TIME_BETWEEN_SPAWNS && zombiePool.Count > 0)
         {
             spawned++;
             lastSpawn = System.DateTime.Now;
@@ -52,8 +47,10 @@ public class ZombieManager : MonoBehaviour {
 
     public void RecycleZombie(ZombieController zombie)
     {
-        print("RECYCLE");
         zombiePool.Enqueue(zombie);
         zombie.gameObject.SetActive(false);
+		zombie.dead = false;
+		zombie.animator.SetBool("dead", false);
+		zombie.GetComponent<PolygonCollider2D> ().enabled = true;
     }
 }

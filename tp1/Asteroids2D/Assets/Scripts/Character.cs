@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 
-	int ROTATION_SPEED = 200;
-	float VELOCITY = 30.0f;
-
 	Rigidbody2D rb;
 	Animator animator;
 	public GameObject ShotFireRenderer;
@@ -29,11 +26,11 @@ public class Character : MonoBehaviour {
 			applyImpulse();
 		}
 		if (Input.GetKey(KeyCode.LeftArrow)) {
-			float angle = transform.localRotation.eulerAngles.z + Time.deltaTime * ROTATION_SPEED;
+			float angle = transform.localRotation.eulerAngles.z + Time.deltaTime * GameLogic.CHARACTER_ROTATION_SPEED;
 			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
 		}
 		if (Input.GetKey(KeyCode.RightArrow)) {
-			float angle = transform.localRotation.eulerAngles.z - Time.deltaTime * ROTATION_SPEED;
+			float angle = transform.localRotation.eulerAngles.z - Time.deltaTime * GameLogic.CHARACTER_ROTATION_SPEED;
 			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
 		}
 		if (Input.GetKey (KeyCode.Space)) {
@@ -54,6 +51,6 @@ public class Character : MonoBehaviour {
 	private void applyImpulse()
 	{
 		Vector2 forward = direction();
-		rb.AddForce(forward * VELOCITY);
+		rb.AddForce(forward * GameLogic.CHARACTER_VELOCITY);
 	}
 }
