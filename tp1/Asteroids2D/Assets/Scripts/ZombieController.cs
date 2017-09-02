@@ -32,7 +32,7 @@ public class ZombieController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (dead) {
-			if ((System.DateTime.Now - died).TotalMilliseconds > GameLogic.ZOMBIE_SHOW_BODY) {
+			if ((System.DateTime.Now - died).TotalMilliseconds > gameLogic.ZombieTimeSpawn()) {
                 zombieManager.RecycleZombie(this);
             }
             return;
@@ -40,7 +40,7 @@ public class ZombieController : MonoBehaviour {
 		Vector2 playerPosition = player.position;
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
-		rb.AddForce(direction.normalized * GameLogic.ZOMBIE_VELOCITY);
+		rb.AddForce(direction.normalized * gameLogic.ZombieVelocity());
     }
 
     void OnCollisionEnter2D(Collision2D col) {

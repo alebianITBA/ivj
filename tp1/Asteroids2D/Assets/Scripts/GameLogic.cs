@@ -23,6 +23,8 @@ public class GameLogic : MonoBehaviour {
 	public static float ZOMBIE_SPAWN_DISTANCE = 10.0f;
 	// GAME CONSTANTS
 	public static int SCORE_MULTIPLIER = 10;
+	public static int ZOMBIE_VELOCITY_MULTIPLIER = 10;
+	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
 
 	// Game variables
 	public Text scoreText;
@@ -44,5 +46,13 @@ public class GameLogic : MonoBehaviour {
 
 	public int Score() {
 		return zombiesKilled * SCORE_MULTIPLIER;
+	}
+
+	public float ZombieVelocity() {
+		return ZOMBIE_VELOCITY + (ZOMBIE_VELOCITY_MULTIPLIER * zombiesKilled); 
+	}
+
+	public double ZombieTimeSpawn() {
+		return ZOMBIE_TIME_BETWEEN_SPAWNS - (ZOMBIE_TIME_SPAWN_MULTIPLIER * zombiesKilled);
 	}
 }
