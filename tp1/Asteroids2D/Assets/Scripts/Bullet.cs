@@ -23,4 +23,10 @@ public class Bullet : MonoBehaviour {
 	public void SetManager(BulletManager manager) {
 		bulletManager = manager;
 	}
+
+	void OnCollisionEnter2D(Collision2D col) {
+		if (col.gameObject.name == "ZombiePrefab") {
+			bulletManager.RecycleBullet(this);
+		}
+	}
 }

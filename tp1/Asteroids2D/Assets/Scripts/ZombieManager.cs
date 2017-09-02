@@ -5,14 +5,14 @@ using UnityEngine;
 public class ZombieManager : MonoBehaviour {
 
     public GameObject zombiePrefab;
-    private int ZOMBIE_LIMIT = 10;
+    private int ZOMBIE_LIMIT = 100;
 
     System.DateTime lastSpawn;
     int spawned = 0;
 
     private Queue<ZombieController> zombiePool;
 
-    private double TIME_BETWEEN_SHOTS = 10000.0f;
+    private double TIME_BETWEEN_SPAWNS = 5000.0f;
 
     // Use this for initialization
     void Start () {
@@ -26,20 +26,21 @@ public class ZombieManager : MonoBehaviour {
         for (int i = 0; i < ZOMBIE_LIMIT; i++)
         {
             GameObject go = GameObject.Instantiate(zombiePrefab) as GameObject;
-            ZombieController bul = go.GetComponent<ZombieController>();
-            if (bul == null)
+            ZombieController zombie = go.GetComponent<ZombieController>();
+            zombie.SetManager(this);
+            if (zombie == null)
             {
                 Debug.LogError("Cannot fint the component Zombie in the zombie prefab.");
             }
             go.name = zombiePrefab.name;
             go.transform.parent = transform;
             go.SetActive(false);
-            zombiePool.Enqueue(bul);
+            zombiePool.Enqueue(zombie);
         }
     }
     void Update() {
         System.TimeSpan ts = System.DateTime.Now - lastSpawn;
-        if (ts.TotalMilliseconds > TIME_BETWEEN_SHOTS && zombiePool.Count > 0)
+        if (ts.TotalMilliseconds > TIME_BETWEEN_SPAWNS && zombiePool.Count > 0)
         {
             spawned++;
             lastSpawn = System.DateTime.Now;
@@ -49,9 +50,10 @@ public class ZombieManager : MonoBehaviour {
         }
     }
 
-    public void RecycleBullet(ZombieController bul)
+    public void RecycleZombie(ZombieController zombie)
     {
-        zombiePool.Enqueue(bul);
-        bul.gameObject.SetActive(false);
+        print("RECYCLE");
+        zombiePool.Enqueue(zombie);
+        zombie.gameObject.SetActive(false);
     }
 }
