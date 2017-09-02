@@ -32,7 +32,7 @@ public class ZombieController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (dead) {
-			if ((System.DateTime.Now - died).TotalMilliseconds > gameLogic.ZombieTimeSpawn()) {
+			if ((System.DateTime.Now - died).TotalMilliseconds > GameLogic.ZOMBIE_SHOW_BODY) {
                 zombieManager.RecycleZombie(this);
             }
             return;
