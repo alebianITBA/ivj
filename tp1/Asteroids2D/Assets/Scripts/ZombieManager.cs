@@ -39,9 +39,9 @@ public class ZombieManager : MonoBehaviour {
         {
             spawned++;
             lastSpawn = System.DateTime.Now;
-            ZombieController bul = zombiePool.Dequeue();
-            bul.transform.position = new Vector2(0.0f, 0.0f);
-            bul.gameObject.SetActive(true);
+            ZombieController zombie = zombiePool.Dequeue();
+            zombie.transform.position = new Vector2(0.0f, 0.0f);
+			zombie.gameObject.SetActive(true);
         }
     }
 
@@ -49,8 +49,7 @@ public class ZombieManager : MonoBehaviour {
     {
         zombiePool.Enqueue(zombie);
         zombie.gameObject.SetActive(false);
-		zombie.dead = false;
-		zombie.animator.SetBool("dead", false);
+		zombie.SetAlive();
 		zombie.GetComponent<PolygonCollider2D> ().enabled = true;
     }
 }
