@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 1183520293516500, guid: 1565c26dce5bf854c83d3c162b0bfaea,
     type: 2}
-  player: {fileID: 1890447751}
+  player: {fileID: 1177024800}
 --- !u!1 &27430348
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,8 +252,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301f056f34592cb45b371b96a361966c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1890447751}
---- !u!1001 &231665329
+  player: {fileID: 1177024800}
+--- !u!4 &1177024800 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4647839781808784, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1367220431}
+--- !u!1001 &1367220431
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -262,11 +267,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4647839781808784, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.6931323
+      value: -0.13
       objectReference: {fileID: 0}
     - target: {fileID: 4647839781808784, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.64664805
+      value: 0.99
       objectReference: {fileID: 0}
     - target: {fileID: 4647839781808784, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -297,14 +302,14 @@ Prefab:
       propertyPath: bulletManager
       value: 
       objectReference: {fileID: 2102688580}
+    - target: {fileID: 50115698151364748, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
+        type: 2}
+      propertyPath: m_Mass
+      value: 70
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1890447751 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4647839781808784, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
-    type: 2}
-  m_PrefabInternal: {fileID: 231665329}
 --- !u!1001 &1950523210
 Prefab:
   m_ObjectHideFlags: 0
