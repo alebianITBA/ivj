@@ -21,6 +21,10 @@ public class Character : MonoBehaviour {
 		checkInput ();
 	}
 
+	void FixedUpdate() {
+		transform.position = PositionManager.Reposition (transform.position);
+	}
+
 	private void checkInput() {
 		if (Input.GetKey(KeyCode.UpArrow)) {
 			applyImpulse();

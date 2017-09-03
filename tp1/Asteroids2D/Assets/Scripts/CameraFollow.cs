@@ -13,6 +13,6 @@ public class CameraFollow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.position = new Vector3(player.position.x, player.position.y, player.position.z - GameLogic.CAMERA_DISTANCE);
+//		transform.position = new Vector3(player.position.x, player.position.y, player.position.z - GameLogic.CAMERA_DISTANCE);
 	}
 }
