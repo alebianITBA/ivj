@@ -9,13 +9,17 @@ public class Character : MonoBehaviour {
 	Animator animator;
 	public GameObject ShotFireRenderer;
 	public BulletManager bulletManager;
+	public GameLogic logic;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
 		animator = GetComponentInChildren<Animator> ();
 	}
-	
+
+	void Awake() {
+	}
+
 	// Update is called once per frame
 	void Update () {
 		checkInput ();
@@ -59,6 +63,7 @@ public class Character : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.name == "ZombiePrefab") {
+			HighscoreController.instance.setLastScore (logic.Score ());
 			SceneManager.LoadScene (2);
 		}
 	}

@@ -533,20 +533,11 @@ Prefab:
       propertyPath: bulletManager
       value: 
       objectReference: {fileID: 2102688580}
-    - target: {fileID: 50115698151364748, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
+    - target: {fileID: 114470281645530916, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
         type: 2}
-      propertyPath: m_Mass
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 212423567415291276, guid: e6b7fe0f03f04432d8a8b2a01f98964d,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1841899749555958, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: logic
+      value: 
+      objectReference: {fileID: 1975591867}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6b7fe0f03f04432d8a8b2a01f98964d, type: 2}
   m_IsPrefabParent: 0
