@@ -20,7 +20,7 @@ public class GameLogic : MonoBehaviour {
 	public static float ZOMBIE_SHOW_BODY = 3000.0f;
 	public static int ZOMBIE_AMOUNT = 20;
 	public static double ZOMBIE_TIME_BETWEEN_SPAWNS = 1000.0f;
-	public static float ZOMBIE_SPAWN_DISTANCE = 10.0f;
+	public static float ZOMBIE_SPAWN_DISTANCE = 6.0f;
 	// GAME CONSTANTS
 	public static int SCORE_MULTIPLIER = 10;
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 10;
