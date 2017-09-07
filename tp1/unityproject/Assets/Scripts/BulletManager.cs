@@ -38,7 +38,7 @@ public class BulletManager : MonoBehaviour {
 		}
 	}
 
-	public void Shoot(Vector2 pos, Vector3 rot, Vector2 dir)
+	public bool Shoot(Vector2 pos, Vector3 rot, Vector2 dir)
 	{
 		System.DateTime now = System.DateTime.Now;
 		System.TimeSpan ts = now - lastShootTime;
@@ -55,7 +55,9 @@ public class BulletManager : MonoBehaviour {
 			bul.gameObject.SetActive(true);
 
 			bul.GetComponent<Rigidbody2D> ().AddForce (dir * GameLogic.BULLET_SPEED);
+            return true;
 		}
+        return false;
 	}
 
 	public void RecycleBullet(Bullet bul)

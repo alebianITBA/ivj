@@ -42,8 +42,10 @@ public class Character : MonoBehaviour {
 			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
 		}
 		if (Input.GetKey (KeyCode.Space)) {
-			animator.SetTrigger("ShootTrigger");
-			bulletManager.Shoot (transform.GetChild(0).position, transform.eulerAngles, direction());
+			if (bulletManager.Shoot (transform.GetChild(0).position, transform.eulerAngles, direction()))
+            {
+                animator.SetTrigger("ShootTrigger");
+            }
 		}
 	}
 
