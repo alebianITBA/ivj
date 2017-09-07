@@ -39,7 +39,7 @@ public class ZombieManager : MonoBehaviour {
     }
     void Update() {
         System.TimeSpan ts = System.DateTime.Now - lastSpawn;
-		if (ts.TotalMilliseconds > GameLogic.ZOMBIE_TIME_BETWEEN_SPAWNS && zombiePool.Count > 0)
+		if (ts.TotalMilliseconds > gameLogic.ZombieTimeSpawn() && zombiePool.Count > 0)
         {
             spawned++;
             lastSpawn = System.DateTime.Now;

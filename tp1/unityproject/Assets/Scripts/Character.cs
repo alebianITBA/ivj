@@ -10,15 +10,17 @@ public class Character : MonoBehaviour {
 	public GameObject ShotFireRenderer;
 	public BulletManager bulletManager;
 	public GameLogic logic;
+    public int health;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
 		animator = GetComponentInChildren<Animator> ();
-	}
+        health = GameLogic.PLAYERHEALTH;
+    }
 
 	void Awake() {
-	}
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -34,11 +36,11 @@ public class Character : MonoBehaviour {
 			applyImpulse();
 		}
 		if (Input.GetKey(KeyCode.LeftArrow)) {
-			float angle = transform.localRotation.eulerAngles.z + Time.deltaTime * GameLogic.CHARACTER_ROTATION_SPEED;
+			float angle = transform.localRotation.eulerAngles.z + Time.deltaTime * logic.GetCharacterRotationSpeed();
 			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
 		}
 		if (Input.GetKey(KeyCode.RightArrow)) {
-			float angle = transform.localRotation.eulerAngles.z - Time.deltaTime * GameLogic.CHARACTER_ROTATION_SPEED;
+			float angle = transform.localRotation.eulerAngles.z - Time.deltaTime * logic.GetCharacterRotationSpeed();
 			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
 		}
 		if (Input.GetKey (KeyCode.Space)) {
@@ -60,13 +62,29 @@ public class Character : MonoBehaviour {
 	private void applyImpulse()
 	{
 		Vector2 forward = direction();
-		rb.AddForce(forward * GameLogic.CHARACTER_VELOCITY);
+		rb.AddForce(forward * logic.GetCharacterVelocity());
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if (col.gameObject.name == "ZombiePrefab") {
-			HighscoreController.instance.setLastScore (logic.Score ());
-			SceneManager.LoadScene (2);
-		}
+        if (col.gameObject.name == "ZombiePrefab") {
+            takeDamage();
+        }
 	}
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "ZombiePrefab")
+        {
+            takeDamage();
+        }
+    }
+
+    void takeDamage(){
+        this.health--;
+        if (health <= 0)
+        {
+            HighscoreController.instance.setLastScore(logic.Score());
+            SceneManager.LoadScene(2);
+        }
+    }
 }

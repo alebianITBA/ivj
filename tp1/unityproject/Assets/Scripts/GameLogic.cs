@@ -23,22 +23,32 @@ public class GameLogic : MonoBehaviour {
 	public static float ZOMBIE_SPAWN_DISTANCE = 6.0f;
 	// GAME CONSTANTS
 	public static int SCORE_MULTIPLIER = 10;
-	public static int ZOMBIE_VELOCITY_MULTIPLIER = 10;
+	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
+
+    public static int PLAYERHEALTH = 100;
 
 	// Game variables
 	public Text scoreText;
-	int zombiesKilled;
+    public Text lifeText;
+    public Character player;
+    int zombiesKilled;
 
 	// Use this for initialization
 	void Start () {
 		zombiesKilled = 0;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		scoreText.text = "Score: " + Score ().ToString();
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+        scoreText.text = "Score: " + Score().ToString();
+        int health = player.health;
+        if (health >= 0)
+        {
+            lifeText.text = "Life: " + player.health;
+        }
+    }
 
 	public void ZombieKilled() {
 		zombiesKilled++;
@@ -53,6 +63,21 @@ public class GameLogic : MonoBehaviour {
 	}
 
 	public double ZombieTimeSpawn() {
-		return ZOMBIE_TIME_BETWEEN_SPAWNS - (ZOMBIE_TIME_SPAWN_MULTIPLIER * zombiesKilled);
+		double time = ZOMBIE_TIME_BETWEEN_SPAWNS - (ZOMBIE_TIME_SPAWN_MULTIPLIER * zombiesKilled);
+        if (time <= 0)
+        {
+            return 0.0f;
+        }
+        return time;
 	}
+
+    public int GetCharacterRotationSpeed()
+    {
+        return CHARACTER_ROTATION_SPEED + (zombiesKilled * 1);
+    }
+
+    public float GetCharacterVelocity()
+    {
+        return (float)(CHARACTER_VELOCITY + (zombiesKilled * 1));
+    }
 }
