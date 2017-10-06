@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallManager : MonoBehaviour {
+public class BallManager : MonoBehaviourSingleton<BallManager> {
 
 	public GameObject table;
 	public GameObject ballPrefab;
+	public CameraManager cameraManager;
 
-	private static float BALL_SIZE = 1.0f;
+	public static float BALL_SIZE = 1.0f;
 	private static float LEVEL_DISTANCE = Mathf.Sqrt(BALL_SIZE - Mathf.Pow(BALL_SIZE / 2, 2));
 
 	public Texture2D whiteTexture;
@@ -45,6 +46,7 @@ public class BallManager : MonoBehaviour {
 
 		Ball white = InstantiateBall ("white", Ball.BallTypes.White, new Vector3 (table.transform.position.x, yDistance, -1 * zDistance), whiteTexture);
 		Balls.Add(white);
+		cameraManager.whiteBall = white.gameObject;
 
 		Ball black = InstantiateBall ("black", Ball.BallTypes.Black, new Vector3 (table.transform.position.x, yDistance, zDistance), ball8Texture);
 		Balls.Add (black);
