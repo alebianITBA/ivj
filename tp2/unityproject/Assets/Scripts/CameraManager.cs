@@ -7,9 +7,9 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager> {
 	public GameObject whiteBall;
 
 	private static float X_ROTATION = 30.0f;
-	private static float Y_DISTANCE = 5.0f;
+	private static float DISTANCE = 5.0f;
 
-	private static float SENSITIVITY = 0.5f;
+	private static float SENSITIVITY = 100.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -20,15 +20,19 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager> {
 	void Update () {
 		if (whiteBall != null) {
 			Vector3 whitePosition = whiteBall.transform.position;
-			camera.transform.position = new Vector3(whitePosition.x + BallManager.BALL_SIZE / 2, whitePosition.y + Y_DISTANCE, whitePosition.z + BallManager.BALL_SIZE / 2);
+			camera.transform.position = whitePosition - camera.transform.forward * DISTANCE;
 		}
 	}
 
 	public void RotateLeft() {
-		camera.transform.RotateAround(whiteBall.transform.position, Vector3.up, -1 * SENSITIVITY);
+		camera.transform.RotateAround(whiteBall.transform.position, Vector3.up, -1 * Sensitivity());
 	}
 
 	public void RotateRight() {
-		camera.transform.RotateAround(whiteBall.transform.position, Vector3.up, SENSITIVITY);
+		camera.transform.RotateAround(whiteBall.transform.position, Vector3.up, Sensitivity());
+	}
+
+	private float Sensitivity() {
+		return Time.deltaTime * SENSITIVITY;
 	}
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameController : MonoBehaviourSingleton<GameController> {
 	public CameraManager cameraManager;
 
+	private static float ENERGY = 1000.0f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -19,15 +21,14 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 			cameraManager.RotateRight();
 		}
 		if (Input.GetKey(KeyCode.Space)) {
-			cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction() * 100.0f);
+			cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction() * ENERGY);
 		}
 	}
 
 	private Vector3 direction()
 	{
-		float angle = cameraManager.camera.transform.localRotation.eulerAngles.z;
-		float x = Mathf.Cos(angle * Mathf.Deg2Rad);
-		float y = Mathf.Sin(angle * Mathf.Deg2Rad);
-		return new Vector3 (x, 0.0f, y);
+		Vector3 forward = cameraManager.camera.transform.forward;
+		Vector3 direction = new Vector3 (forward.x, 0.0f, forward.z);
+		return direction;
 	}
 }
