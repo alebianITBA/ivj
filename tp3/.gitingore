@@ -39,16 +39,4 @@ sysinfo.txt
 
 # End of https://www.gitignore.io/api/unity
 
-tp1/unityproject/Library/
-tp1/unityproject/Temp/
-tp1/unityproject/obj/
-
-tp2/unityproject/Library/
-tp2/unityproject/Temp/
-tp2/unityproject/obj/
-
-tp3/unityproject/Library/
-tp3/unityproject/Temp/
-tp3/unityproject/obj/
-
 *.DS_Store
