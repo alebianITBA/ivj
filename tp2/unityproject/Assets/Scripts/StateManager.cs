@@ -7,8 +7,10 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public enum GameModes { OnePlayer, TwoPlayers };
 	public enum Players { PlayerOne, PlayerTwo };
 
+	public GameObject pauseCanvas;
+
 	// TODO: Make the state start in Menu
-	public States currentState = States.Striking;
+	public States currentState = States.InGame;
 	public GameModes currentGameMode;
 	public Players currentPlayer;
 	public int currentPlayerMoves = 1;
@@ -18,8 +20,9 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public PocketCollider.Pocket lastPlayerTwoPocket;
 
 	public void PauseGame() {
-		if (currentState == States.InGame) {
+		if (currentState == States.InGame || currentState == States.Striking) {
 			currentState = States.Pause;
+			pauseCanvas.SetActive(true);
 		} else {
 			LogInvalidTransition (States.Pause);
 		}
@@ -34,16 +37,17 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	public void Strike() {
-		if (currentState == States.Striking) {
-			currentState = States.InGame;
+		if (currentState == States.InGame) {
+			currentState = States.Striking;
 		} else {
-			LogInvalidTransition (States.InGame);
+			LogInvalidTransition (States.Striking);
 		}
 	}
 
 	public void ContinueGame() {
 		if (currentState == States.Pause) {
 			currentState = States.InGame;
+			pauseCanvas.SetActive(false);
 		} else {
 			LogInvalidTransition (States.InGame);
 		}
@@ -116,12 +120,15 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		currentPlayerMoves = 2;
 	}
 
-	private void BlackInPocket(Ball white, PocketCollider.Pocket pocketId) {
-
+	private void BlackInPocket(Ball black, PocketCollider.Pocket pocketId) {
+		// TODO: Lose logic
+		BallManager.Instance.RemoveBall (black);
+		Destroy (black.gameObject);
 	}
 
-	private void BallInPocket(Ball white, PocketCollider.Pocket pocketId) {
-		
+	private void BallInPocket(Ball ball, PocketCollider.Pocket pocketId) {
+		BallManager.Instance.RemoveBall (ball);
+		Destroy (ball.gameObject);
 	}
 
 	private void SwitchPlayer() {

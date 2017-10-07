@@ -23,7 +23,7 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 			}
 		} else {
 			if (BallManager.Instance.Still () && !StateManager.Instance.Striking ()) {
-				StateManager.Instance.ReadyToStrike ();
+//				StateManager.Instance.ReadyToStrike ();
 			}
 			if (Input.GetKey (KeyCode.LeftArrow)) {
 				cameraManager.RotateLeft ();
