@@ -785,7 +785,7 @@ MonoBehaviour:
   currentGameMode: 1
   currentPlayer: 0
   currentPlayerMoves: 1
-  cue: {fileID: 0}
+  cue: {fileID: 1502349638}
   lastPlayerOnePocket: 0
   lastPlayerTwoPocket: 0
   pauseCanvas: {fileID: 36740464}
