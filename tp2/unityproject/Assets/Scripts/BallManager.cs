@@ -41,14 +41,11 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 	}
 
 	private void CreateBalls() {
-		float zDistance = table.GetComponent<Renderer> ().bounds.size.z * 0.30f;
-		float yDistance = table.GetComponent<Renderer> ().bounds.size.y;
-
-		Ball white = InstantiateBall ("white", Ball.BallTypes.White, new Vector3 (table.transform.position.x, yDistance, -1 * zDistance), whiteTexture);
+		Ball white = InstantiateBall ("white", Ball.BallTypes.White, DefaultWhitePosition(), whiteTexture);
 		Balls.Add(white);
 		cameraManager.whiteBall = white.gameObject;
 
-		Ball black = InstantiateBall ("black", Ball.BallTypes.Black, new Vector3 (table.transform.position.x, yDistance, zDistance), ball8Texture);
+		Ball black = InstantiateBall ("black", Ball.BallTypes.Black, new Vector3 (table.transform.position.x, TableYDistance(), TableZDistance()), ball8Texture);
 		Balls.Add (black);
 
 		// Add rest of balls relative to black's position
@@ -110,5 +107,17 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 		ball.transform.Rotate (0, 90, 90);
 
 		return ball;
+	}
+
+	private float TableZDistance() {
+		return table.GetComponent<Renderer> ().bounds.size.z * 0.30f;
+	}
+
+	private float TableYDistance() {
+		return table.GetComponent<Renderer> ().bounds.size.y;
+	}
+
+	public Vector3 DefaultWhitePosition() {
+		return new Vector3 (table.transform.position.x, TableYDistance (), -1 * TableZDistance ());
 	}
 }
