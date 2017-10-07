@@ -180,18 +180,18 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		// Set ball type to players
 		if (playerOneBallType == Ball.BallTypes.None) {
 			if (currentPlayer == Players.PlayerOne) {
-				playerOneBallType = ball.type;
+				ballTypes[Players.PlayerOne] = ball.type;
 				if (ball.type == Ball.BallTypes.Solid) {
-					playerTwoBallType = Ball.BallTypes.Striped;
+					ballTypes[Players.PlayerTwo] = Ball.BallTypes.Striped;
 				} else {
-					playerTwoBallType = Ball.BallTypes.Solid;
+					ballTypes[Players.PlayerTwo] = Ball.BallTypes.Solid;
 				}
 			} else {
-				playerTwoBallType = ball.type;
+				ballTypes[Players.PlayerTwo] = ball.type;
 				if (ball.type == Ball.BallTypes.Solid) {
-					playerOneBallType = Ball.BallTypes.Striped;
+					ballTypes[Players.PlayerOne] = Ball.BallTypes.Striped;
 				} else {
-					playerOneBallType = Ball.BallTypes.Solid;
+					ballTypes[Players.PlayerOne] = Ball.BallTypes.Solid;
 				}
 			}
 		}
