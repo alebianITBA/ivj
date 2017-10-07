@@ -47,6 +47,7 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 				if (Input.GetKeyUp (KeyCode.Space)) {
 					StateManager.Instance.Strike ();
 					cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+					StateManager.Instance.ReduceMovements ();
 				}
 			}
 		}

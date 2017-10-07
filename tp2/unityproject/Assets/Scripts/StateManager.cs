@@ -1,23 +1,72 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StateManager : MonoBehaviourSingleton<StateManager> {
+	// Enums
 	public enum States { Menu, Striking, InGame, Pause };
 	public enum GameModes { OnePlayer, TwoPlayers };
 	public enum Players { PlayerOne, PlayerTwo };
 
-	public GameObject pauseCanvas;
-
+	// Game logic
 	// TODO: Make the state start in Menu
 	public States currentState = States.InGame;
-	public GameModes currentGameMode;
-	public Players currentPlayer;
+	public GameModes currentGameMode = GameModes.TwoPlayers;
+	public Players currentPlayer = Players.PlayerOne;
 	public int currentPlayerMoves = 1;
-
-	public Dictionary<Players, int> scores = new Dictionary<Players, int>();
+	public Dictionary<Players, int> scores = InitializeScores();
+	public Dictionary<Players, Ball.BallTypes> ballTypes = InitializeBallTypes();
 	public PocketCollider.Pocket lastPlayerOnePocket;
 	public PocketCollider.Pocket lastPlayerTwoPocket;
+	private bool whiteInPocket = false;
+	private Ball white;
+
+	// Game variables
+	public GameObject pauseCanvas;
+	public Text playerOneText;
+	public Text playerTwoText;
+
+	void Update() {
+		if (currentState != States.Menu) {
+			// Set Texts
+			playerOneText.gameObject.SetActive (true);
+			playerOneText.text = PlayerText(Players.PlayerOne);
+			if (currentGameMode == GameModes.TwoPlayers) {
+				playerTwoText.gameObject.SetActive (true);
+				playerTwoText.text = PlayerText(Players.PlayerTwo);
+			}
+			// Bold
+			if (currentPlayer == Players.PlayerOne) {
+				playerOneText.fontStyle = FontStyle.Bold;
+				playerTwoText.fontStyle = FontStyle.Normal;
+				playerOneText.fontSize = 16;
+				playerTwoText.fontSize = 14;
+			}
+			else if (currentPlayer == Players.PlayerTwo) {
+				playerOneText.fontStyle = FontStyle.Normal;
+				playerTwoText.fontStyle = FontStyle.Bold;
+				playerOneText.fontSize = 14;
+				playerTwoText.fontSize = 16;
+			}
+			// Change player
+			if (BallManager.Instance.Still ()) {
+				if (currentPlayerMoves <= 0) {
+					SwitchPlayer ();
+					currentPlayerMoves++;
+				}
+				if (whiteInPocket) {
+					this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
+					currentPlayerMoves++;
+					this.whiteInPocket = false;
+
+				}
+			}
+		} else {
+			playerOneText.gameObject.SetActive (false);
+			playerTwoText.gameObject.SetActive (false);
+		}
+	}
 
 	public void PauseGame() {
 		if (currentState == States.InGame || currentState == States.Striking) {
@@ -115,9 +164,8 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	private void WhiteInPocket(Ball white, PocketCollider.Pocket pocketId) {
-		white.transform.position = BallManager.Instance.DefaultWhitePosition ();
-		SwitchPlayer ();
-		currentPlayerMoves = 2;
+		whiteInPocket = true;
+		this.white = white;
 	}
 
 	private void BlackInPocket(Ball black, PocketCollider.Pocket pocketId) {
@@ -127,6 +175,45 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	private void BallInPocket(Ball ball, PocketCollider.Pocket pocketId) {
+		Ball.BallTypes playerOneBallType = ballTypes[Players.PlayerOne];
+		Ball.BallTypes playerTwoBallType = ballTypes[Players.PlayerTwo];
+		// Set ball type to players
+		if (playerOneBallType == Ball.BallTypes.None) {
+			if (currentPlayer == Players.PlayerOne) {
+				playerOneBallType = ball.type;
+				if (ball.type == Ball.BallTypes.Solid) {
+					playerTwoBallType = Ball.BallTypes.Striped;
+				} else {
+					playerTwoBallType = Ball.BallTypes.Solid;
+				}
+			} else {
+				playerTwoBallType = ball.type;
+				if (ball.type == Ball.BallTypes.Solid) {
+					playerOneBallType = Ball.BallTypes.Striped;
+				} else {
+					playerOneBallType = Ball.BallTypes.Solid;
+				}
+			}
+		}
+		// Sum score
+		if (playerOneBallType == Ball.BallTypes.Striped) {
+			if (ball.type == Ball.BallTypes.Striped) {
+				scores [Players.PlayerOne] = scores [Players.PlayerOne] + 1;
+			} else {
+				scores [Players.PlayerTwo] = scores [Players.PlayerOne] + 1;
+			}
+		} else {
+			if (ball.type == Ball.BallTypes.Striped) {
+				scores [Players.PlayerTwo] = scores [Players.PlayerOne] + 1;
+			} else {
+				scores [Players.PlayerOne] = scores [Players.PlayerOne] + 1;
+			}
+		}
+		// Restart movement
+		if (ball.type == ballTypes[currentPlayer]) {
+			currentPlayerMoves++;
+		}
+		// Remove
 		BallManager.Instance.RemoveBall (ball);
 		Destroy (ball.gameObject);
 	}
@@ -137,5 +224,39 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		} else {
 			currentPlayer = Players.PlayerOne;
 		}
+	}
+
+	private static Dictionary<Players, int> InitializeScores() {
+		Dictionary<Players, int> result = new Dictionary<Players, int> ();
+		result.Add (Players.PlayerOne, 0);
+		result.Add (Players.PlayerTwo, 0);
+		return result;
+	}
+
+	private static Dictionary<Players, Ball.BallTypes> InitializeBallTypes() {
+		Dictionary<Players, Ball.BallTypes> result = new Dictionary<Players, Ball.BallTypes> ();
+		result.Add (Players.PlayerOne, Ball.BallTypes.None);
+		result.Add (Players.PlayerTwo, Ball.BallTypes.None);
+		return result;
+	}
+
+	private string PlayerText(Players player) {
+		string ans = "";
+		if (player == Players.PlayerOne) {
+			ans += "Player 1";
+		} else {
+			ans += "Player 2";
+		}
+		ans += " | Score " + scores[player].ToString();
+		ans += " | Ball Type ";
+		ans += ballTypes [player].ToString();
+		if (currentPlayer == player) {
+			ans += " | Movements " + currentPlayerMoves.ToString();
+		}
+		return ans;
+	}
+
+	public void ReduceMovements() {
+		currentPlayerMoves--;
 	}
 }
