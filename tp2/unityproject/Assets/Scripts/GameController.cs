@@ -5,11 +5,12 @@ using UnityEngine;
 public class GameController : MonoBehaviourSingleton<GameController> {
 	public CameraManager cameraManager;
 	public CueManager cueManager;
+	public GameObject energyBar;
 
 	private static float ENERGY = 100.0f;
 	private static float MAX_ENERGY = 30000.0f;
 
-	private float currentPlayerEnergy = 0.0f;
+	public float currentPlayerEnergy = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +19,8 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 	
 	// Update is called once per frame
 	void Update () {
-		print (currentPlayerEnergy);
+		energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
+
 		if (StateManager.Instance.Paused ()) {
 			if (Input.GetKeyDown (KeyCode.Escape)) {
 				StateManager.Instance.ContinueGame ();
@@ -41,15 +43,15 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 			// Shot
 			if (StateManager.Instance.Striking ()) {
 				if (Input.GetKey (KeyCode.Space)) {
+					energyBar.SetActive (true);
 					cueManager.speed = 1.0f;
-					if (currentPlayerEnergy < MAX_ENERGY) {
-						currentPlayerEnergy += ENERGY;
-						if (currentPlayerEnergy > MAX_ENERGY) {
-							currentPlayerEnergy = MAX_ENERGY;
-						}
+					currentPlayerEnergy += ENERGY;
+					if (currentPlayerEnergy > MAX_ENERGY) {
+						currentPlayerEnergy = 0.0f;
 					}
 				}
 				if (Input.GetKeyUp (KeyCode.Space)) {
+					energyBar.SetActive (false);
 					cueManager.speed = 0.0f;
 					StateManager.Instance.Strike ();
 					cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
