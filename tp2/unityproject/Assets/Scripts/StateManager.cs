@@ -12,6 +12,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public GameModes currentGameMode;
 	public Players currentPlayer;
 	public int currentPlayerMoves = 1;
+	public CueManager cue;
 
 	public Dictionary<Players, int> scores = new Dictionary<Players, int>();
 	public PocketCollider.Pocket lastPlayerOnePocket;
@@ -27,6 +28,8 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	public void ReadyToStrike() {
 		if (currentState == States.InGame) {
+			cue.ResetCue ();
+			cue.SetVisible(true);
 			currentState = States.Striking;
 		} else {
 			LogInvalidTransition (States.Striking);
@@ -35,6 +38,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	public void Strike() {
 		if (currentState == States.Striking) {
+			cue.SetVisible(false);
 			currentState = States.InGame;
 		} else {
 			LogInvalidTransition (States.InGame);

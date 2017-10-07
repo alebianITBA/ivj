@@ -6,7 +6,7 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 
 	public GameObject table;
 	public GameObject ballPrefab;
-	public CameraManager cameraManager;
+	public GameObject whiteBall;
 
 	public static float BALL_SIZE = 1.0f;
 	private static float LEVEL_DISTANCE = Mathf.Sqrt(BALL_SIZE - Mathf.Pow(BALL_SIZE / 2, 2));
@@ -31,14 +31,14 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 	public List<Ball> Balls = new List<Ball>();
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		CreateBalls ();
 	}
 
 	private void CreateBalls() {
 		Ball white = InstantiateBall ("white", Ball.BallTypes.White, DefaultWhitePosition(), whiteTexture);
 		Balls.Add(white);
-		cameraManager.whiteBall = white.gameObject;
+		whiteBall = white.gameObject;
 
 		Ball black = InstantiateBall ("black", Ball.BallTypes.Black, new Vector3 (table.transform.position.x, TableYDistance(), TableZDistance()), ball8Texture);
 		Balls.Add (black);

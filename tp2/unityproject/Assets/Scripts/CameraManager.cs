@@ -14,14 +14,13 @@ public class CameraManager : MonoBehaviourSingleton<CameraManager> {
 	// Use this for initialization
 	void Start () {
 		camera.transform.Rotate (X_ROTATION, 0, 0);
+		whiteBall = BallManager.Instance.whiteBall;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (whiteBall != null) {
-			Vector3 whitePosition = whiteBall.transform.position;
-			camera.transform.position = whitePosition - camera.transform.forward * DISTANCE;
-		}
+		Vector3 whitePosition = whiteBall.transform.position;
+		camera.transform.position = whitePosition - camera.transform.forward * DISTANCE;
 	}
 
 	public void RotateLeft() {
