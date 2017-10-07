@@ -115,4 +115,14 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 	public Vector3 DefaultWhitePosition() {
 		return new Vector3 (table.transform.position.x, TableYDistance (), -1 * TableZDistance ());
 	}
+
+	public bool Still() {
+		foreach (Ball b in Balls) {
+			Rigidbody rb = b.GetComponentInChildren<Rigidbody> ();
+			if (!(rb.IsSleeping () || rb.velocity.Equals (Vector3.zero))) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

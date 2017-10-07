@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StateManager : MonoBehaviourSingleton<StateManager> {
-	public enum States { Menu, InGame, Pause };
+	public enum States { Menu, Striking, InGame, Pause };
 	public enum GameModes { OnePlayer, TwoPlayers };
 	public enum Players { PlayerOne, PlayerTwo };
 
 	// TODO: Make the state start in Menu
-	public States currentState = States.InGame;
+	public States currentState = States.Striking;
 	public GameModes currentGameMode;
 	public Players currentPlayer;
 	public int currentPlayerMoves = 1;
@@ -22,6 +22,22 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 			currentState = States.Pause;
 		} else {
 			LogInvalidTransition (States.Pause);
+		}
+	}
+
+	public void ReadyToStrike() {
+		if (currentState == States.InGame) {
+			currentState = States.Striking;
+		} else {
+			LogInvalidTransition (States.Striking);
+		}
+	}
+
+	public void Strike() {
+		if (currentState == States.Striking) {
+			currentState = States.InGame;
+		} else {
+			LogInvalidTransition (States.InGame);
 		}
 	}
 
@@ -68,6 +84,10 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	public bool Paused() {
 		return currentState.Equals(States.Pause);
+	}
+
+	public bool Striking() {
+		return currentState.Equals (States.Striking);
 	}
 
 	private void LogInvalidTransition(States toState) {

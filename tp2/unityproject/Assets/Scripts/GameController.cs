@@ -18,30 +18,36 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 	// Update is called once per frame
 	void Update () {
 		if (StateManager.Instance.Paused ()) {
-			if (Input.GetKeyDown(KeyCode.Escape)) {
-				StateManager.Instance.ContinueGame();
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				StateManager.Instance.ContinueGame ();
 			}
 		} else {
+			if (BallManager.Instance.Still () && !StateManager.Instance.Striking ()) {
+				StateManager.Instance.ReadyToStrike ();
+			}
 			if (Input.GetKey (KeyCode.LeftArrow)) {
 				cameraManager.RotateLeft ();
 			}
 			if (Input.GetKey (KeyCode.RightArrow)) {
 				cameraManager.RotateRight ();
 			}
-			if (Input.GetKeyDown(KeyCode.Escape)) {
-				StateManager.Instance.PauseGame();
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				StateManager.Instance.PauseGame ();
 			}
 			// Shot
-			if (Input.GetKey (KeyCode.Space)) {
-				if (currentPlayerEnergy < MAX_ENERGY) {
-					currentPlayerEnergy += ENERGY;
-					if (currentPlayerEnergy > MAX_ENERGY) {
-						currentPlayerEnergy = MAX_ENERGY;
+			if (StateManager.Instance.Striking ()) {
+				if (Input.GetKey (KeyCode.Space)) {
+					if (currentPlayerEnergy < MAX_ENERGY) {
+						currentPlayerEnergy += ENERGY;
+						if (currentPlayerEnergy > MAX_ENERGY) {
+							currentPlayerEnergy = MAX_ENERGY;
+						}
 					}
 				}
-			}
-			if (Input.GetKeyUp (KeyCode.Space)) {
-				cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+				if (Input.GetKeyUp (KeyCode.Space)) {
+					StateManager.Instance.Strike ();
+					cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+				}
 			}
 		}
 	}
