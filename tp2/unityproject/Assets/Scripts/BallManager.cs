@@ -40,7 +40,7 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 		Balls.Add(white);
 		cameraManager.whiteBall = white.gameObject;
 
-		Ball black = InstantiateBall ("black", Ball.BallTypes.Black, new Vector3 (table.transform.position.x, TableYDistance(), TableZDistance()), ball8Texture);
+		Ball black = InstantiateBall ("black", Ball.BallTypes.Black, DefaultBlackPosition(), ball8Texture);
 		Balls.Add (black);
 
 		// Add rest of balls relative to black's position
@@ -114,6 +114,10 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 
 	public Vector3 DefaultWhitePosition() {
 		return new Vector3 (table.transform.position.x, TableYDistance (), -1 * TableZDistance ());
+	}
+
+	public Vector3 DefaultBlackPosition() {
+		return new Vector3 (table.transform.position.x, TableYDistance(), TableZDistance());
 	}
 
 	public bool Still() {
