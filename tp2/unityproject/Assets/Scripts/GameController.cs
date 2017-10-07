@@ -5,7 +5,10 @@ using UnityEngine;
 public class GameController : MonoBehaviourSingleton<GameController> {
 	public CameraManager cameraManager;
 
-	private static float ENERGY = 1000.0f;
+	private static float ENERGY = 100.0f;
+	private static float MAX_ENERGY = 10000.0f;
+
+	private float currentPlayerEnergy = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -25,13 +28,23 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 			if (Input.GetKey (KeyCode.RightArrow)) {
 				cameraManager.RotateRight ();
 			}
-			if (Input.GetKey (KeyCode.Space)) {
-				cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * ENERGY);
-			}
 			if (Input.GetKeyDown(KeyCode.Escape)) {
 				StateManager.Instance.PauseGame();
 			}
+			// Shot
+			if (Input.GetKey (KeyCode.Space)) {
+				if (currentPlayerEnergy < MAX_ENERGY) {
+					currentPlayerEnergy += ENERGY;
+					if (currentPlayerEnergy > MAX_ENERGY) {
+						currentPlayerEnergy = MAX_ENERGY;
+					}
+				}
+			}
+			if (Input.GetKeyUp (KeyCode.Space)) {
+				cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+			}
 		}
+		print (currentPlayerEnergy);
 	}
 
 	private Vector3 direction()
