@@ -125,4 +125,8 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 		}
 		return true;
 	}
+
+	public void RemoveBall(Ball b) {
+		Balls.Remove (b);
+	}
 }

@@ -7,7 +7,7 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 	public CueManager cueManager;
 
 	private static float ENERGY = 100.0f;
-	private static float MAX_ENERGY = 10000.0f;
+	private static float MAX_ENERGY = 30000.0f;
 
 	private float currentPlayerEnergy = 0.0f;
 
@@ -18,6 +18,7 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 	
 	// Update is called once per frame
 	void Update () {
+		print (currentPlayerEnergy);
 		if (StateManager.Instance.Paused ()) {
 			if (Input.GetKeyDown (KeyCode.Escape)) {
 				StateManager.Instance.ContinueGame ();
@@ -52,6 +53,8 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 					cueManager.speed = 0.0f;
 					StateManager.Instance.Strike ();
 					cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+					StateManager.Instance.ReduceMovements ();
+					currentPlayerEnergy = 0.0f;
 				}
 			}
 		}
