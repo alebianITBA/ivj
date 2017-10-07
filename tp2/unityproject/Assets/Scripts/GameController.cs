@@ -14,14 +14,23 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKey(KeyCode.LeftArrow)) {
-			cameraManager.RotateLeft();
-		}
-		if (Input.GetKey(KeyCode.RightArrow)) {
-			cameraManager.RotateRight();
-		}
-		if (Input.GetKey(KeyCode.Space)) {
-			cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction() * ENERGY);
+		if (StateManager.Instance.Paused ()) {
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				StateManager.Instance.ContinueGame();
+			}
+		} else {
+			if (Input.GetKey (KeyCode.LeftArrow)) {
+				cameraManager.RotateLeft ();
+			}
+			if (Input.GetKey (KeyCode.RightArrow)) {
+				cameraManager.RotateRight ();
+			}
+			if (Input.GetKey (KeyCode.Space)) {
+				cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * ENERGY);
+			}
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				StateManager.Instance.PauseGame();
+			}
 		}
 	}
 

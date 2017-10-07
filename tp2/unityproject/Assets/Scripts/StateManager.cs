@@ -5,29 +5,46 @@ using UnityEngine;
 public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public enum States { Menu, InGame, Pause };
 
-	public States currentState = States.Menu;
+	// TODO: Make the state start in Menu
+	public States currentState = States.InGame;
 
-	public void pauseGame() {
+	public void PauseGame() {
 		if (currentState == States.InGame) {
 			currentState = States.Pause;
 		} else {
-			Debug.LogError("Can't pause if not in game");
+			LogInvalidTransition (States.Pause);
 		}
 	}
 
-	public void startGame() {
+	public void ContinueGame() {
+		if (currentState == States.Pause) {
+			currentState = States.InGame;
+		} else {
+			LogInvalidTransition (States.InGame);
+		}
+	}
+
+	public void StartGame() {
 		if (currentState == States.Menu) {
 			currentState = States.InGame;
 		} else {
-			Debug.LogError ("Can't start game if not in menu");
+			LogInvalidTransition (States.InGame);
 		}
 	}
 
-	public void backToMainMenu() {
+	public void BackToMainMenu() {
 		if (currentState == States.Pause) {
 			currentState = States.Menu;
 		} else {
-			Debug.LogError ("Can't go to main menu unless in pause");
+			LogInvalidTransition (States.Menu);
 		}
+	}
+
+	public bool Paused() {
+		return currentState.Equals(States.Pause);
+	}
+
+	private void LogInvalidTransition(States toState) {
+		Debug.LogError ("Current state is: " + currentState.ToString () + ", cannot transition to: " + toState.ToString ());
 	}
 }
