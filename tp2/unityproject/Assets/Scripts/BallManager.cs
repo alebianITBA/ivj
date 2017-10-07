@@ -35,11 +35,6 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 		CreateBalls ();
 	}
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 	private void CreateBalls() {
 		Ball white = InstantiateBall ("white", Ball.BallTypes.White, DefaultWhitePosition(), whiteTexture);
 		Balls.Add(white);
