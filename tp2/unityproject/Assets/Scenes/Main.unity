@@ -726,7 +726,7 @@ MonoBehaviour:
   currentGameMode: 1
   currentPlayer: 0
   currentPlayerMoves: 1
-  cue: {fileID: 0}
+  cue: {fileID: 978253084}
   lastPlayerOnePocket: 0
   lastPlayerTwoPocket: 0
   pauseCanvas: {fileID: 36740464}
@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraManager: {fileID: 402357443}
-  cueManager: {fileID: 0}
+  cueManager: {fileID: 978253084}
 --- !u!4 &1130441945
 Transform:
   m_ObjectHideFlags: 0
