@@ -44,7 +44,6 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 				cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
 			}
 		}
-		print (currentPlayerEnergy);
 	}
 
 	private Vector3 direction()
