@@ -8,7 +8,9 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public enum States { Menu, Striking, InGame, Pause };
 	public enum GameModes { OnePlayer, TwoPlayers };
 	public enum Players { PlayerOne, PlayerTwo };
-
+	// Constants
+	private static Color ACTIVE_COLOR = new Color32( 0xFF, 0xE2, 0x59, 0xFF );
+	private static Color INACTIVE_COLOR = new Color32( 0xE0, 0x83, 0x28, 0xFF );
 	// Game logic
 	// TODO: Make the state start in Menu
 	public States currentState = States.InGame;
@@ -43,12 +45,16 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 				playerTwoText.fontStyle = FontStyle.Normal;
 				playerOneText.fontSize = 16;
 				playerTwoText.fontSize = 14;
+				playerOneText.color = ACTIVE_COLOR;
+				playerTwoText.color = INACTIVE_COLOR;
 			}
 			else if (currentPlayer == Players.PlayerTwo) {
 				playerOneText.fontStyle = FontStyle.Normal;
 				playerTwoText.fontStyle = FontStyle.Bold;
 				playerOneText.fontSize = 14;
 				playerTwoText.fontSize = 16;
+				playerOneText.color = INACTIVE_COLOR;
+				playerTwoText.color = ACTIVE_COLOR;
 			}
 			// Change player
 			if (BallManager.Instance.Still ()) {
