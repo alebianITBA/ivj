@@ -15,4 +15,19 @@ public class Ball : MonoBehaviour {
 			rigidbody.velocity = velocity;
 		}
 	}
+
+	public static BallTypes Opposite(BallTypes type) {
+		switch(type) {
+			case BallTypes.Solid:
+				return BallTypes.Striped;
+			case BallTypes.Striped:
+				return BallTypes.Solid;
+			case BallTypes.White:
+				return BallTypes.Black;
+			case BallTypes.Black:
+				return BallTypes.White;
+			default:
+				return BallTypes.None;
+		}
+	}
 }
