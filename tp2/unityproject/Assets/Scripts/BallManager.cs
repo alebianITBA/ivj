@@ -87,6 +87,7 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 
 		Ball ball12 = InstantiateBall("ball12", Ball.BallTypes.Striped, new Vector3(blackPosition.x + 2.0f * BALL_SIZE, blackPosition.y, blackPosition.z + 2.0f * LEVEL_DISTANCE), ball12Texture);
 		Balls.Add (ball12);
+
 	}
 
 	private Ball InstantiateBall(string id, Ball.BallTypes type, Vector3 position, Texture2D texture) {

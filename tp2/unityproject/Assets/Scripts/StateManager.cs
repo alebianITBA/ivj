@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StateManager : MonoBehaviourSingleton<StateManager> {
 	// Enums
-	public enum States { Menu, Striking, InGame, Pause };
+	public enum States { Menu, Striking, InGame, Pause, Finished };
 	public enum GameModes { OnePlayer, TwoPlayers };
 	public enum Players { PlayerOne, PlayerTwo };
 	// Constants
@@ -22,52 +22,60 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public Dictionary<Players, Ball.BallTypes> ballTypes = InitializeBallTypes();
 	public PocketCollider.Pocket lastPlayerOnePocket;
 	public PocketCollider.Pocket lastPlayerTwoPocket;
+	public Players winner;
 	private bool whiteInPocket = false;
 	private Ball white;
 
 	// Game variables
 	public GameObject pauseCanvas;
+	public GameObject finishedCanvas;
 	public Text playerOneText;
 	public Text playerTwoText;
+	public Text WinnerText;
 
 	void Update() {
 		if (currentState != States.Menu) {
-			// Set Texts
-			playerOneText.gameObject.SetActive (true);
-			playerOneText.text = PlayerText(Players.PlayerOne);
-			if (currentGameMode == GameModes.TwoPlayers) {
-				playerTwoText.gameObject.SetActive (true);
-				playerTwoText.text = PlayerText(Players.PlayerTwo);
-			}
-			// Bold
-			if (currentPlayer == Players.PlayerOne) {
-				playerOneText.fontStyle = FontStyle.Bold;
-				playerTwoText.fontStyle = FontStyle.Normal;
-				playerOneText.fontSize = 16;
-				playerTwoText.fontSize = 14;
-				playerOneText.color = ACTIVE_COLOR;
-				playerTwoText.color = INACTIVE_COLOR;
-			}
-			else if (currentPlayer == Players.PlayerTwo) {
-				playerOneText.fontStyle = FontStyle.Normal;
-				playerTwoText.fontStyle = FontStyle.Bold;
-				playerOneText.fontSize = 14;
-				playerTwoText.fontSize = 16;
-				playerOneText.color = INACTIVE_COLOR;
-				playerTwoText.color = ACTIVE_COLOR;
-			}
-			// Change player
-			if (BallManager.Instance.Still ()) {
-				if (currentPlayerMoves <= 0) {
-					SwitchPlayer ();
-					currentPlayerMoves++;
+			if (currentState != States.Finished) {
+				finishedCanvas.SetActive (false);
+				// Set Texts
+				playerOneText.gameObject.SetActive (true);
+				playerOneText.text = PlayerText (Players.PlayerOne);
+				if (currentGameMode == GameModes.TwoPlayers) {
+					playerTwoText.gameObject.SetActive (true);
+					playerTwoText.text = PlayerText (Players.PlayerTwo);
 				}
-				if (whiteInPocket) {
-					this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
-					currentPlayerMoves++;
-					this.whiteInPocket = false;
+				// Bold
+				if (currentPlayer == Players.PlayerOne) {
+					playerOneText.fontStyle = FontStyle.Bold;
+					playerTwoText.fontStyle = FontStyle.Normal;
+					playerOneText.fontSize = 16;
+					playerTwoText.fontSize = 14;
+					playerOneText.color = ACTIVE_COLOR;
+					playerTwoText.color = INACTIVE_COLOR;
+				} else if (currentPlayer == Players.PlayerTwo) {
+					playerOneText.fontStyle = FontStyle.Normal;
+					playerTwoText.fontStyle = FontStyle.Bold;
+					playerOneText.fontSize = 14;
+					playerTwoText.fontSize = 16;
+					playerOneText.color = INACTIVE_COLOR;
+					playerTwoText.color = ACTIVE_COLOR;
+				}
+				// Change player
+				if (BallManager.Instance.Still ()) {
+					if (currentPlayerMoves <= 0) {
+						SwitchPlayer ();
+						currentPlayerMoves++;
+					}
+					if (whiteInPocket) {
+						this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
+						currentPlayerMoves++;
+						this.whiteInPocket = false;
 
+					}
 				}
+			} else {
+				finishedCanvas.SetActive (true);
+				WinnerText.text = "Winner " + PlayerString(currentPlayer) + "!";
 			}
 		} else {
 			playerOneText.gameObject.SetActive (false);
@@ -180,7 +188,23 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	private void BlackInPocket(Ball black, PocketCollider.Pocket pocketId) {
-		// TODO: Lose logic
+		// Win logic
+		if (currentPlayer == Players.PlayerOne && lastPlayerOnePocket == pocketId) {
+			winner = Players.PlayerOne;
+			currentState = States.Finished;
+		} else if (currentPlayer == Players.PlayerTwo && lastPlayerTwoPocket == pocketId) {
+			winner = Players.PlayerTwo;
+			currentState = States.Finished;
+		}
+		// Lose logic
+		if (currentState != States.Finished) {
+			currentState = States.Finished;
+			if (currentPlayer == Players.PlayerOne) {
+				winner = Players.PlayerTwo;
+			} else {
+				winner = Players.PlayerOne;
+			}
+		}
 		BallManager.Instance.RemoveBall (black);
 		Destroy (black.gameObject);
 	}
@@ -209,15 +233,23 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		// Sum score
 		if (playerOneBallType == Ball.BallTypes.Striped) {
 			if (ball.type == Ball.BallTypes.Striped) {
-				scores [Players.PlayerOne] = scores [Players.PlayerOne] + 1;
+				IncreasePlayerScore (Players.PlayerOne);
 			} else {
-				scores [Players.PlayerTwo] = scores [Players.PlayerOne] + 1;
+				IncreasePlayerScore (Players.PlayerTwo);
 			}
 		} else {
 			if (ball.type == Ball.BallTypes.Striped) {
-				scores [Players.PlayerTwo] = scores [Players.PlayerOne] + 1;
+				IncreasePlayerScore (Players.PlayerTwo);
 			} else {
-				scores [Players.PlayerOne] = scores [Players.PlayerOne] + 1;
+				IncreasePlayerScore (Players.PlayerOne);
+			}
+		}
+		// Set pocket to put black
+		if (scores[currentPlayer] == 7) {
+			if (currentPlayer == Players.PlayerOne) {
+				lastPlayerOnePocket = pocketId;
+			} else {
+				lastPlayerTwoPocket = pocketId;
 			}
 		}
 		// Restart movement
@@ -253,11 +285,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	private string PlayerText(Players player) {
 		string ans = "";
-		if (player == Players.PlayerOne) {
-			ans += "Player 1";
-		} else {
-			ans += "Player 2";
-		}
+		ans += PlayerString (player);
 		ans += " | Score " + scores[player].ToString();
 		ans += " | Ball Type ";
 		ans += ballTypes [player].ToString();
@@ -269,5 +297,17 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	public void ReduceMovements() {
 		currentPlayerMoves--;
+	}
+
+	private string PlayerString(Players player) {
+		if (player == Players.PlayerOne) {
+			return "Player One";
+		} else {
+			return "Player Two";
+		}
+	}
+
+	private void IncreasePlayerScore(Players player) {
+		scores [player] = scores [player] + 1;
 	}
 }

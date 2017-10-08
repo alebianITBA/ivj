@@ -7,7 +7,6 @@ public class PocketCollider : MonoBehaviour {
 	public Pocket pocketId;
 
 	void OnCollisionEnter(Collision col) {
-		print ("Collided " + col.gameObject.name);
 		StateManager.Instance.BallEnteredInPocket (col.gameObject, pocketId);
 	}
 }

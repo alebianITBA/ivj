@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PocketsController : MonoBehaviourSingleton<PocketsController> {
-	private StateManager stateManager = StateManager.Instance;
+//	private StateManager stateManager = StateManager.Instance;
 
 	// Use this for initialization
 	void Start () {
@@ -13,12 +13,12 @@ public class PocketsController : MonoBehaviourSingleton<PocketsController> {
 	void Update () {
 
 	}
-
-	void OnCollisionEnter(Collision col) {
-		print (col.gameObject);
-		if(col.gameObject.name == "ball")
-		{
-			Destroy(col.gameObject);
-		}
-	}
+//
+//	void OnCollisionEnter(Collision col) {
+//		print (col.gameObject);
+//		if(col.gameObject.name == "ball")
+//		{
+//			Destroy(col.gameObject);
+//		}
+//	}
 }
