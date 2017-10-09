@@ -441,6 +441,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   table: {fileID: 231421048}
   ballPrefab: {fileID: 1775963454689358, guid: fe145948e0e89464daf8f6873f3e48ba, type: 2}
+  whiteBallPrefab: {fileID: 1506725876056966, guid: 7e7d2524ad55abc4fb6117becbf19056,
+    type: 2}
   whiteBall: {fileID: 0}
   whiteTexture: {fileID: 2800000, guid: 3e331bb4223d9614ea6007809547587a, type: 3}
   ball1Texture: {fileID: 2800000, guid: 56659064185f27a4685a39b7461657c5, type: 3}
@@ -1076,14 +1078,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ffd5e03c9614d958bf195099c883cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentPlayerIdx: 0
   currentState: 1
   currentGameMode: 1
-  currentPlayer: 0
-  currentPlayerMoves: 1
   cue: {fileID: 1502349638}
-  lastPlayerOnePocket: 0
-  lastPlayerTwoPocket: 0
-  winner: 0
   pauseCanvas: {fileID: 36740464}
   finishedCanvas: {fileID: 918070480}
   playerOneText: {fileID: 1817503810}

@@ -19,7 +19,8 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public CueManager cue;
 	public Player winner;
 	private bool whiteInPocket = false;
-	private Ball white;
+	private WhiteBall white;
+	private bool firstBall = false;
 
 	// Game variables
 	public GameObject pauseCanvas;
@@ -32,6 +33,8 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		this.Players = new Player[2];
 		this.Players[0] = new Player ("One");
 		this.Players[1] = new Player ("Two");
+		this.white = BallManager.Instance.whiteBall	.GetComponent<WhiteBall>();
+		CurrentPlayer ().IncreaseMovements ();
 	}
 
 	void Update() {
@@ -62,17 +65,37 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 					playerTwoText.color = ACTIVE_COLOR;
 				}
 				// Change player
-				if (BallManager.Instance.Still ()) {
-					if (CurrentPlayer().Movements <= 0) {
+				if (BallManager.Instance.Still () && this.currentState == States.InGame) {
+					Ball.BallTypes firstCollided = white.GetFirstCollided ();
+					white.ResetFirstCollided ();
+					if (firstCollided == Ball.BallTypes.None) {
 						SwitchPlayer ();
 						CurrentPlayer ().IncreaseMovements ();
-					}
-					if (whiteInPocket) {
+						CurrentPlayer ().IncreaseMovements ();
+						Debug.Log ("No ball hit");
+					} else if (CurrentPlayer ().BallType != Ball.BallTypes.None && firstCollided != CurrentPlayer ().BallType) {
+						if (!this.firstBall) {
+							SwitchPlayer ();
+							CurrentPlayer ().IncreaseMovements ();
+							CurrentPlayer ().IncreaseMovements ();
+						} else {
+							this.firstBall = false;
+						}
+						Debug.Log ("Wrong ball type");
+					} else if (whiteInPocket) {
 						this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
+						SwitchPlayer ();
+						CurrentPlayer ().IncreaseMovements ();
 						CurrentPlayer ().IncreaseMovements ();
 						this.whiteInPocket = false;
 
 					}
+					else if (CurrentPlayer().Movements <= 0) {
+						SwitchPlayer ();
+						CurrentPlayer ().IncreaseMovements ();
+					}
+
+					this.ReadyToStrike ();
 				}
 			} else {
 				finishedCanvas.SetActive (true);
@@ -185,7 +208,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	private void WhiteInPocket(Ball white, PocketCollider.Pocket pocketId) {
 		whiteInPocket = true;
-		this.white = white;
+		this.white = (WhiteBall) white;
 	}
 
 	private void BlackInPocket(Ball black, PocketCollider.Pocket pocketId) {
@@ -213,6 +236,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	private void BallInPocket(Ball ball, PocketCollider.Pocket pocketId) {
 		// Set ball type to players
 		if (PlayerOne().BallType == Ball.BallTypes.None) {
+			this.firstBall = true;
 			if (PlayerOnePlaying()) {
 				PlayerOne ().SetBallType (ball.type);
 				PlayerTwo ().SetBallType (Ball.Opposite(ball.type));

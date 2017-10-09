@@ -8,9 +8,11 @@ public class CueManager : MonoBehaviourSingleton<CueManager> {
 	public GameObject MainCamera;
 
 	private float DISTANCE;
-	private static float SENSITIVITY = 100.0f;
-	private static float MAX_DISTANCE = 50.0f;
-	private static float MIN_DISTANCE = 10.0f;
+	private static float SENSITIVITY = 90.0f;
+	private static float MAX_DISTANCE = 32.0f;
+	private float MIN_DISTANCE = 28.0f;
+
+	private float cueDirection = 1;
 
 	public float speed = 0.0f;
 	// Use this for initialization
@@ -22,10 +24,11 @@ public class CueManager : MonoBehaviourSingleton<CueManager> {
 	// Update is called once per frame
 	void Update () {
 		float distance = Vector3.Distance(Cue.transform.position, WhiteBall.transform.position);
-		int cueDirection = 1;
-		if (distance < MIN_DISTANCE || distance > MAX_DISTANCE)
-			cueDirection *= -1;
-		Cue.transform.Translate(Vector3.down * speed * cueDirection * Time.deltaTime);
+		if (distance > MAX_DISTANCE)
+			cueDirection = -1;
+		else if (distance < MIN_DISTANCE)
+			cueDirection = 1;
+		Cue.transform.Translate(Vector3.down * speed * 5.0f * cueDirection * Time.deltaTime);
 	}
 
 	public void SetVisible(bool b) {

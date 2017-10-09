@@ -6,6 +6,7 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 
 	public GameObject table;
 	public GameObject ballPrefab;
+	public GameObject whiteBallPrefab;
 	public GameObject whiteBall;
 
 	public static float BALL_SIZE = 1.0f;
@@ -91,7 +92,10 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 	}
 
 	private Ball InstantiateBall(string id, Ball.BallTypes type, Vector3 position, Texture2D texture) {
-		GameObject go = GameObject.Instantiate(ballPrefab) as GameObject;
+		GameObject prefab = this.ballPrefab;
+		if (type == Ball.BallTypes.White)
+			prefab = this.whiteBallPrefab;
+		GameObject go = GameObject.Instantiate(prefab) as GameObject;
 		Ball ball = go.GetComponent<Ball>();
 
 		ball.id = id;
