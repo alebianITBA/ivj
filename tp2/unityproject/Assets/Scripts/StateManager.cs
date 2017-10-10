@@ -297,4 +297,17 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	public void ReduceMovements() {
 		CurrentPlayer ().DecreaseMovements ();
 	}
+
+	public void PutBallBackInTable(GameObject ballGo) {
+		Ball ball = ballGo.GetComponent<Ball>();
+
+		switch (ball.type) {
+		case Ball.BallTypes.White:
+			ball.transform.position = BallManager.Instance.DefaultWhitePosition ();
+			break;
+		default:
+			ball.transform.position = BallManager.Instance.DefaultBlackPosition ();
+			break;
+		}
+	}
 }
