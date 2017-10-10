@@ -124,6 +124,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 					energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
 				}
 				if (Input.GetKeyUp (KeyCode.Space)) {
+					BasicSoundManager.Instance.PlayCueHitSound ();
 					energyBar.SetActive (false);
 					CueManager.Instance.speed = 0.0f;
 					white.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
