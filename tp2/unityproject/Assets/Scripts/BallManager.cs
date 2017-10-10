@@ -34,6 +34,7 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 	// Use this for initialization
 	void Awake () {
 		CreateBalls ();
+		BasicSoundManager.Instance.PlayStartSound ();
 	}
 
 	private void CreateBalls() {

@@ -82,7 +82,6 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	void LateUpdate() {
-		Debug.Log (currentState);
 		this.updateCounts--;
 		switch (currentState) {
 			case States.InGame:
@@ -100,12 +99,9 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 			Ball.BallTypes type = white.GetFirstCollided ();
 			white.ResetFirstCollided ();
 
-			Debug.Log (type);
-
 			penalize = penalize || CurrentPlayer ().checkFirstCollided (type, firstBall);
 			if (firstBall)
 				firstBall = false;
-				Debug.Log (penalize);
 				if (penalize) {
 					SwitchPlayer (penalize);
 					return;

@@ -17,7 +17,8 @@ public class WhiteBall : Ball {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-			Ball b = collision.gameObject.GetComponent<Ball> ();
+		BasicSoundManager.Instance.PlayBallHitSound ();
+		Ball b = collision.gameObject.GetComponent<Ball> ();
 		if (b != null && this.firstCollided == BallTypes.None) {
 			this.firstCollided = b.type;
 		}

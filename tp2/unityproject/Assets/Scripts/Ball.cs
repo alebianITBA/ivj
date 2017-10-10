@@ -30,4 +30,8 @@ public class Ball : MonoBehaviour {
 				return BallTypes.None;
 		}
 	}
+
+	void OnCollisionEnter(Collision collision) {
+		BasicSoundManager.Instance.PlaySmallBallHit ();
+	}
 }

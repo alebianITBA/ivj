@@ -7,6 +7,7 @@ public class PocketCollider : MonoBehaviour {
 	public Pocket pocketId;
 
 	void OnCollisionEnter(Collision col) {
+		BasicSoundManager.Instance.PlayPocketHitSound ();
 		StateManager.Instance.BallEnteredInPocket (col.gameObject, pocketId);
 	}
 }
