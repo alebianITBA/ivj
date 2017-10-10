@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StateManager : MonoBehaviourSingleton<StateManager> {
 	// Enums
-	public enum States { Menu, Striking, InGame, Pause, Finished };
+	public enum States { Menu, Striking, InGame, WaitingForNextTurn, Pause, Finished };
 	public enum GameModes { OnePlayer, TwoPlayers };
 	// Constants
 	private static Color ACTIVE_COLOR = new Color32( 0xFF, 0xE2, 0x59, 0xFF );
@@ -21,10 +21,15 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	private bool whiteInPocket = false;
 	private WhiteBall white;
 	private bool firstBall = false;
-
+	private bool setInGame = false;
+	private int updateCounts = 0;
+	private float currentPlayerEnergy = 0.0f;
+	private static float ENERGY = 100.0f;
+	private static float MAX_ENERGY = 30000.0f;
 	// Game variables
 	public GameObject pauseCanvas;
 	public GameObject finishedCanvas;
+	public GameObject energyBar;
 	public Text playerOneText;
 	public Text playerTwoText;
 	public Text WinnerText;
@@ -34,7 +39,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		this.Players[0] = new Player ("One");
 		this.Players[1] = new Player ("Two");
 		this.white = BallManager.Instance.whiteBall	.GetComponent<WhiteBall>();
-		CurrentPlayer ().IncreaseMovements ();
+		CurrentPlayer ().SetMovements (1);
 	}
 
 	void Update() {
@@ -65,38 +70,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 					playerTwoText.color = ACTIVE_COLOR;
 				}
 				// Change player
-				if (BallManager.Instance.Still () && this.currentState == States.InGame) {
-					Ball.BallTypes firstCollided = white.GetFirstCollided ();
-					white.ResetFirstCollided ();
-					if (firstCollided == Ball.BallTypes.None) {
-						SwitchPlayer ();
-						CurrentPlayer ().IncreaseMovements ();
-						CurrentPlayer ().IncreaseMovements ();
-						Debug.Log ("No ball hit");
-					} else if (CurrentPlayer ().BallType != Ball.BallTypes.None && firstCollided != CurrentPlayer ().BallType) {
-						if (!this.firstBall) {
-							SwitchPlayer ();
-							CurrentPlayer ().IncreaseMovements ();
-							CurrentPlayer ().IncreaseMovements ();
-						} else {
-							this.firstBall = false;
-						}
-						Debug.Log ("Wrong ball type");
-					} else if (whiteInPocket) {
-						this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
-						SwitchPlayer ();
-						CurrentPlayer ().IncreaseMovements ();
-						CurrentPlayer ().IncreaseMovements ();
-						this.whiteInPocket = false;
 
-					}
-					else if (CurrentPlayer().Movements <= 0) {
-						SwitchPlayer ();
-						CurrentPlayer ().IncreaseMovements ();
-					}
-
-					this.ReadyToStrike ();
-				}
 			} else {
 				finishedCanvas.SetActive (true);
 				WinnerText.text = "Winner " + CurrentPlayer().ToString() + "!";
@@ -105,6 +79,78 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 			playerOneText.gameObject.SetActive (false);
 			playerTwoText.gameObject.SetActive (false);
 		}
+	}
+
+	void LateUpdate() {
+		Debug.Log (currentState);
+		this.updateCounts--;
+		switch (currentState) {
+			case States.InGame:
+			if (this.updateCounts<= 0 && BallManager.Instance.Still ()) {
+					this.currentState = States.WaitingForNextTurn;
+				}
+				break;
+		case States.WaitingForNextTurn:
+			bool penalize = false;
+			if (this.whiteInPocket) {
+				this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
+				penalize = true;
+			}
+
+			Ball.BallTypes type = white.GetFirstCollided ();
+			white.ResetFirstCollided ();
+
+			Debug.Log (type);
+
+			penalize = penalize || CurrentPlayer ().checkFirstCollided (type, firstBall);
+			if (firstBall)
+				firstBall = false;
+				Debug.Log (penalize);
+				if (penalize) {
+					SwitchPlayer (penalize);
+					return;
+				}
+
+				if (CurrentPlayer ().Movements <= 0) {
+					SwitchPlayer (penalize);
+				}
+
+				this.readyToStrike ();
+				break;
+			case States.Striking:
+				if (Input.GetKey (KeyCode.Space)) {
+					energyBar.SetActive (true);
+					CueManager.Instance.speed = 1.0f;
+					currentPlayerEnergy += ENERGY;
+					if (currentPlayerEnergy > MAX_ENERGY) {
+						currentPlayerEnergy = 0.0f;
+					}
+					energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
+				}
+				if (Input.GetKeyUp (KeyCode.Space)) {
+					energyBar.SetActive (false);
+					CueManager.Instance.speed = 0.0f;
+					white.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+					currentPlayerEnergy = 0.0f;
+					this.ReduceMovements ();
+				this.updateCounts = 5;
+					this.strike();
+					//StateManager.Instance.strike ();
+				}
+				break;
+			case States.Pause:
+				break;
+			case States.Menu:
+				break;
+			default:
+				break;
+			}
+	}
+	private Vector3 direction()
+	{
+		Vector3 forward = CameraManager.Instance.camera.transform.forward;
+		Vector3 direction = new Vector3 (forward.x, 0.0f, forward.z);
+		return direction;
 	}
 
 	public void PauseGame() {
@@ -116,8 +162,8 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		}
 	}
 
-	public void ReadyToStrike() {
-		if (currentState == States.InGame) {
+	public void readyToStrike() {
+		if (currentState == States.WaitingForNextTurn) {
 			cue.ResetCue ();
 			cue.SetVisible(true);
 			currentState = States.Striking;
@@ -126,13 +172,13 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		}
 	}
 
-	public void Strike() {
+	public void strike() {
 		if (currentState == States.Striking) {
 			cue.SetVisible (false);
 			currentState = States.InGame;
 		}
 		else {
-			LogInvalidTransition (States.Striking);
+			LogInvalidTransition (States.InGame);
 		}
 	}
 
@@ -235,14 +281,14 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	private void BallInPocket(Ball ball, PocketCollider.Pocket pocketId) {
 		// Set ball type to players
-		if (PlayerOne().BallType == Ball.BallTypes.None) {
+		if (PlayerOne ().BallType == Ball.BallTypes.None) {
 			this.firstBall = true;
-			if (PlayerOnePlaying()) {
+			if (PlayerOnePlaying ()) {
 				PlayerOne ().SetBallType (ball.type);
-				PlayerTwo ().SetBallType (Ball.Opposite(ball.type));
+				PlayerTwo ().SetBallType (Ball.Opposite (ball.type));
 			} else {
 				PlayerTwo ().SetBallType (ball.type);
-				PlayerOne ().SetBallType (Ball.Opposite(ball.type));
+				PlayerOne ().SetBallType (Ball.Opposite (ball.type));
 			}
 		}
 		// Sum score
@@ -254,7 +300,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		}
 		// Restart movement
 		if (ball.type == CurrentPlayer().BallType) {
-			CurrentPlayer ().IncreaseMovements ();
+			CurrentPlayer ().SetMovements(1);
 		}
 		// Remove
 		BallManager.Instance.RemoveBall (ball);
@@ -281,8 +327,14 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		return CurrentPlayer ().Equals (PlayerTwo ());
 	}
 
-	private void SwitchPlayer() {
+	private void SwitchPlayer(bool penalize) {
+		CurrentPlayer ().SetMovements (0);
 		CurrentPlayerIdx = OtherPlayerIndex();
+		int movements = 1;
+		if (penalize)
+			movements = 2;
+		CurrentPlayer ().SetMovements (movements);
+		this.readyToStrike ();
 	}
 
 	// Returns the other player that is not the currentPlayer
