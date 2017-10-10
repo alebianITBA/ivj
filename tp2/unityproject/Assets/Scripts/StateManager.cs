@@ -22,6 +22,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	private WhiteBall white;
 	private bool firstBall = false;
 	private bool setInGame = false;
+	private int hacknumber = 0;
 	private float currentPlayerEnergy = 0.0f;
 	private static float ENERGY = 100.0f;
 	private static float MAX_ENERGY = 30000.0f;
@@ -81,9 +82,11 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	void LateUpdate() {
+		Debug.Log (currentState);
+		this.hacknumber--;
 		switch (currentState) {
 			case States.InGame:
-				if (BallManager.Instance.Still ()) {
+			if (this.hacknumber<= 0 && BallManager.Instance.Still ()) {
 					this.currentState = States.WaitingForNextTurn;
 				}
 				break;
@@ -129,8 +132,9 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 					CueManager.Instance.speed = 0.0f;
 					white.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
 					currentPlayerEnergy = 0.0f;
-					this.strike();
 					this.ReduceMovements ();
+				this.hacknumber = 5;
+					this.strike();
 					//StateManager.Instance.strike ();
 				}
 				break;
