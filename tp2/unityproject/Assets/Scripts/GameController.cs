@@ -50,10 +50,10 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 				if (Input.GetKeyUp (KeyCode.Space)) {
 					energyBar.SetActive (false);
 					cueManager.speed = 0.0f;
-					StateManager.Instance.Strike ();
 					cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
 					StateManager.Instance.ReduceMovements ();
 					currentPlayerEnergy = 0.0f;
+					//StateManager.Instance.strike ();
 				}
 			}
 		}
