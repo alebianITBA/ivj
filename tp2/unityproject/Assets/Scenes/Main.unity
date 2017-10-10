@@ -1084,6 +1084,7 @@ MonoBehaviour:
   cue: {fileID: 1502349638}
   pauseCanvas: {fileID: 36740464}
   finishedCanvas: {fileID: 918070480}
+  energyBar: {fileID: 1898529816}
   playerOneText: {fileID: 1817503810}
   playerTwoText: {fileID: 1041791139}
   WinnerText: {fileID: 2116319405}
