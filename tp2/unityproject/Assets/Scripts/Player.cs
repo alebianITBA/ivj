@@ -7,7 +7,6 @@ public class Player {
 	public PocketCollider.Pocket LastPocket { get; private set; }
 	public Ball.BallTypes BallType { get; private set; }
 
-	private bool firstTime = false;
 
 	public Player (string name) {
 		this.Name = name;
@@ -55,14 +54,13 @@ public class Player {
 	}
 	public void SetBallType(Ball.BallTypes type) {
 		this.BallType = type;
-		this.firstTime = true;
 	}
 
 	public void SetLastPocket(PocketCollider.Pocket pocket) {
 		this.LastPocket = pocket;
 	}
 
-	public bool checkFirstCollided(Ball.BallTypes type) {
+	public bool checkFirstCollided(Ball.BallTypes type, bool firstball) {
 		if (type == Ball.BallTypes.None) {
 			if (this.Movements >= 1)
 				return false;
@@ -81,7 +79,7 @@ public class Player {
 		if (this.BallType == Ball.BallTypes.None)
 			return false;
 
-		if (this.firstTime)
+		if (firstball)
 			return false;
 		
 		return true;

@@ -22,9 +22,13 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	private WhiteBall white;
 	private bool firstBall = false;
 	private bool setInGame = false;
+	private float currentPlayerEnergy = 0.0f;
+	private static float ENERGY = 100.0f;
+	private static float MAX_ENERGY = 30000.0f;
 	// Game variables
 	public GameObject pauseCanvas;
 	public GameObject finishedCanvas;
+	public GameObject energyBar;
 	public Text playerOneText;
 	public Text playerTwoText;
 	public Text WinnerText;
@@ -35,7 +39,6 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		this.Players[1] = new Player ("Two");
 		this.white = BallManager.Instance.whiteBall	.GetComponent<WhiteBall>();
 		CurrentPlayer ().SetMovements (1);
-		this.readyToStrike ();
 	}
 
 	void Update() {
@@ -84,19 +87,21 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 					this.currentState = States.WaitingForNextTurn;
 				}
 				break;
-			case States.WaitingForNextTurn:
-				bool penalize = false;
-				if (this.whiteInPocket) {
-					this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
-					penalize = true;
-				}
+		case States.WaitingForNextTurn:
+			bool penalize = false;
+			if (this.whiteInPocket) {
+				this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
+				penalize = true;
+			}
 
-				Ball.BallTypes type = white.GetFirstCollided ();
-				white.ResetFirstCollided ();
+			Ball.BallTypes type = white.GetFirstCollided ();
+			white.ResetFirstCollided ();
 
-				Debug.Log (type);
+			Debug.Log (type);
 
-				penalize = penalize || CurrentPlayer ().checkFirstCollided (type);
+			penalize = penalize || CurrentPlayer ().checkFirstCollided (type, firstBall);
+			if (firstBall)
+				firstBall = false;
 				Debug.Log (penalize);
 				if (penalize) {
 					SwitchPlayer (penalize);
@@ -110,8 +115,23 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 				this.readyToStrike ();
 				break;
 			case States.Striking:
+				if (Input.GetKey (KeyCode.Space)) {
+					energyBar.SetActive (true);
+					CueManager.Instance.speed = 1.0f;
+					currentPlayerEnergy += ENERGY;
+					if (currentPlayerEnergy > MAX_ENERGY) {
+						currentPlayerEnergy = 0.0f;
+					}
+					energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
+				}
 				if (Input.GetKeyUp (KeyCode.Space)) {
+					energyBar.SetActive (false);
+					CueManager.Instance.speed = 0.0f;
+					white.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
+					currentPlayerEnergy = 0.0f;
 					this.strike();
+					this.ReduceMovements ();
+					//StateManager.Instance.strike ();
 				}
 				break;
 			case States.Pause:
@@ -122,6 +142,13 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 				break;
 			}
 	}
+	private Vector3 direction()
+	{
+		Vector3 forward = CameraManager.Instance.camera.transform.forward;
+		Vector3 direction = new Vector3 (forward.x, 0.0f, forward.z);
+		return direction;
+	}
+
 	public void PauseGame() {
 		if (currentState == States.InGame || currentState == States.Striking) {
 			currentState = States.Pause;
@@ -147,7 +174,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 			currentState = States.InGame;
 		}
 		else {
-			LogInvalidTransition (States.Striking);
+			LogInvalidTransition (States.InGame);
 		}
 	}
 

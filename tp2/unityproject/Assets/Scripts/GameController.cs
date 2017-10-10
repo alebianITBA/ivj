@@ -38,31 +38,8 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 				StateManager.Instance.PauseGame ();
 			}
 			// Shot
-			if (StateManager.Instance.Striking ()) {
-				if (Input.GetKey (KeyCode.Space)) {
-					energyBar.SetActive (true);
-					cueManager.speed = 1.0f;
-					currentPlayerEnergy += ENERGY;
-					if (currentPlayerEnergy > MAX_ENERGY) {
-						currentPlayerEnergy = 0.0f;
-					}
-				}
-				if (Input.GetKeyUp (KeyCode.Space)) {
-					energyBar.SetActive (false);
-					cueManager.speed = 0.0f;
-					cameraManager.whiteBall.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
-					StateManager.Instance.ReduceMovements ();
-					currentPlayerEnergy = 0.0f;
-					//StateManager.Instance.strike ();
-				}
-			}
 		}
 	}
 
-	private Vector3 direction()
-	{
-		Vector3 forward = cameraManager.camera.transform.forward;
-		Vector3 direction = new Vector3 (forward.x, 0.0f, forward.z);
-		return direction;
-	}
+
 }
