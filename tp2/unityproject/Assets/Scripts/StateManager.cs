@@ -264,22 +264,10 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 
 	private void BlackInPocket(Ball black, PocketCollider.Pocket pocketId) {
 		// Win logic
-		if (PlayerOnePlaying() && PlayerOne().LastPocket == pocketId) {
-			winner = PlayerOne();
-			currentState = States.Finished;
-		} else if (PlayerTwoPlaying() && PlayerTwo().LastPocket == pocketId) {
-			winner = PlayerTwo();
-			currentState = States.Finished;
-		}
-		// Lose logic
-		if (currentState != States.Finished) {
-			currentState = States.Finished;
-			if (PlayerOnePlaying()) {
-				winner = PlayerTwo();
-			} else {
-				winner = PlayerOne();
-			}
-		}
+		if (CurrentPlayer ().Score < 7 && pocketId != CurrentPlayer().LastPocket)
+			SwitchPlayer (false);
+		winner = CurrentPlayer ();
+		currentState = States.Finished;
 		BallManager.Instance.RemoveBall (black);
 		Destroy (black.gameObject);
 	}
