@@ -29,7 +29,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	// Game variables
 	public GameObject pauseCanvas;
 	public GameObject finishedCanvas;
-	public GameObject energyBar;
+	public Text energyText;
 	public Text playerOneText;
 	public Text playerTwoText;
 	public Text WinnerText;
@@ -43,7 +43,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	void Update() {
-		Debug.Log (currentState);
+		energyText.text = "% " + Mathf.Ceil((currentPlayerEnergy / MAX_ENERGY) * 100).ToString();
 		if (currentState != States.Menu) {
 			if (currentState != States.Finished) {
 				finishedCanvas.SetActive (false);
@@ -79,6 +79,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		} else {
 			playerOneText.gameObject.SetActive (false);
 			playerTwoText.gameObject.SetActive (false);
+			energyText.gameObject.SetActive (false);
 		}
 	}
 
@@ -119,17 +120,14 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 				break;
 			case States.Striking:
 				if (Input.GetKey (KeyCode.Space)) {
-					energyBar.SetActive (true);
 					CueManager.Instance.speed = 1.0f;
 					currentPlayerEnergy += ENERGY;
 					if (currentPlayerEnergy > MAX_ENERGY) {
 						currentPlayerEnergy = 0.0f;
 					}
-					energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
 				}
 				if (Input.GetKeyUp (KeyCode.Space)) {
 					BasicSoundManager.Instance.PlayCueHitSound ();
-					energyBar.SetActive (false);
 					CueManager.Instance.speed = 0.0f;
 					white.GetComponent<Rigidbody> ().AddForce (direction () * currentPlayerEnergy);
 					currentPlayerEnergy = 0.0f;

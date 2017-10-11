@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviourSingleton<GameController> {
 	public CameraManager cameraManager;
 	public CueManager cueManager;
-	public GameObject energyBar;
 
 	private static float ENERGY = 100.0f;
 	private static float MAX_ENERGY = 30000.0f;
@@ -19,8 +19,6 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 	
 	// Update is called once per frame
 	void Update () {
-		energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
-
 		if (StateManager.Instance.Paused ()) {
 
 		} else {
