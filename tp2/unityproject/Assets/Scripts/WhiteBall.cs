@@ -10,11 +10,6 @@ public class WhiteBall : Ball {
 		this.type = BallTypes.White;
 		this.firstCollided = BallTypes.None;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	void OnCollisionEnter(Collision collision) {
 		BasicSoundManager.Instance.PlayBallHitSound ();

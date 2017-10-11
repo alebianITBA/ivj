@@ -22,9 +22,7 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 		energyBar.GetComponent<GUIBarScript>().SetNewValue(currentPlayerEnergy / MAX_ENERGY);
 
 		if (StateManager.Instance.Paused ()) {
-			if (Input.GetKeyDown (KeyCode.Escape)) {
-				StateManager.Instance.ContinueGame ();
-			}
+
 		} else {
 			if (Input.GetKey (KeyCode.LeftArrow)) {
 				cameraManager.RotateLeft ();
@@ -34,9 +32,7 @@ public class GameController : MonoBehaviourSingleton<GameController> {
 				cameraManager.RotateRight ();
 				cueManager.RotateRight ();
 			}
-			if (Input.GetKeyDown (KeyCode.Escape)) {
-				StateManager.Instance.PauseGame ();
-			}
+
 			// Shot
 		}
 	}

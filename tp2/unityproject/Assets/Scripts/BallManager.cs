@@ -129,7 +129,7 @@ public class BallManager : MonoBehaviourSingleton<BallManager> {
 	public bool Still() {
 		foreach (Ball b in Balls) {
 			Rigidbody rb = b.GetComponentInChildren<Rigidbody> ();
-			if (!(rb.IsSleeping () || rb.velocity.Equals (Vector3.zero))) {
+			if (!(rb.IsSleeping () || rb.velocity.sqrMagnitude <= 0.01f)) {
 				return false;
 			}
 		}
