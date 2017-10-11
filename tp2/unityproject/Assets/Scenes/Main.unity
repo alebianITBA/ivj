@@ -439,6 +439,14 @@ Prefab:
       propertyPath: inPocketSound
       value: 
       objectReference: {fileID: 631071729}
+    - target: {fileID: 4669342159631928, guid: a6c47b1639a0844599874d4dfb79eec2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4940443371288642, guid: a6c47b1639a0844599874d4dfb79eec2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 31
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a6c47b1639a0844599874d4dfb79eec2, type: 2}
   m_IsPrefabParent: 0
