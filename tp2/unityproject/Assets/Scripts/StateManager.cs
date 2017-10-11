@@ -43,6 +43,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	void Update() {
+		Debug.Log (currentState);
 		if (currentState != States.Menu) {
 			if (currentState != States.Finished) {
 				finishedCanvas.SetActive (false);
@@ -82,7 +83,8 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 	}
 
 	void LateUpdate() {
-		this.updateCounts--;
+		if (this.updateCounts > 0)
+			this.updateCounts--;
 		switch (currentState) {
 			case States.InGame:
 			if (this.updateCounts<= 0 && BallManager.Instance.Still ()) {
@@ -93,6 +95,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 			bool penalize = false;
 			if (this.whiteInPocket) {
 				this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
+				this.whiteInPocket = false;
 				penalize = true;
 			}
 
@@ -136,12 +139,18 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 				}
 				break;
 			case States.Pause:
+				if (Input.GetKeyDown (KeyCode.Escape)) {
+					this.ContinueGame ();
+				}
 				break;
 			case States.Menu:
 				break;
 			default:
 				break;
 			}
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			this.PauseGame ();
+		}
 	}
 	private Vector3 direction()
 	{
