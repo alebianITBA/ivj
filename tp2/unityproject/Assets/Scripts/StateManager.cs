@@ -94,6 +94,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 			if (this.whiteInPocket) {
 				this.white.transform.position = BallManager.Instance.DefaultWhitePosition ();
 				penalize = true;
+				this.whiteInPocket = false;
 			}
 
 			Ball.BallTypes type = white.GetFirstCollided ();
@@ -353,6 +354,7 @@ public class StateManager : MonoBehaviourSingleton<StateManager> {
 		switch (ball.type) {
 		case Ball.BallTypes.White:
 			ball.transform.position = BallManager.Instance.DefaultWhitePosition ();
+			whiteInPocket = false;
 			break;
 		default:
 			ball.transform.position = BallManager.Instance.DefaultBlackPosition ();
