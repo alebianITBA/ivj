@@ -61,10 +61,20 @@ public class PlayerInput : MonoBehaviour
 		if (previousDirection != currentDirection) {
 			transform.position = MapManager.Instance.GetWorldPos (currentX, currentY);
 		}
-
+			
 		int nextX = (int)currentDirection.y * multiplyer;
 		int nextY = (int)currentDirection.x * multiplyer;
 		Vector3 newPosition = transform.position + currentDirection * Time.deltaTime * VELOCITY;
+
+		if (currentY + nextY < 0) {
+			currentY = MapManager.Instance.cols - 1;
+			transform.position = MapManager.Instance.GetWorldPos (currentX, currentY);
+		}
+		else if (currentY + nextY >= MapManager.Instance.cols) {
+			currentY = 0;
+			transform.position = MapManager.Instance.GetWorldPos (currentX, currentY);
+		}
+
 		if (!MapManager.Instance.IsWalkable (currentX + nextX, currentY + nextY)) {
 			transform.position = MapManager.Instance.GetWorldPos (currentX, currentY);		
 		}
