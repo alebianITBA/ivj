@@ -27,7 +27,11 @@ public class PlayerInput : MonoBehaviour
 		int currentX;
 		int currentY;
 		MapManager.Instance.GetRowCol (transform.position, out currentX, out currentY);
-		MapManager.Instance.EatDot (currentX, currentY);
+
+		bool couldEat = MapManager.Instance.EatDot (currentX, currentY);
+		if (couldEat) {
+			SoundManager.Instance.PlayDotSound ();
+		}
 
 		if (Input.GetKey(KeyCode.UpArrow)) {
 			if (MapManager.Instance.IsWalkable(currentX - 1, currentY)) {
