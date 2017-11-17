@@ -147,8 +147,8 @@ MonoBehaviour:
   wallPrefab: {fileID: 110520, guid: 1457b669f650d4c2faec7b49b5e5477a, type: 2}
   levelXSize: 30
   levelYSize: 30
-  automataInitialRounds: 3
-  automataAfterRounds: 1
+  automataInitialRounds: 4
+  automataAfterRounds: 4
   automataInitialBirthChance: 5
   automataInitialDeathChance: 2
   automataAfterBirthChance: 5

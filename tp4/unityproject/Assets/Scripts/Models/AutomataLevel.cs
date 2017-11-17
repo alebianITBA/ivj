@@ -9,45 +9,49 @@ public class AutomataLevel : Level {
 		Level.Tile[,] map = GetRandomMap(rows, cols, initialWallChance);
 
 		for (int i = 0; i < initialRounds; i++) {
+			Level.Tile[,] newMap = new Level.Tile[rows, cols];
 			for (int row = 0; row < map.GetLength(0); row++) {
 				for (int col = 0; col < map.GetLength(1); col++) {
 					int numberOfWalls = NumberOfWallsAround (map, row, col);
 					if (map[row, col] == Level.Tile.Wall) {
 						if (numberOfWalls < initialBirth) {
-							map [row, col] = Level.Tile.Floor;
+							newMap [row, col] = Level.Tile.Wall;
 						} else {
-							map [row, col] = Level.Tile.Wall;
+							newMap [row, col] = Level.Tile.Floor;
 						}
 					} else {
 						if (numberOfWalls > initialDeath) {
-							map [row, col] = Level.Tile.Floor;
+							newMap [row, col] = Level.Tile.Wall;
 						} else {
-							map [row, col] = Level.Tile.Wall;
+							newMap [row, col] = Level.Tile.Floor;
 						}
 					}
 				}
 			}
+			map = newMap;
 		}
 
 		for (int i = 0; i < afterRounds; i++) {
+			Level.Tile[,] newMap = new Level.Tile[rows, cols];
 			for (int row = 0; row < map.GetLength(0); row++) {
 				for (int col = 0; col < map.GetLength(1); col++) {
 					int numberOfWalls = NumberOfWallsAround (map, row, col);
 					if (map[row, col] == Level.Tile.Wall) {
 						if (numberOfWalls < afterBirth) {
-							map [row, col] = Level.Tile.Floor;
+							newMap [row, col] = Level.Tile.Wall;
 						} else {
-							map [row, col] = Level.Tile.Wall;
+							newMap [row, col] = Level.Tile.Floor;
 						}
 					} else {
 						if (numberOfWalls > afterDeath) {
-							map [row, col] = Level.Tile.Floor;
+							newMap [row, col] = Level.Tile.Wall;
 						} else {
-							map [row, col] = Level.Tile.Wall;
+							newMap [row, col] = Level.Tile.Floor;
 						}
 					}
 				}
 			}
+			map = newMap;
 		}
 
 		return map;
