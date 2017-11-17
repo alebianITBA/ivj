@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviourSingleton<GameManager> {
 	private Level level;
+	GameObject boardHolder;
 
 	public GameObject[] floorPrefabs;
 	public GameObject[] wallPrefabs;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public float automataInitialWallChance;
 
 	void Start() {
+		this.boardHolder = new GameObject("BoardHolder");
 		this.level = LevelManager.Instance.GetAutomataLevel (levelXSize, levelYSize, automataInitialRounds,
 			automataAfterRounds, automataInitialBirthChance, automataInitialDeathChance, automataAfterBirthChance, 
 			automataAfterDeathChance, automataInitialWallChance);
@@ -29,17 +31,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	private void DrawTiles() {
 		for (int row = 0; row < level.map.GetLength(0); row++) {
 			for (int col = 0; col < level.map.GetLength(1); col++) {
-				GameObject go;
+				GameObject tileInstance = null;
 				float len = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x;
 				Vector3 position = new Vector3 (row * len, col * len, 0);
 				switch (level.map [row, col]) {
 				case Level.Tile.Floor:
-					go = Instantiate (RandomTile(floorPrefabs), position, Quaternion.identity) as GameObject;	
+					tileInstance = Instantiate (RandomTile(floorPrefabs), position, Quaternion.identity) as GameObject;	
 					break;
 				case Level.Tile.Wall:
-					go = Instantiate (RandomTile(wallPrefabs), position, Quaternion.identity) as GameObject;
+					tileInstance = Instantiate (RandomTile(wallPrefabs), position, Quaternion.identity) as GameObject;
 					break;
 				}
+				tileInstance.transform.parent = boardHolder.transform;
 			}
 		}
 	}
