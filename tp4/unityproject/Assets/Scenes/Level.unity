@@ -144,7 +144,19 @@ MonoBehaviour:
   - {fileID: 127736, guid: e3f8357c31d7042f8ab6c030832b113a, type: 2}
   - {fileID: 110520, guid: fecfaf220ad3f4034b1ec697ad502c5a, type: 2}
   - {fileID: 110520, guid: 82c84aa5d06774b3bb48f03724195854, type: 2}
-  wallPrefab: {fileID: 110520, guid: 1457b669f650d4c2faec7b49b5e5477a, type: 2}
+  wallPrefabs:
+  - {fileID: 110520, guid: e62d7debb0b444334bfff9fe969c7848, type: 2}
+  - {fileID: 110520, guid: 219ac0a347b104c108a556bdba6c5250, type: 2}
+  - {fileID: 110520, guid: 1926bc1cb637340139fa8c477db0b0fb, type: 2}
+  - {fileID: 110520, guid: 92aa211ca3b9c4f0895bc11da2c6cd37, type: 2}
+  - {fileID: 110520, guid: a18b43e01b1424d9cbaa498bb74c0f3e, type: 2}
+  - {fileID: 110520, guid: 7b554e0316a0b4a968d451e60337f4cf, type: 2}
+  - {fileID: 110520, guid: 6047745ae67204e4d822137b49e40947, type: 2}
+  - {fileID: 110520, guid: 66b3b0acd76c54dfd9b8d17516c18085, type: 2}
+  outerWallPrefabs:
+  - {fileID: 110520, guid: 1457b669f650d4c2faec7b49b5e5477a, type: 2}
+  - {fileID: 110520, guid: 431152ef4e49c408fbb2d910378f532d, type: 2}
+  - {fileID: 110520, guid: d668383fb4b624bc6958c4d65e20f131, type: 2}
   levelXSize: 30
   levelYSize: 30
   automataInitialRounds: 4

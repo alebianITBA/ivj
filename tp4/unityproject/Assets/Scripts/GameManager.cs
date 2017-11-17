@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviourSingleton<GameManager> {
 	private Level level;
 
-	// TODO: Make this an array and access them randomly
 	public GameObject[] floorPrefabs;
-	public GameObject wallPrefab;
+	public GameObject[] wallPrefabs;
+	public GameObject[] outerWallPrefabs;
 
 	public int levelXSize;
 	public int levelYSize;
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 					go = Instantiate (RandomTile(floorPrefabs), position, Quaternion.identity) as GameObject;	
 					break;
 				case Level.Tile.Wall:
-					go = Instantiate (wallPrefab, position, Quaternion.identity) as GameObject;
+					go = Instantiate (RandomTile(wallPrefabs), position, Quaternion.identity) as GameObject;
 					break;
 				}
 			}

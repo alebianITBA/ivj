@@ -10,7 +10,6 @@ GameObject:
   - component: {fileID: 410520}
   - component: {fileID: 21210520}
   - component: {fileID: 6133920}
-  - component: {fileID: 11431888}
   m_Layer: 8
   m_Name: Wall8
   m_TagString: Untagged
@@ -46,31 +45,16 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &11431888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 110520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b55ebdc127da43ee9afaef098e22f35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chopSound1: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
-  chopSound2: {fileID: 8300000, guid: f6aaac83be9e0493493aace800b76619, type: 3}
-  dmgSprite: {fileID: 21300108, guid: fbe1e7b94bb1a4a099d5bcb15a00141c, type: 3}
-  hp: 4
 --- !u!212 &21210520
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -103,15 +87,15 @@ SpriteRenderer:
   m_SortingLayerID: 1861650685
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300062, guid: fbe1e7b94bb1a4a099d5bcb15a00141c, type: 3}
+  m_Sprite: {fileID: 21300062, guid: dd88a5f4357fd4bb89f13f2415df0365, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!1001 &100100000
 Prefab:
