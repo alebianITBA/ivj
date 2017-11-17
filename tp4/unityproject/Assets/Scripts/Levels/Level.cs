@@ -2,6 +2,7 @@
 
 public class Level
 {
+	public enum LevelType { Automata };
 	public enum Tile { Empty, Wall, Floor };
 
 	public Tile[,] map;

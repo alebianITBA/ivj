@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 
 	public int levelXSize;
 	public int levelYSize;
+	public Level.LevelType levelType;
+	// Automata generator attributes
 	public int automataInitialRounds;
 	public int automataAfterRounds;
 	public int automataInitialBirthChance;
@@ -22,10 +24,18 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 
 	void Start() {
 		this.boardHolder = new GameObject("BoardHolder");
-		this.level = LevelManager.Instance.GetAutomataLevel (levelXSize, levelYSize, automataInitialRounds,
-			automataAfterRounds, automataInitialBirthChance, automataInitialDeathChance, automataAfterBirthChance, 
-			automataAfterDeathChance, automataInitialWallChance);
+		StartLevel ();
 		DrawTiles ();
+	}
+
+	private void StartLevel() {
+		switch (levelType) {
+		case Level.LevelType.Automata:
+			this.level = LevelManager.Instance.GetAutomataLevel (levelXSize, levelYSize, automataInitialRounds,
+				automataAfterRounds, automataInitialBirthChance, automataInitialDeathChance, automataAfterBirthChance, 
+				automataAfterDeathChance, automataInitialWallChance);
+			break;
+		}
 	}
 
 	private void DrawTiles() {
