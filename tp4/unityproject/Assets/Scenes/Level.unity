@@ -135,6 +135,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dd2b2cfbd2e404999dc541fde6709a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floorPrefabs:
+  - {fileID: 106160, guid: 824c6baf991a245c0a40d3e2158f5818, type: 2}
+  - {fileID: 137908, guid: f8f6baca7ee744876a2addd1c2de9b42, type: 2}
+  - {fileID: 125636, guid: 367db18893ce94f869af51b5a8106b32, type: 2}
+  - {fileID: 177044, guid: 740f5719e9d6a4d478991446ea1d33a1, type: 2}
+  - {fileID: 109612, guid: 531b91e4cd1674a7699ccb09903d50ea, type: 2}
+  - {fileID: 127736, guid: e3f8357c31d7042f8ab6c030832b113a, type: 2}
+  - {fileID: 110520, guid: fecfaf220ad3f4034b1ec697ad502c5a, type: 2}
+  - {fileID: 110520, guid: 82c84aa5d06774b3bb48f03724195854, type: 2}
+  wallPrefab: {fileID: 110520, guid: 1457b669f650d4c2faec7b49b5e5477a, type: 2}
+  levelXSize: 30
+  levelYSize: 30
+  automataInitialRounds: 3
+  automataAfterRounds: 1
+  automataInitialBirthChance: 5
+  automataInitialDeathChance: 2
+  automataAfterBirthChance: 5
+  automataAfterDeathChance: -1
+  automataInitialWallChance: 0.4
 --- !u!4 &459195059
 Transform:
   m_ObjectHideFlags: 0

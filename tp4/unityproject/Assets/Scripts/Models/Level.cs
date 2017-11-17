@@ -6,6 +6,10 @@ public class Level
 
 	public Tile[,] map;
 
+	public Level() {
+		
+	}
+
 	public Level (Tile[,] map)
 	{
 		this.map = map;
