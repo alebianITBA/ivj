@@ -1,8 +1,72 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class AutomataLevel : Level {
+	private Dictionary<Direction, LevelPosition> playerSpawningPositions;
+
 	public AutomataLevel (int rows, int cols, int initialRounds, int afterRounds, int birth, int death, int afterBirth, int afterDeath, float initialWallChance) : base() {
 		this.map = GenerateMap (rows, cols, initialRounds, afterRounds, birth, death, afterBirth, afterDeath, initialWallChance);
+		this.playerSpawningPositions = new Dictionary<Direction, LevelPosition> ();
+		CalculatePlayerSpawningPositions ();
+	}
+
+	public override LevelPosition PlayerSpawningPoint(Direction direction) {
+		return playerSpawningPositions [direction];
+	}
+
+	private void CalculatePlayerSpawningPositions() {
+		int fixedXOrY = 0;
+		// Search the South spawning point
+		for (int x = 0; x < map.GetLength (0); x++) {
+			if (map [x, fixedXOrY] == Tile.Floor) {
+				playerSpawningPositions.Add (Direction.South, new LevelPosition (x, fixedXOrY));
+				break;
+			}
+			if (x == map.GetLength (0) - 1) {
+				// We didn't find any spawning point so we try again
+				x = 0;
+				fixedXOrY++;
+			}
+		}
+		// Search the North spawning point
+		fixedXOrY = map.GetLength (1) - 1;
+		for (int x = 0; x < map.GetLength (0); x++) {
+			if (map [x, fixedXOrY] == Tile.Floor) {
+				playerSpawningPositions.Add (Direction.North, new LevelPosition (x, fixedXOrY));
+				break;
+			}
+			if (x == map.GetLength (0) - 1) {
+				// We didn't find any spawning point so we try again
+				x = 0;
+				fixedXOrY--;
+			}
+		}
+		// Search the West spawning point
+		fixedXOrY = 0;
+		for (int y = 0; y < map.GetLength (1); y++) {
+			if (map [fixedXOrY, y] == Tile.Floor) {
+				playerSpawningPositions.Add (Direction.West, new LevelPosition (fixedXOrY, y));
+				break;
+			}
+			if (y == map.GetLength (1) - 1) {
+				// We didn't find any spawning point so we try again
+				y = 0;
+				fixedXOrY++;
+			}
+		}
+		// Search the East spawning point
+		fixedXOrY = map.GetLength (0) - 1;
+		for (int y = 0; y < map.GetLength (1); y++) {
+			if (map [fixedXOrY, y] == Tile.Floor) {
+				playerSpawningPositions.Add (Direction.East, new LevelPosition (fixedXOrY, y));
+				break;
+			}
+			if (y == map.GetLength (1) - 1) {
+				// We didn't find any spawning point so we try again
+				y = 0;
+				fixedXOrY--;
+			}
+		}
 	}
 
 	private Level.Tile[,] GenerateMap(int rows, int cols, int initialRounds, int afterRounds, int initialBirth, int initialDeath, int afterBirth, int afterDeath, float initialWallChance) {
@@ -52,24 +116,6 @@ public class AutomataLevel : Level {
 				}
 			}
 			map = newMap;
-		}
-
-		return map;
-	}
-
-	private Level.Tile[,] GetRandomMap(int rows, int cols, float wallChance) {
-		Level.Tile[,] map = new Level.Tile[rows, cols];
-
-		Level.Tile[] availableTiles = new Level.Tile[] { Level.Tile.Floor, Level.Tile.Wall };
-
-		for (int row = 0; row < map.GetLength(0); row++) {
-			for (int col = 0; col < map.GetLength(1); col++) {
-				if (UnityEngine.Random.value < wallChance) {
-					map [row, col] = Level.Tile.Wall;
-				} else {
-					map [row, col] = Level.Tile.Floor;
-				}
-			}
 		}
 
 		return map;

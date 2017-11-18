@@ -1,43 +1,87 @@
 ﻿using UnityEngine;
 
 public class LevelManager : MonoBehaviourSingleton<LevelManager> {
-	public Level CreateLevel(int cols, int rows) {
-		Level.Tile[,] map = new Level.Tile[6, 5];
-		map [0, 0] = Level.Tile.Floor;
-		map [0, 1] = Level.Tile.Floor;
-		map [0, 2] = Level.Tile.Floor;
-		map [0, 3] = Level.Tile.Floor;
-		map [0, 4] = Level.Tile.Floor;
-		map [1, 0] = Level.Tile.Floor;
-		map [1, 1] = Level.Tile.Floor;
-		map [1, 2] = Level.Tile.Floor;
-		map [1, 3] = Level.Tile.Floor;
-		map [1, 4] = Level.Tile.Floor;
-		map [2, 0] = Level.Tile.Floor;
-		map [2, 1] = Level.Tile.Floor;
-		map [2, 2] = Level.Tile.Floor;
-		map [2, 3] = Level.Tile.Floor;
-		map [2, 4] = Level.Tile.Floor;
-		map [3, 0] = Level.Tile.Floor;
-		map [3, 1] = Level.Tile.Floor;
-		map [3, 2] = Level.Tile.Floor;
-		map [3, 3] = Level.Tile.Floor;
-		map [3, 4] = Level.Tile.Floor;
-		map [4, 0] = Level.Tile.Floor;
-		map [4, 1] = Level.Tile.Floor;
-		map [4, 2] = Level.Tile.Floor;
-		map [4, 3] = Level.Tile.Floor;
-		map [4, 4] = Level.Tile.Floor;
-		map [5, 0] = Level.Tile.Floor;
-		map [5, 1] = Level.Tile.Floor;
-		map [5, 2] = Level.Tile.Floor;
-		map [5, 3] = Level.Tile.Floor;
-		map [5, 4] = Level.Tile.Floor;
+	private Level level;
+	GameObject boardHolder = null;
 
-		return new Level(map);
+	public GameObject[] floorPrefabs;
+	public GameObject[] wallPrefabs;
+	public GameObject[] outerWallPrefabs;
+
+	public int levelXSize;
+	public int levelYSize;
+	// Automata generator attributes
+	public int automataInitialRounds;
+	public int automataAfterRounds;
+	public int automataInitialBirthChance;
+	public int automataInitialDeathChance;
+	public int automataAfterBirthChance;
+	public int automataAfterDeathChance;
+	public float automataInitialWallChance;
+
+	public void CreateNewLevel() {
+		if (this.boardHolder != null) {
+			// There was an existing level so we destroy it
+			Destroy(boardHolder);
+		}
+		this.boardHolder = new GameObject ("BoardHolder");
+
+		CreateLevel ();
+		FillOuterWalls ();
+		DrawTiles ();
 	}
 
-	public Level GetAutomataLevel(int rows, int cols, int initialRounds, int afterRounds, int birth, int death, int afterBirth, int afterDeath, float initialWallChance) {
-		return new AutomataLevel (rows, cols, initialRounds, afterRounds, birth, death, afterBirth, afterDeath, initialWallChance);
+	private void CreateLevel() {
+//		switch (levelType) {
+//		case Level.LevelType.Automata:
+//			this.level = new AutomataLevel (levelXSize, levelYSize, automataInitialRounds, automataAfterRounds, automataInitialBirthChance,
+//				automataInitialDeathChance, automataAfterBirthChance, automataAfterDeathChance, automataInitialWallChance);
+//			break;
+//		case Level.LevelType.Room:
+//			this.level = new RoomLevel (levelXSize, levelYSize);
+//			break;
+//		}
+	}
+
+	private void FillOuterWalls() {
+		// TODO
+	}
+
+	private void DrawTiles() {
+		for (int row = 0; row < level.GetMap().GetLength(0); row++) {
+			for (int col = 0; col < level.GetMap().GetLength(1); col++) {
+				GameObject tileInstance = null;
+				float len = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x;
+				Vector3 position = new Vector3 (row * len, col * len, 0);
+
+				switch (level.GetMap() [row, col]) {
+				case Level.Tile.Floor:
+					tileInstance = Instantiate (RandomTile(floorPrefabs), position, Quaternion.identity) as GameObject;	
+					break;
+				case Level.Tile.PlayerSpawn:
+					// TODO: Make a different floor sprite
+					tileInstance = Instantiate (RandomTile(floorPrefabs), position, Quaternion.identity) as GameObject;	
+					break;
+				case Level.Tile.ZombieSpawn:
+					// TODO: Make a different floor sprite
+					tileInstance = Instantiate (RandomTile(floorPrefabs), position, Quaternion.identity) as GameObject;	
+					break;
+				case Level.Tile.Wall:
+					tileInstance = Instantiate (RandomTile(wallPrefabs), position, Quaternion.identity) as GameObject;
+					break;
+				case Level.Tile.OuterWall:
+					tileInstance = Instantiate (RandomTile (outerWallPrefabs), position, Quaternion.identity) as GameObject;
+					break;
+				}
+
+				if (tileInstance != null) {
+					tileInstance.transform.parent = boardHolder.transform;
+				}
+			}
+		}
+	}
+
+	private GameObject RandomTile(GameObject[] tiles) {
+		return tiles[UnityEngine.Random.Range (0, tiles.Length)];
 	}
 }
