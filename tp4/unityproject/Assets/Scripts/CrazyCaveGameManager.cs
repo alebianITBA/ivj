@@ -9,8 +9,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 		SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
 
 		CrazyCaveLevelManager.Instance.CreateNewLevel ();
-		LevelPosition playerPosition = ((AutomataLevel)CrazyCaveLevelManager.Instance.GetLevel()).PlayerSpawningPoint (Level.Direction.South);
-		player = Drawer.Instance.CreatePlayer (playerPosition);
+		player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.level.PlayerStartingPoint());
 	}
 
 	void Update() {
@@ -44,8 +43,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 		if (direction != -1) {
 			// We got out of the level so we create a new one
 			CrazyCaveLevelManager.Instance.CreateNewLevel ();
-			AutomataLevel newLevel = (AutomataLevel)CrazyCaveLevelManager.Instance.level;
-			Drawer.Instance.RepositionPlayer (player, newLevel.PlayerSpawningPoint ((Level.Direction)direction));
+			Drawer.Instance.RepositionPlayer (player, (Level.Direction)direction, CrazyCaveLevelManager.Instance.level);
 		}
 	}
 }

@@ -20,6 +20,7 @@ public abstract class Level {
 	}
 
 	public abstract LevelPosition PlayerSpawningPoint(Direction direction);
+	public abstract LevelPosition PlayerStartingPoint();
 
 	protected Level.Tile[,] GetRandomMap(int rows, int cols, float wallChance) {
 		Level.Tile[,] map = new Level.Tile[rows, cols];

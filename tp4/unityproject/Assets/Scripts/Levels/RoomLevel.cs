@@ -5,6 +5,10 @@ public class RoomLevel : Level {
 		this.map = GenerateMap (rows, cols);
 	}
 
+	public override LevelPosition PlayerStartingPoint() {
+		return new LevelPosition (1, 1);
+	}
+
 	public override LevelPosition PlayerSpawningPoint(Direction direction) {
 		// TODO: Return the same spawning point for every direction
 		return new LevelPosition (1, 1);

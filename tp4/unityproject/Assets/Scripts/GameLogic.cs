@@ -34,7 +34,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
     public Character player;
     int zombiesKilled;
 
-	void Initialize () {
+	override protected void Initialize () {
 		zombiesKilled = 0;
 	}
 
