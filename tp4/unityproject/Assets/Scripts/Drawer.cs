@@ -5,6 +5,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public GameObject[] wallPrefabs;
 	public GameObject[] outerWallPrefabs;
 	public GameObject playerPrefab;
+	public GameObject minimap;
 
 	[HideInInspector]
 	public float tileLength;
@@ -168,9 +169,11 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	}
 
 	public LevelPosition GetLevelPosition(GameObject obj) {
-		int x = Mathf.FloorToInt(obj.transform.position.x % tileLength);
-		int y = Mathf.FloorToInt(obj.transform.position.x % tileLength);
-		return new LevelPosition (x, y);
+		int tl = Mathf.FloorToInt (tileLength * 100);
+		int x = Mathf.FloorToInt (obj.transform.position.x * 100);
+		int y = Mathf.FloorToInt (obj.transform.position.y * 100);
+
+		return new LevelPosition (Mathf.FloorToInt (x / tl), Mathf.FloorToInt (y / tl));
 	}
 
 	private GameObject NewObjectFromPrefab(GameObject prefab, Vector3 position) {
@@ -179,5 +182,37 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 
 	private GameObject RandomTile(GameObject[] tiles) {
 		return tiles[UnityEngine.Random.Range (0, tiles.Length)];
+	}
+
+	public void DrawMinimap(Level level, GameObject player) {
+		Level.Tile[,] map = level.GetMap ();
+
+		Texture2D texture = new Texture2D(map.GetLength(0) + 2, map.GetLength(1) + 2, TextureFormat.ARGB32, false);
+		for (int y = 0; y < map.GetLength(1); y++) {
+			for (int x = 0; x < map.GetLength(0); x++) {
+				if (map [x, y] == Level.Tile.Wall) {
+					texture.SetPixel(x + 1, y + 1, new Color (255, 255, 255));
+				} else {
+					texture.SetPixel(x + 1, y + 1, new Color (0, 0, 0));
+				}
+			}
+		}
+		// Paint borders
+		for (int x = 0; x < map.GetLength(0) + 2; x++) {
+			texture.SetPixel(x, 0, new Color (255, 255, 0));
+			texture.SetPixel(x, map.GetLength(1) + 1, new Color (255, 255, 0));
+		}
+		for (int y = 0; y < map.GetLength(1) + 2; y++) {
+			texture.SetPixel(0, y, new Color (255, 255, 0));
+			texture.SetPixel(map.GetLength(0) + 1, y, new Color (255, 255, 0));
+		}
+		// Paint player
+		LevelPosition playerPosition = GetLevelPosition(player);
+		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, new Color (255, 0, 0));
+
+		texture.filterMode = FilterMode.Point;
+		texture.Apply();
+
+		minimap.GetComponent<SpriteRenderer>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 	}
 }
