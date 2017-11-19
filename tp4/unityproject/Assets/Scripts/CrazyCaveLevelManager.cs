@@ -16,14 +16,14 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	public int automataAfterDeathChance;
 	public float automataInitialWallChance;
 
-	public void CreateNewLevel() {
+	public void CreateNewLevel(int seed) {
 		if (this.boardHolder != null) {
 			// There was an existing level so we destroy it
 			Destroy(boardHolder);
 		}
 		this.boardHolder = new GameObject ("BoardHolder");
 
-		this.level = CreateLevel ();
+		this.level = CreateLevel (seed);
 		FillOuterWalls ();
 		Drawer.Instance.DrawTiles (level, boardHolder);
 	}
@@ -32,9 +32,9 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		return this.level;
 	}
 
-	private Level CreateLevel() {
+	private Level CreateLevel(int seed) {
 		return new AutomataLevel (levelXSize, levelYSize, automataInitialRounds, automataAfterRounds, automataInitialBirthChance, 
-			automataInitialDeathChance, automataAfterBirthChance, automataAfterDeathChance, automataInitialWallChance);
+			automataInitialDeathChance, automataAfterBirthChance, automataAfterDeathChance, automataInitialWallChance, seed);
 	}
 
 	private void FillOuterWalls() {
