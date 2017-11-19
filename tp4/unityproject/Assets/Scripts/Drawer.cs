@@ -6,6 +6,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public GameObject[] outerWallPrefabs;
 	public GameObject playerPrefab;
 	public GameObject minimap;
+	public GameObject ammoPrefab;
 
 	[HideInInspector]
 	public float tileLength;
@@ -16,34 +17,40 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		halfTileLength = tileLength / 2f;
 	}
 
-	public void DrawTiles(Level level, GameObject holder) {
+	public void DrawTiles(Level level, GameObject tilesHolder, GameObject accessoriesHolder) {
 		for (int row = 0; row < level.GetMap().GetLength(0); row++) {
 			for (int col = 0; col < level.GetMap().GetLength(1); col++) {
 				GameObject tileInstance = null;
 				Vector3 position = new Vector3 (row * tileLength, col * tileLength, 10);
+//				Vector3 midPosition = new Vector3 ((row * tileLength) + halfTileLength, (col * tileLength) + halfTileLength, 10);
 
 				switch (level.GetMap() [row, col]) {
-				case Level.Tile.Floor:
-					tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), position);
-					break;
-				case Level.Tile.PlayerSpawn:
-					// TODO: Make a different floor sprite
-					tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), position);
-					break;
-				case Level.Tile.ZombieSpawn:
-					// TODO: Make a different floor sprite
-					tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), position);
-					break;
-				case Level.Tile.Wall:
-					tileInstance = NewObjectFromPrefab (RandomTile (wallPrefabs), position);
-					break;
-				case Level.Tile.OuterWall:
-					tileInstance = NewObjectFromPrefab (RandomTile (outerWallPrefabs), position);
-					break;
+					case Level.Tile.Floor:
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), position);
+						break;
+					case Level.Tile.PlayerSpawn:
+						// TODO: Make a different floor sprite
+						tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), position);
+						break;
+					case Level.Tile.ZombieSpawn:
+						// TODO: Make a different floor sprite
+						tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), position);
+						break;
+					case Level.Tile.Wall:
+						tileInstance = NewObjectFromPrefab (RandomTile (wallPrefabs), position);
+						break;
+					case Level.Tile.OuterWall:
+						tileInstance = NewObjectFromPrefab (RandomTile (outerWallPrefabs), position);
+						break;
+					case Level.Tile.AmmoSpawn:
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), position);
+						GameObject ammo = NewObjectFromPrefab (ammoPrefab, position);
+						ammo.transform.parent = accessoriesHolder.transform;
+						break;
 				}
 
 				if (tileInstance != null) {
-					tileInstance.transform.parent = holder.transform;
+					tileInstance.transform.parent = tilesHolder.transform;
 				}
 			}
 		}
@@ -195,6 +202,9 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 				}
 				else if (map [x, y] == Level.Tile.ZombieSpawn) {
 					texture.SetPixel(x + 1, y + 1, new Color (0.3f, 0.5f, 0.3f));
+				}
+				else if (map [x, y] == Level.Tile.AmmoSpawn) {
+					texture.SetPixel(x + 1, y + 1, new Color (0.3f, 0.3f, 0.5f));
 				}
 				else {
 					texture.SetPixel(x + 1, y + 1, new Color (0f, 0f, 0f));

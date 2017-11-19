@@ -6,14 +6,13 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 	public GameObject player;
 	public int initialSeed = 0;
 	private int seed;
-	public int zombieSpawningPoints;
 
 	void Start() {
 		SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
 
 		CrazyCaveLevelManager.Instance.CreateNewLevel (initialSeed);
 		player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.level.PlayerStartingPoint());
-		CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (zombieSpawningPoints, player);
+		CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (player);
 		seed = initialSeed;
 	}
 
@@ -55,7 +54,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 			// We got out of the level so we create a new one
 			CrazyCaveLevelManager.Instance.CreateNewLevel (seed);
 			Drawer.Instance.RepositionPlayer (player, (Level.Direction)direction, CrazyCaveLevelManager.Instance.level);
-			CrazyCaveLevelManager.Instance.GetLevel ().AddZombieSpawningPoints (zombieSpawningPoints, Drawer.Instance.GetLevelPosition (player));
+			CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (player);
 		}
 	}
 }

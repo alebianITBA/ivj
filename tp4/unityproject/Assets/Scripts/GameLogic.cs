@@ -7,9 +7,9 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	// GLOBAL CONSTANTS
 	// BULLET
 	public static float TIME_BETWEEN_SHOTS = 300.0f;
-	public static int BULLET_AMOUNT = 10;
 	public static float BULLET_SPEED = 1000.0f;
-	public static float BULLET_TTL = TIME_BETWEEN_SHOTS * (BULLET_AMOUNT - 1);
+	public static int DEFAULT_AMMO_SPAWNING_PONTS = 2;
+	public static int MAX_AMMO = 10;
 	// CAMERA
 	public static float CAMERA_DISTANCE = 10.0f;
 	// CHARACTER
@@ -21,6 +21,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static int ZOMBIE_AMOUNT = 20;
 	public static double ZOMBIE_TIME_BETWEEN_SPAWNS = 1000.0f;
 	public static float ZOMBIE_SPAWN_DISTANCE = 6.0f;
+	public static int DEFAULT_ZOMBIE_SPAWNING_PONTS = 5;
 	// GAME CONSTANTS
 	public static int SCORE_MULTIPLIER = 10;
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;

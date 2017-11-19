@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Level {
-	public enum Tile { Empty, Wall, Floor, OuterWall, PlayerSpawn, ZombieSpawn };
+	public enum Tile { Empty, Wall, Floor, OuterWall, PlayerSpawn, ZombieSpawn, AmmoSpawn };
 	public enum Direction { North, East, South, West };
 
 	protected Tile[,] map;
@@ -59,24 +59,10 @@ public abstract class Level {
 	}
 
 	public void AddZombieSpawningPoints(int amount, LevelPosition playerPosition) {
-		if (map == null) {
-			throw new OperationCanceledException ("Level not initialised.");
-		}
+		List<LevelPosition> availableTiles = GetAvailableTiles();
+		availableTiles.RemoveAll (item => playerPosition.Distance(item) < (int)GameLogic.ZOMBIE_SPAWN_DISTANCE);
 		zombieSpawns = new List<LevelPosition> ();
-		List<LevelPosition> availableTiles = new List<LevelPosition> ();
 
-		// First check which tiles are available to use
-		for (int x = 0; x < map.GetLength (0); x++) {
-			for (int y = 0; y < map.GetLength (1); y++) {
-				if (map [x, y] == Tile.Floor) {
-					LevelPosition current = new LevelPosition (x, y);
-					// Zombies should spawn 
-					if (playerPosition.Distance(current) >= (int)GameLogic.ZOMBIE_SPAWN_DISTANCE) {
-						availableTiles.Add (current);
-					}
-				}
-			}
-		}
 		// Take "amount" random tiles from the available if possible
 		int toTake = Math.Min(amount, availableTiles.Count);
 		while (zombieSpawns.Count < toTake) {
@@ -89,5 +75,39 @@ public abstract class Level {
 			// Remove from possible
 			availableTiles.RemoveAt (rand);
 		}
+	}
+
+	public void AddAmmo(int amount) {
+		List<LevelPosition> availableTiles = GetAvailableTiles();
+		// Take "amount" random tiles from the available if possible
+		int toTake = Math.Min(amount, availableTiles.Count);
+		int taken = 0;
+		while (taken < toTake) {
+			int rand = UnityEngine.Random.Range(0, availableTiles.Count);
+			// Change Tile
+			LevelPosition place = availableTiles [rand];
+			map [place.x, place.y] = Tile.AmmoSpawn;
+			// Remove from possible
+			availableTiles.RemoveAt (rand);
+			taken++;
+		}
+	}
+
+	private List<LevelPosition> GetAvailableTiles() {
+		if (map == null) {
+			throw new OperationCanceledException ("Level not initialised.");
+		}
+		List<LevelPosition> availableTiles = new List<LevelPosition> ();
+
+		// First check which tiles are available to use
+		for (int x = 0; x < map.GetLength (0); x++) {
+			for (int y = 0; y < map.GetLength (1); y++) {
+				if (map [x, y] == Tile.Floor) {
+					availableTiles.Add (new LevelPosition (x, y));
+				}
+			}
+		}
+
+		return availableTiles;
 	}
 }
