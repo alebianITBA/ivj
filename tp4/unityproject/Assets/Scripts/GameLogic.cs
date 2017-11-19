@@ -25,7 +25,6 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static int SCORE_MULTIPLIER = 10;
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
-
     public static int PLAYERHEALTH = 100;
 
 	// Game variables

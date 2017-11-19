@@ -140,6 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 980010628}
   player: {fileID: 0}
+  initialSeed: 1
+  zombieSpawningPoints: 5
 --- !u!4 &459195059
 Transform:
   m_ObjectHideFlags: 0

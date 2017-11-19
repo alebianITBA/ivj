@@ -187,28 +187,32 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public void DrawMinimap(Level level, GameObject player) {
 		Level.Tile[,] map = level.GetMap ();
 
-		Texture2D texture = new Texture2D(map.GetLength(0) + 2, map.GetLength(1) + 2, TextureFormat.ARGB32, false);
+		Texture2D texture = new Texture2D(map.GetLength(0) + 2, map.GetLength(1) + 2, TextureFormat.RGBA32, false);
 		for (int y = 0; y < map.GetLength(1); y++) {
 			for (int x = 0; x < map.GetLength(0); x++) {
 				if (map [x, y] == Level.Tile.Wall) {
-					texture.SetPixel(x + 1, y + 1, new Color (255, 255, 255));
-				} else {
-					texture.SetPixel(x + 1, y + 1, new Color (0, 0, 0));
+					texture.SetPixel(x + 1, y + 1, new Color (1f, 1f, 1f));
+				}
+				else if (map [x, y] == Level.Tile.ZombieSpawn) {
+					texture.SetPixel(x + 1, y + 1, new Color (0.3f, 0.5f, 0.3f));
+				}
+				else {
+					texture.SetPixel(x + 1, y + 1, new Color (0f, 0f, 0f));
 				}
 			}
 		}
 		// Paint borders
 		for (int x = 0; x < map.GetLength(0) + 2; x++) {
-			texture.SetPixel(x, 0, new Color (255, 255, 0));
-			texture.SetPixel(x, map.GetLength(1) + 1, new Color (255, 255, 0));
+			texture.SetPixel(x, 0, new Color (1f, 1f, 0f));
+			texture.SetPixel(x, map.GetLength(1) + 1, new Color (1f, 1f, 0f));
 		}
 		for (int y = 0; y < map.GetLength(1) + 2; y++) {
-			texture.SetPixel(0, y, new Color (255, 255, 0));
-			texture.SetPixel(map.GetLength(0) + 1, y, new Color (255, 255, 0));
+			texture.SetPixel(0, y, new Color (1f, 1f, 0f));
+			texture.SetPixel(map.GetLength(0) + 1, y, new Color (1f, 1f, 0f));
 		}
 		// Paint player
 		LevelPosition playerPosition = GetLevelPosition(player);
-		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, new Color (255, 0, 0));
+		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, new Color (1f, 0f, 0f));
 
 		texture.filterMode = FilterMode.Point;
 		texture.wrapMode = TextureWrapMode.Clamp;

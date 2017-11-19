@@ -32,6 +32,10 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		return this.level;
 	}
 
+	public void AddZombieSpawningPoints(int amount, GameObject player) {
+		CrazyCaveLevelManager.Instance.GetLevel ().AddZombieSpawningPoints (amount, Drawer.Instance.GetLevelPosition (player));
+	}
+
 	private Level CreateLevel(int seed) {
 		return new AutomataLevel (levelXSize, levelYSize, automataInitialRounds, automataAfterRounds, automataInitialBirthChance, 
 			automataInitialDeathChance, automataAfterBirthChance, automataAfterDeathChance, automataInitialWallChance, seed);
