@@ -22,9 +22,10 @@ public abstract class Level {
 	public abstract LevelPosition PlayerSpawningPoint(Direction direction);
 	public abstract LevelPosition PlayerStartingPoint();
 
-	protected Level.Tile[,] GetRandomMap(int rows, int cols, float wallChance) {
+	protected Level.Tile[,] GetRandomMap(int rows, int cols, float wallChance, int seed) {
 		Level.Tile[,] map = new Level.Tile[rows, cols];
 
+		UnityEngine.Random.InitState (seed);	
 		for (int row = 0; row < map.GetLength(0); row++) {
 			for (int col = 0; col < map.GetLength(1); col++) {
 				if (UnityEngine.Random.value < wallChance) {

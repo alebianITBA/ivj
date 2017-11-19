@@ -5,8 +5,8 @@ using UnityEngine;
 public class AutomataLevel : Level {
 	private Dictionary<Direction, LevelPosition> playerSpawningPositions;
 
-	public AutomataLevel (int rows, int cols, int initialRounds, int afterRounds, int birth, int death, int afterBirth, int afterDeath, float initialWallChance) : base() {
-		this.map = GenerateMap (rows, cols, initialRounds, afterRounds, birth, death, afterBirth, afterDeath, initialWallChance);
+	public AutomataLevel (int rows, int cols, int initialRounds, int afterRounds, int birth, int death, int afterBirth, int afterDeath, float initialWallChance, int seed) : base() {
+		this.map = GenerateMap (rows, cols, initialRounds, afterRounds, birth, death, afterBirth, afterDeath, initialWallChance, seed);
 		this.playerSpawningPositions = new Dictionary<Direction, LevelPosition> ();
 		CalculatePlayerSpawningPositions ();
 	}
@@ -26,8 +26,8 @@ public class AutomataLevel : Level {
 		playerSpawningPositions.Add (Direction.East, new LevelPosition (map.GetLength(0) - 1, 0));
 	}
 
-	private Level.Tile[,] GenerateMap(int rows, int cols, int initialRounds, int afterRounds, int initialBirth, int initialDeath, int afterBirth, int afterDeath, float initialWallChance) {
-		Level.Tile[,] map = GetRandomMap(rows, cols, initialWallChance);
+	private Level.Tile[,] GenerateMap(int rows, int cols, int initialRounds, int afterRounds, int initialBirth, int initialDeath, int afterBirth, int afterDeath, float initialWallChance, int seed) {
+		Level.Tile[,] map = GetRandomMap(rows, cols, initialWallChance, seed);
 
 		for (int i = 0; i < initialRounds; i++) {
 			Level.Tile[,] newMap = new Level.Tile[rows, cols];
