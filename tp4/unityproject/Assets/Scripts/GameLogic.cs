@@ -8,6 +8,8 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	// BULLET
 	public static float TIME_BETWEEN_SHOTS = 300.0f;
 	public static float BULLET_SPEED = 1000.0f;
+	public static int TOTAL_BULLETS_AMOUNT = 10;
+	public static float BULLET_TTL = TIME_BETWEEN_SHOTS * (TOTAL_BULLETS_AMOUNT - 1);
 	public static int DEFAULT_AMMO_SPAWNING_PONTS = 2;
 	public static int MAX_AMMO = 10;
 	// CAMERA
