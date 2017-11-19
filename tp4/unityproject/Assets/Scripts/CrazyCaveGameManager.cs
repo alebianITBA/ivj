@@ -4,21 +4,18 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 	public GameObject mainCamera;
 	[HideInInspector]
 	public GameObject player;
-	private int initialSeed = 0;
-	private int seed;
 
 	void Start() {
 		SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
 
-		CrazyCaveLevelManager.Instance.CreateNewLevel (initialSeed);
-		player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.level.PlayerStartingPoint());
-		seed = initialSeed;
+		//CrazyCaveLevelManager.Instance.CreateNewLevel (Level.Direction.Center);
+		player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.GetLevel().PlayerStartingPoint());
 	}
 
 	void Update() {
 		CameraFollowPlayer ();
 		CheckPlayerOutsideLevel ();
-		Drawer.Instance.DrawMinimap (CrazyCaveLevelManager.Instance.level, player);
+		Drawer.Instance.DrawMinimap (CrazyCaveLevelManager.Instance.GetLevel(), player);
 	}
 
 	private void CameraFollowPlayer() {
@@ -28,32 +25,26 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 	}
 
 	private void CheckPlayerOutsideLevel() {
-		Vector3 playerPosition = player.transform.position;
-		int direction = -1;
+		Vector3 playerPosition = player.transform.localPosition;
+		Level.Direction direction = (Level.Direction) (-1);
 
-		if (playerPosition.x > Drawer.Instance.MaxVisibleX(CrazyCaveLevelManager.Instance.level)) {
-			direction = (int)Level.Direction.West;
-			seed += 1;
+		if (playerPosition.x > Drawer.Instance.MaxVisibleX(CrazyCaveLevelManager.Instance.GetLevel())) {
+			direction = Level.Direction.West;
 		}
 		if (playerPosition.x < 0) {
-			direction = (int)Level.Direction.East;
-			seed -= 1;
-
+			direction = Level.Direction.East;
 		}
-		if (playerPosition.y > Drawer.Instance.MaxVisibleY(CrazyCaveLevelManager.Instance.level)) {
-			direction = (int)Level.Direction.South;
-			seed+= 100;
+		if (playerPosition.y > Drawer.Instance.MaxVisibleY(CrazyCaveLevelManager.Instance.GetLevel())) {
+			direction = Level.Direction.South;
 		}
 		if (playerPosition.y < 0) {
-			direction = (int)Level.Direction.North;
-			seed-= 100;
+			direction = Level.Direction.North;
 		}
 			
-		if (direction != -1) {
+		if (direction != (Level.Direction) (-1)) {
 			// We got out of the level so we create a new one
-			print(seed);
-			CrazyCaveLevelManager.Instance.CreateNewLevel (seed);
-			Drawer.Instance.RepositionPlayer (player, (Level.Direction)direction, CrazyCaveLevelManager.Instance.level);
+			CrazyCaveLevelManager.Instance.CreateNewLevel (direction);
+			Drawer.Instance.RepositionPlayer (player, (Level.Direction)direction, CrazyCaveLevelManager.Instance.GetLevel(), CrazyCaveLevelManager.Instance.GetHolder());
 		}
 	}
 }
