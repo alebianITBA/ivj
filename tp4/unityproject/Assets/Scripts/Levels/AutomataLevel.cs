@@ -7,7 +7,6 @@ public class AutomataLevel : Level {
 
 	public AutomataLevel (int rows, int cols, int initialRounds, int afterRounds, int birth, int death, int afterBirth, int afterDeath, float initialWallChance, int seed) : base() {
 		this.map = GenerateMap (rows, cols, initialRounds, afterRounds, birth, death, afterBirth, afterDeath, initialWallChance, seed);
-		this.playerSpawningPositions = new Dictionary<Direction, LevelPosition> ();
 		CalculatePlayerSpawningPositions ();
 	}
 
@@ -20,6 +19,7 @@ public class AutomataLevel : Level {
 	}
 
 	private void CalculatePlayerSpawningPositions() {
+		this.playerSpawningPositions = new Dictionary<Direction, LevelPosition> ();
 		playerSpawningPositions.Add (Direction.North, new LevelPosition (map.GetLength(0) - 1, map.GetLength(1) - 1));
 		playerSpawningPositions.Add (Direction.South, new LevelPosition (0, 0));
 		playerSpawningPositions.Add (Direction.West, new LevelPosition (0, map.GetLength(1) - 1));
@@ -27,6 +27,9 @@ public class AutomataLevel : Level {
 	}
 
 	private Level.Tile[,] GenerateMap(int rows, int cols, int initialRounds, int afterRounds, int initialBirth, int initialDeath, int afterBirth, int afterDeath, float initialWallChance, int seed) {
+		bool insertHealth = UnityEngine.Random.value < GameLogic.HEALTH_KIT_PROBABILITY;
+		bool insertBox = UnityEngine.Random.value < GameLogic.SPECIAL_BOX_PROBABILITY;
+
 		Level.Tile[,] map = GetRandomMap(rows, cols, initialWallChance, seed);
 
 		for (int i = 0; i < initialRounds; i++) {

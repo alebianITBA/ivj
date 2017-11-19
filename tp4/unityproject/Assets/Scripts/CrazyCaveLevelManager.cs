@@ -32,7 +32,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 
 		this.level = CreateLevel (seed);
 		FillOuterWalls ();
-		AddAmmo ();
+		AddAccessories ();
 		Drawer.Instance.DrawTiles (level, boardHolder, accessoriesHolder);
 	}
 
@@ -53,7 +53,9 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		// TODO
 	}
 
-	private void AddAmmo() {
+	private void AddAccessories() {
 		GetLevel ().AddAmmo (bulletSpawningPoints);
+		GetLevel ().AddHealthKit ();
+		GetLevel ().AddSpecialBox ();
 	}
 }

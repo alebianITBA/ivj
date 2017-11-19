@@ -140,8 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 980010628}
   player: {fileID: 0}
-  initialSeed: 1
-  zombieSpawningPoints: 5
+  initialSeed: 0
 --- !u!4 &459195059
 Transform:
   m_ObjectHideFlags: 0
@@ -245,6 +244,11 @@ MonoBehaviour:
   playerPrefab: {fileID: 1474156938808872, guid: da855db8f93334f6699c81dcd0e70f52,
     type: 2}
   minimap: {fileID: 1179989865}
+  ammoPrefab: {fileID: 1467400688868474, guid: 3b37082cadf81415887b60afeaea633a, type: 2}
+  healthKitPrefab: {fileID: 1161130136405202, guid: 4d7b163a180c0439e8ad1b6ce2f87dd3,
+    type: 2}
+  specialBoxPrefab: {fileID: 1069595084332262, guid: 47d2c1787bafc4b5998043fadcc7fc75,
+    type: 2}
   tileLength: 0
 --- !u!4 &750866316
 Transform:
@@ -549,6 +553,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelXSize: 30
   levelYSize: 20
+  zombieSpawningPoints: 5
+  bulletSpawningPoints: 2
   automataInitialRounds: 4
   automataAfterRounds: 4
   automataInitialBirthChance: 5

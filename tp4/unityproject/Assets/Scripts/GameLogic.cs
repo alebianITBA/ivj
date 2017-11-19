@@ -27,6 +27,9 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
     public static int PLAYERHEALTH = 100;
+	// ACCESSORIES
+	public static float HEALTH_KIT_PROBABILITY = 0.4f;
+	public static float SPECIAL_BOX_PROBABILITY = 0.2f;
 
 	// Game variables
 	public Text scoreText;

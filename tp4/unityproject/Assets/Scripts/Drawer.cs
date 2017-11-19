@@ -1,12 +1,39 @@
 ﻿using UnityEngine;
 
 public class Drawer : MonoBehaviourSingleton<Drawer> {
+	// COLORS
+	public static Color YELLOW = new Color(1f, 1f, 0f);
+	public static Color RED = new Color(1f, 0f, 0f);
+	public static Color DARK_RED = new Color(0.4f, 0f, 0f);
+	public static Color GREEN = new Color(0f, 1f, 0f);
+	public static Color DARK_GREEN = new Color(0f, 0.4f, 0f);
+	public static Color BLUE = new Color(0f, 0f, 1f);
+	public static Color DARK_BLUE = new Color(0f, 0f, 0.4f);
+	public static Color BLACK = new Color(0f, 0f, 0f);
+	public static Color WHITE = new Color(1f, 1f, 1f);
+	public static Color PURPLE = new Color(1f, 0f, 1f);
+
+	private static Color MM_BORDER_COLOR = YELLOW;
+	private static Color MM_WALL_COLOR = WHITE;
+	private static Color MM_OUTER_WALL_COLOR = WHITE;
+	private static Color MM_FLOOR_COLOR = BLACK;
+
+	private static Color MM_PLAYER_COLOR = GREEN;
+	private static Color MM_ZOMBIE_COLOR = RED;
+
+	private static Color MM_ZOMBIE_SPAWN_COLOR = DARK_RED;
+	private static Color MM_AMMO_SPAWN_COLOR = DARK_BLUE;
+	private static Color MM_HEALTH_SPAWN_COLOR = DARK_GREEN;
+	private static Color MM_SPECIAL_BOX_SPAWN_COLOR = PURPLE;
+
 	public GameObject[] floorPrefabs;
 	public GameObject[] wallPrefabs;
 	public GameObject[] outerWallPrefabs;
 	public GameObject playerPrefab;
 	public GameObject minimap;
 	public GameObject ammoPrefab;
+	public GameObject healthKitPrefab;
+	public GameObject specialBoxPrefab;
 
 	[HideInInspector]
 	public float tileLength;
@@ -46,6 +73,16 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), position);
 						GameObject ammo = NewObjectFromPrefab (ammoPrefab, position);
 						ammo.transform.parent = accessoriesHolder.transform;
+						break;
+					case Level.Tile.HealthKitSpawn:
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), position);
+						GameObject healthKit = NewObjectFromPrefab (healthKitPrefab, position);
+						healthKit.transform.parent = accessoriesHolder.transform;
+						break;
+					case Level.Tile.SpecialBoxSpawn:
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), position);
+						GameObject box = NewObjectFromPrefab (specialBoxPrefab, position);
+						box.transform.parent = accessoriesHolder.transform;
 						break;
 				}
 
@@ -197,32 +234,40 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		Texture2D texture = new Texture2D(map.GetLength(0) + 2, map.GetLength(1) + 2, TextureFormat.RGBA32, false);
 		for (int y = 0; y < map.GetLength(1); y++) {
 			for (int x = 0; x < map.GetLength(0); x++) {
-				if (map [x, y] == Level.Tile.Wall) {
-					texture.SetPixel(x + 1, y + 1, new Color (1f, 1f, 1f));
-				}
-				else if (map [x, y] == Level.Tile.ZombieSpawn) {
-					texture.SetPixel(x + 1, y + 1, new Color (0.3f, 0.5f, 0.3f));
-				}
-				else if (map [x, y] == Level.Tile.AmmoSpawn) {
-					texture.SetPixel(x + 1, y + 1, new Color (0.3f, 0.3f, 0.5f));
-				}
-				else {
-					texture.SetPixel(x + 1, y + 1, new Color (0f, 0f, 0f));
+				switch (map [x, y]) {
+					case Level.Tile.Wall:
+						texture.SetPixel (x + 1, y + 1, MM_WALL_COLOR);
+						break;
+					case Level.Tile.ZombieSpawn:
+						texture.SetPixel(x + 1, y + 1, MM_ZOMBIE_SPAWN_COLOR);
+						break;
+					case Level.Tile.AmmoSpawn:
+						texture.SetPixel(x + 1, y + 1, MM_AMMO_SPAWN_COLOR);
+						break;
+					case Level.Tile.HealthKitSpawn:
+						texture.SetPixel(x + 1, y + 1, MM_HEALTH_SPAWN_COLOR);
+						break;
+					case Level.Tile.SpecialBoxSpawn:
+						texture.SetPixel(x + 1, y + 1, MM_SPECIAL_BOX_SPAWN_COLOR);
+						break;
+					default:
+						texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
+						break;
 				}
 			}
 		}
 		// Paint borders
 		for (int x = 0; x < map.GetLength(0) + 2; x++) {
-			texture.SetPixel(x, 0, new Color (1f, 1f, 0f));
-			texture.SetPixel(x, map.GetLength(1) + 1, new Color (1f, 1f, 0f));
+			texture.SetPixel(x, 0, MM_BORDER_COLOR);
+			texture.SetPixel(x, map.GetLength(1) + 1, MM_BORDER_COLOR);
 		}
 		for (int y = 0; y < map.GetLength(1) + 2; y++) {
-			texture.SetPixel(0, y, new Color (1f, 1f, 0f));
-			texture.SetPixel(map.GetLength(0) + 1, y, new Color (1f, 1f, 0f));
+			texture.SetPixel(0, y, MM_BORDER_COLOR);
+			texture.SetPixel(map.GetLength(0) + 1, y, MM_BORDER_COLOR);
 		}
 		// Paint player
 		LevelPosition playerPosition = GetLevelPosition(player);
-		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, new Color (1f, 0f, 0f));
+		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, MM_PLAYER_COLOR);
 
 		texture.filterMode = FilterMode.Point;
 		texture.wrapMode = TextureWrapMode.Clamp;

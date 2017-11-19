@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Level {
-	public enum Tile { Empty, Wall, Floor, OuterWall, PlayerSpawn, ZombieSpawn, AmmoSpawn };
+	public enum Tile { Empty, Wall, Floor, OuterWall, PlayerSpawn, ZombieSpawn, AmmoSpawn, HealthKitSpawn, SpecialBoxSpawn };
 	public enum Direction { North, East, South, West };
 
 	protected Tile[,] map;
@@ -93,7 +93,25 @@ public abstract class Level {
 		}
 	}
 
-	private List<LevelPosition> GetAvailableTiles() {
+	public void AddHealthKit() {
+		if (UnityEngine.Random.value < GameLogic.HEALTH_KIT_PROBABILITY) {
+			List<LevelPosition> availableTiles = GetAvailableTiles ();
+			int rand = UnityEngine.Random.Range(0, availableTiles.Count);
+			LevelPosition place = availableTiles [rand];
+			map [place.x, place.y] = Level.Tile.HealthKitSpawn;
+		}
+	}
+
+	public void AddSpecialBox() {
+		if (UnityEngine.Random.value < GameLogic.SPECIAL_BOX_PROBABILITY) {
+			List<LevelPosition> availableTiles = GetAvailableTiles ();
+			int rand = UnityEngine.Random.Range(0, availableTiles.Count);
+			LevelPosition place = availableTiles [rand];
+			map [place.x, place.y] = Level.Tile.SpecialBoxSpawn;
+		}
+	}
+
+	protected List<LevelPosition> GetAvailableTiles() {
 		if (map == null) {
 			throw new OperationCanceledException ("Level not initialised.");
 		}
