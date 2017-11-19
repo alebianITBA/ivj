@@ -214,7 +214,6 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		texture.wrapMode = TextureWrapMode.Clamp;
 		texture.Apply();
 
-//		minimap.GetComponent<SpriteRenderer>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 		minimap.GetComponent<GUITexture>().texture = texture;
 	}
 }

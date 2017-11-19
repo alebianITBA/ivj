@@ -4,7 +4,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 	public GameObject mainCamera;
 	[HideInInspector]
 	public GameObject player;
-	private int initialSeed = 0;
+	public int initialSeed = 0;
 	private int seed;
 
 	void Start() {
@@ -51,7 +51,6 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 			
 		if (direction != -1) {
 			// We got out of the level so we create a new one
-			print(seed);
 			CrazyCaveLevelManager.Instance.CreateNewLevel (seed);
 			Drawer.Instance.RepositionPlayer (player, (Level.Direction)direction, CrazyCaveLevelManager.Instance.level);
 		}
