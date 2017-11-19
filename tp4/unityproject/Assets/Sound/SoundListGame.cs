@@ -16,7 +16,7 @@ public enum SndIdGame : int
 public class SoundListGame : SoundList
 {
 	SoundProp[] sounds = {
-		new SoundProp((int) SndIdGame.BACKGROUND_MUSIC, "scavengers_music", 1, 100),
+		new SoundProp((int) SndIdGame.BACKGROUND_MUSIC, "scavengers_music", 1, true, SndType.SND_MUSIC, 100),
 	};
 
 	new void Start()

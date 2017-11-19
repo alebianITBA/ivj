@@ -8,4 +8,8 @@ public class LevelPosition {
 		this.x = x;
 		this.y = y;
 	}
+
+	public int Distance(LevelPosition other) {
+		return Math.Abs (this.x - other.x) + Math.Abs (this.y - other.y);
+	}
 }

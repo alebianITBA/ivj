@@ -7,9 +7,16 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	//public Level level;
 	Dictionary<Level.Direction, GameObject> boardHolders;
 	Dictionary<Level.Direction, Level> levels;
+	public Level level;
+	[HideInInspector]
+	GameObject boardHolder = null;
+	[HideInInspector]
+	GameObject accessoriesHolder = null;
 
 	public int levelXSize;
 	public int levelYSize;
+	public int zombieSpawningPoints = GameLogic.DEFAULT_ZOMBIE_SPAWNING_PONTS;
+	public int bulletSpawningPoints = GameLogic.DEFAULT_AMMO_SPAWNING_PONTS;
 	// Automata generator attributes
 	public int automataInitialRounds;
 	public int automataAfterRounds;
@@ -38,6 +45,9 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		boardHolders.Add(Level.Direction.SouthWest, new GameObject("SouthWest BoardHolder"));
 		boardHolders.Add(Level.Direction.East, new GameObject("East BoardHolder"));
 		boardHolders.Add(Level.Direction.West, new GameObject("West BoardHolder"));
+
+		this.accessoriesHolder = new GameObject ("AccessoriesHolder");
+
 	}
 
 	void Start() {
@@ -47,8 +57,10 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 				levels.Add (dir, CreateLevel (seed + Level.GetSeedOffset (dir)));
 				boardHolders [dir].transform.position = Vector3.Scale (Level.GetPosition (dir), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
 			}
-			Drawer.Instance.DrawTiles (levels[dir], boardHolders[dir]);
+			AddAccessories (levels[dir]);
+			Drawer.Instance.DrawTiles (levels[dir], boardHolders[dir], accessoriesHolder);
 		}
+
 	}
 	public void CreateNewLevel(Level.Direction dir) {
 		print (dir);
@@ -76,7 +88,9 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		newHolder.transform.position = pos + Vector3.Scale (Level.GetPosition (dir), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
 		newBoards[dir] =  newHolder;
 		newLevels[dir] =  CreateLevel (seed + Level.GetSeedOffset(dir));
-		Drawer.Instance.DrawTiles (newLevels[dir], newBoards[dir]);
+		AddAccessories (newLevels [dir]);
+		newLevels[dir].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+		Drawer.Instance.DrawTiles (newLevels[dir], newBoards[dir],accessoriesHolder);
 
 		foreach (Level.Direction neigh in Level.GetNeighbours(dir)) {
 			print (neigh);
@@ -92,12 +106,16 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 			newHolder.transform.position = pos + Vector3.Scale (Level.GetPosition (neigh), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
 			newBoards[neigh] =  newHolder;
 			newLevels[neigh] =  CreateLevel (seed + Level.GetSeedOffset(neigh));
-			Drawer.Instance.DrawTiles (newLevels[neigh], newBoards[neigh]);
+			AddAccessories (newLevels [neigh]);
+			newLevels[neigh].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+			Drawer.Instance.DrawTiles (newLevels[neigh], newBoards[neigh], accessoriesHolder);
 		
 		}
 
 		boardHolders = newBoards;
 		levels = newLevels;
+
+
 	} 
 
 	public Level GetLevel() {
@@ -108,6 +126,10 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		return boardHolders[Level.Direction.Center];
 	}
 
+	public void AddZombieSpawningPoints(GameObject player) {
+		CrazyCaveLevelManager.Instance.GetLevel ().AddZombieSpawningPoints (zombieSpawningPoints, Drawer.Instance.GetLevelPosition (player));
+	}
+
 	private Level CreateLevel(int seed) {
 		return new AutomataLevel (levelXSize, levelYSize, automataInitialRounds, automataAfterRounds, automataInitialBirthChance, 
 			automataInitialDeathChance, automataAfterBirthChance, automataAfterDeathChance, automataInitialWallChance, seed);
@@ -116,5 +138,10 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	private void FillOuterWalls() {
 		// TODO
 	}
-		
+
+	private void AddAccessories(Level level) {
+		level.AddAmmo (bulletSpawningPoints);
+		level.AddHealthKit ();
+		level.AddSpecialBox ();
+	}
 }
