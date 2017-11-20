@@ -40,7 +40,7 @@ public class WarriorManager : MonoBehaviour {
             spawned++;
             lastSpawn = System.DateTime.Now;
 			Warrior warrior = warriorPool.Dequeue();
-			warrior.transform.position = getSpawnPosition(GameLogic.WARRIOR_SPAWN_DISTANCE);
+			warrior.transform.position = (Vector2)CrazyCaveGameManager.Instance.player.transform.position + getSpawnPosition(GameLogic.WARRIOR_SPAWN_DISTANCE);
 			warrior.gameObject.SetActive(true);
         }
     }

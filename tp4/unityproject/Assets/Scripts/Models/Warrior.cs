@@ -46,7 +46,7 @@ public class Warrior : MonoBehaviour {
         Vector2 direction = playerPosition - myPosition;
 		RaycastHit2D hit = Physics2D.Raycast ((Vector2)transform.position + Vector2.Scale(direction,new Vector2(0.1f, 0.1f)), direction, 100.0f);
 		print (hit.transform.gameObject.name);
-		if (hit.transform.gameObject.name == "Player(Clone)") {
+		if (hit.transform.gameObject.name.Equals("Player(Clone)")) {
 			if (hit.distance < 0.5f) {
 				animator.SetBool ("attacking", true);
 			} else {
