@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	// GLOBAL CONSTANTS
@@ -35,10 +34,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static float HEALTH_KIT_PROBABILITY = 0.4f;
 	public static float SPECIAL_BOX_PROBABILITY = 0.2f;
 
-	// Game variables
-	public Text scoreText;
-    public Text lifeText;
-	public Text bulletsText;
+	[HideInInspector]
     public Character player;
 
 	public void SetPlayer(GameObject player) {

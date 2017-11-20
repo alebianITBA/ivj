@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Drawer : MonoBehaviourSingleton<Drawer> {
 	// COLORS
@@ -26,6 +27,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	private static Color MM_HEALTH_SPAWN_COLOR = DARK_GREEN;
 	private static Color MM_SPECIAL_BOX_SPAWN_COLOR = PURPLE;
 
+	// Prefabs
 	public GameObject[] floorPrefabs;
 	public GameObject[] wallPrefabs;
 	public GameObject[] outerWallPrefabs;
@@ -35,13 +37,27 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public GameObject healthKitPrefab;
 	public GameObject specialBoxPrefab;
 
+	private GameObject player;
+
 	[HideInInspector]
 	public float tileLength;
 	private float halfTileLength;
 
+	public Text scoreText;
+	public Text lifeText;
+	public Text bulletsText;
+
 	override protected void Initialize() {
 		tileLength = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x - 0.01f;
 		halfTileLength = tileLength / 2f;
+	}
+
+	void Update() {
+		if (player != null) {
+			scoreText.text = "Score: " + player.GetComponent<Character>().score.ToString();
+			lifeText.text = "Life: " + Mathf.Max(GameLogic.PLAYERHEALTH, player.GetComponent<Character>().health).ToString();
+			bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString();
+		}
 	}
 
 	public void DrawTiles(Level level, GameObject tilesHolder, GameObject accessoriesHolder) {
@@ -97,7 +113,8 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	}
 
 	public GameObject CreatePlayer(LevelPosition position) {
-		return NewObjectFromPrefab (playerPrefab, NewPlayerPosition(position));
+		player = NewObjectFromPrefab (playerPrefab, NewPlayerPosition(position));
+		return player;
 	}
 
 	public void RepositionPlayer(GameObject player, Level.Direction direction, Level level, GameObject holder) {
