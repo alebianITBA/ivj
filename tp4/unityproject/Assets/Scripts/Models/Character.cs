@@ -76,20 +76,24 @@ public class Character : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
+		int change;
 		switch (col.gameObject.name) {
 			case "ZombiePrefab":
 				TakeDamage ();
 				break;
 			case "Ammo(Clone)":
-				AddBullet ();
+				change = AddBullet ();
+				Drawer.Instance.CreateActionText (change.ToString(), Drawer.DARK_BLUE, col.gameObject.transform.position);
 				Destroy (col.gameObject);
 				break;
 			case "HealthKit(Clone)":
-				AddHealth (GameLogic.HEALTH_KIT_HP);
+				change = AddHealth (GameLogic.HEALTH_KIT_HP);
+				Drawer.Instance.CreateActionText (change.ToString(), Drawer.GREEN, col.gameObject.transform.position);
 				Destroy (col.gameObject);
 				break;
 			case "SpecialBox(Clone)":
-				AddScore (GameLogic.SPECIAL_BOX_SCORE);
+				change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
+				Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
 				Destroy (col.gameObject);
 				break;
 		}
@@ -109,20 +113,30 @@ public class Character : MonoBehaviour {
         }
     }
 
-	private void AddBullet() {
+	private int AddBullet() {
 		if (bullets < GameLogic.MAX_AMMO) {
 			SoundManager.PlaySound ((int)SndIdGame.AMMO_PICK);
 			bullets++;
+			return 1;
+		}
+		return 0;
+	}
+
+	private int AddHealth(int amount) {
+		int newHealth = health + amount;
+		if (newHealth > GameLogic.PLAYERHEALTH) {
+			health = GameLogic.PLAYERHEALTH;
+			int reminder = newHealth - GameLogic.PLAYERHEALTH;
+			return Mathf.Abs (reminder - amount);
+		} else {
+			health = newHealth;
+			return amount;
 		}
 	}
 
-	private void AddHealth(int amount) {
-		int newHealth = health + amount;
-		health = Mathf.Max (amount, GameLogic.PLAYERHEALTH);
-	}
-
-	private void AddScore(int amount) {
+	private int AddScore(int amount) {
 		score += amount;
+		return amount;
 	}
 
 	public void ZombieKilled() {
