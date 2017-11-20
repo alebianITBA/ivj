@@ -257,8 +257,14 @@ MonoBehaviour:
   scoreText: {fileID: 1187244792}
   lifeText: {fileID: 1255672861}
   bulletsText: {fileID: 903264620}
-  middleText: {fileID: 0}
+  middleText: {fileID: 585485947}
   damagePanel: {fileID: 613052502}
+--- !u!114 &585485947 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114376961336911050, guid: c71a53b267c06498bbbb6336c050ffad,
+    type: 2}
+  m_PrefabInternal: {fileID: 1300844404}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &613052502 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1948802801191566, guid: c71a53b267c06498bbbb6336c050ffad,
