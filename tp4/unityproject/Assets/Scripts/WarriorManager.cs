@@ -30,6 +30,8 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
             go.name = warriorPrefab.name;
             go.transform.parent = transform;
             go.SetActive(false);
+            warrior.container = go;
+            warrior.inQueue = true;
 			warriorPool.Enqueue(warrior);
         }
     }
@@ -40,6 +42,7 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
             spawned++;
             lastSpawn = System.DateTime.Now;
 			Warrior warrior = warriorPool.Dequeue();
+            warrior.inQueue = false;
 			warrior.transform.position = (Vector2)CrazyCaveGameManager.Instance.player.transform.position + getSpawnPosition(GameLogic.WARRIOR_SPAWN_DISTANCE);
 			warrior.gameObject.SetActive(true);
         }
@@ -48,6 +51,7 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
 	public void RecycleWarrior(Warrior warrior)
     {
 		warriorPool.Enqueue(warrior);
+        warrior.inQueue = true;
 		warrior.gameObject.SetActive(false);
 		warrior.SetAlive();
 		warrior.GetComponent<Collider2D> ().enabled = true;

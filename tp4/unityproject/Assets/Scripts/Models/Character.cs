@@ -107,6 +107,7 @@ public class Character : MonoBehaviour {
 
     private void TakeDamage(){
         this.health--;
+        Drawer.Instance.TookDamage ();
         if (health <= 0) {
 //            HighscoreController.instance.setLastScore(logic.Score());
 //            SceneManager.LoadScene(2);

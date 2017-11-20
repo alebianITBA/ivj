@@ -8,15 +8,20 @@ public class Warrior : MonoBehaviour {
     public Animator animator;
     public System.DateTime died;
 	private bool dead;
+    [HideInInspector]
 	private bool walking;
 	private bool attacking;
 	public Sprite idle;
+
+    public GameObject container;
+    public bool inQueue;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator> ();
         dead = false;
+        inQueue = true;
 		GetComponent<SpriteRenderer> ().sprite = idle;
 		animator.SetBool ("attacking", false);
 		animator.SetBool ("walking", false);
@@ -72,5 +77,9 @@ public class Warrior : MonoBehaviour {
 			GameLogic.Instance.WarriorKilled ();
             BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet>());
         }
+    }
+
+    public bool IsAlive() {
+        return !dead;
     }
 }
