@@ -10,6 +10,11 @@ public abstract class Level {
 	protected Tile[,] map;
 	protected List<LevelPosition> zombieSpawns;
 
+    public float renderedMinX;
+    public float renderedMaxX;
+    public float renderedMinY;
+    public float renderedMaxY;
+
 	public Level() {
 		
 	}

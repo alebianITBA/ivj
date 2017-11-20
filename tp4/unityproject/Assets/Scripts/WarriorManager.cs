@@ -66,4 +66,8 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
             Physics2D.IgnoreCollision (collider, w.GetComponent<Collider2D>());
         }
     }
+
+    public List<Warrior> GetWarriors() {
+        return new List<Warrior>(warriorPool.ToArray());
+    }
 }

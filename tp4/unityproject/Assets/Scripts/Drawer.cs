@@ -21,9 +21,9 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	private static Color MM_FLOOR_COLOR = BLACK;
 
 	private static Color MM_PLAYER_COLOR = GREEN;
-	private static Color MM_ZOMBIE_COLOR = RED;
+    private static Color MM_WARRIOR_COLOR = RED;
 
-	private static Color MM_ZOMBIE_SPAWN_COLOR = DARK_RED;
+    private static Color MM_WARRIOR_SPAWN_COLOR = DARK_RED;
 	private static Color MM_AMMO_SPAWN_COLOR = DARK_BLUE;
 	private static Color MM_HEALTH_SPAWN_COLOR = DARK_GREEN;
 	private static Color MM_SPECIAL_BOX_SPAWN_COLOR = PURPLE;
@@ -112,6 +112,15 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 				if (tileInstance != null) {
 					//tileInstance.transform.parent = holder.transform;
 					tileInstance.transform.localPosition = position;
+
+                    // To detect objects inside level
+                    if (row == 0 && col == 0) {
+                        level.renderedMinX = position.x;
+                        level.renderedMinY = position.y;
+                    } else if (row == level.GetMap().GetLength(0) - 1 && col == level.GetMap().GetLength(1) - 1) {
+                        level.renderedMaxX = position.x + tileLength;
+                        level.renderedMaxY = position.y + tileLength;
+                    }
 				}
 			}
 		}
@@ -138,12 +147,29 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		return level.GetMap ().GetLength (1) * tileLength;
 	}
 
-	public LevelPosition GetLevelPosition(GameObject obj) {
-		int tl = Mathf.FloorToInt (tileLength * 100);
-		int x = Mathf.FloorToInt (obj.transform.position.x * 100);
-		int y = Mathf.FloorToInt (obj.transform.position.y * 100);
+	public LevelPosition GetLevelPosition(GameObject obj, Level level) {
+        Vector3 objPosition = obj.transform.localPosition;
 
-		return new LevelPosition (Mathf.FloorToInt (x / tl), Mathf.FloorToInt (y / tl));
+        if (objPosition.x >= level.renderedMinX && objPosition.x <= level.renderedMaxX)
+        {
+            if (objPosition.y >= level.renderedMinY && objPosition.y <= level.renderedMaxY)
+            {
+                float maxX = tileLength * level.GetMap ().GetLength (0);
+                float maxY = tileLength * level.GetMap ().GetLength (1);
+                float x = objPosition.x % maxX;
+                float y = objPosition.y % maxY;
+
+                if (x < 0) {
+                    x = x + maxX;
+                }
+                if (y < 0) {
+                    y = y + maxY;
+                }
+
+                return new LevelPosition (Mathf.FloorToInt (x / tileLength), Mathf.FloorToInt (y / tileLength));
+            }
+        }
+        return new LevelPosition (-1, -1);
 	}
 
 	private GameObject NewObjectFromPrefab(GameObject prefab, Vector3 position) {
@@ -158,6 +184,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		return tiles[UnityEngine.Random.Range (0, tiles.Length)];
 	}
 
+    // Parameter level should be the center level
 	public void DrawMinimap(Level level, GameObject player) {
 		Level.Tile[,] map = level.GetMap ();
 
@@ -169,7 +196,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 						texture.SetPixel (x + 1, y + 1, MM_WALL_COLOR);
 						break;
 					case Level.Tile.ZombieSpawn:
-						texture.SetPixel(x + 1, y + 1, MM_ZOMBIE_SPAWN_COLOR);
+						texture.SetPixel(x + 1, y + 1, MM_WARRIOR_SPAWN_COLOR);
 						break;
 					case Level.Tile.AmmoSpawn:
 						texture.SetPixel(x + 1, y + 1, MM_AMMO_SPAWN_COLOR);
@@ -195,9 +222,22 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 			texture.SetPixel(0, y, MM_BORDER_COLOR);
 			texture.SetPixel(map.GetLength(0) + 1, y, MM_BORDER_COLOR);
 		}
-		// Paint player
-		LevelPosition playerPosition = GetLevelPosition(player);
+
+        // Paint player
+		LevelPosition playerPosition = GetLevelPosition(player, level);
 		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, MM_PLAYER_COLOR);
+
+        // Paint zombies
+        foreach(Warrior w in WarriorManager.Instance.GetWarriors()) {
+            LevelPosition wPosition = GetLevelPosition (w.gameObject, level);
+            // We are assuming that level was the center level
+            if (wPosition.x >= 0 && wPosition.x < level.GetMap().GetLength(0)) {
+                if (wPosition.y >= 0 && wPosition.y < level.GetMap().GetLength(1)) {
+                    print ("Warrior " + wPosition.ToString());
+                    texture.SetPixel(wPosition.x + 1, wPosition.y + 1, MM_WARRIOR_COLOR);
+                }
+            }
+        }
 
 		texture.filterMode = FilterMode.Point;
 		texture.wrapMode = TextureWrapMode.Clamp;

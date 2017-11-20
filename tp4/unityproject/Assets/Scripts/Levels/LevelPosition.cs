@@ -12,4 +12,9 @@ public class LevelPosition {
 	public int Distance(LevelPosition other) {
 		return Math.Abs (this.x - other.x) + Math.Abs (this.y - other.y);
 	}
+
+    public override string ToString ()
+    {
+        return string.Format ("[LevelPosition: x={0}, y={1}]", x, y);
+    }
 }
