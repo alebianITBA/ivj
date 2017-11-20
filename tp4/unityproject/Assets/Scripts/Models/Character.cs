@@ -27,23 +27,29 @@ public class Character : MonoBehaviour {
 	}
 
 	private void checkInput() {
-		if (Input.GetKey(KeyCode.UpArrow)) {
-			applyImpulseForward();
-		}
-		if (Input.GetKey (KeyCode.DownArrow)) {
-			applyImpulseBackwards ();
-		}
-		if (Input.GetKey(KeyCode.LeftArrow)) {
-			float angle = transform.localRotation.eulerAngles.z + Time.deltaTime * GameLogic.Instance.GetCharacterRotationSpeed();
-			transform.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
-		}
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			float angle = transform.localRotation.eulerAngles.z - Time.deltaTime * GameLogic.Instance.GetCharacterRotationSpeed ();
-			transform.localRotation = Quaternion.Euler (0.0f, 0.0f, angle);
-		}
-		if (Input.GetKey (KeyCode.Space)) {
-			Shoot ();
-		}
+        if (health > 0) {
+            if (Input.GetKey (KeyCode.UpArrow)) {
+                applyImpulseForward ();
+            }
+            if (Input.GetKey (KeyCode.DownArrow)) {
+                applyImpulseBackwards ();
+            }
+            if (Input.GetKey (KeyCode.LeftArrow)) {
+                float angle = transform.localRotation.eulerAngles.z + Time.deltaTime * GameLogic.Instance.GetCharacterRotationSpeed ();
+                transform.localRotation = Quaternion.Euler (0.0f, 0.0f, angle);
+            }
+            if (Input.GetKey (KeyCode.RightArrow)) {
+                float angle = transform.localRotation.eulerAngles.z - Time.deltaTime * GameLogic.Instance.GetCharacterRotationSpeed ();
+                transform.localRotation = Quaternion.Euler (0.0f, 0.0f, angle);
+            }
+            if (Input.GetKey (KeyCode.Space)) {
+                Shoot ();
+            }
+        } else {
+            if (Input.GetKey (KeyCode.Return) || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Escape)) {
+                 SceneManager.LoadScene(2);
+            }
+        }
 	}
 
 	private Vector2 direction() {
@@ -109,11 +115,9 @@ public class Character : MonoBehaviour {
     }
 
     private void TakeDamage(){
-        this.health--;
-        Drawer.Instance.TookDamage ();
-        if (health <= 0) {
-//            HighscoreController.instance.setLastScore(logic.Score());
-//            SceneManager.LoadScene(2);
+        if (health > 0) {
+            this.health--;
+            Drawer.Instance.TookDamage ();
         }
     }
 
@@ -121,7 +125,7 @@ public class Character : MonoBehaviour {
 		if (bullets < GameLogic.MAX_AMMO) {
             int newBullets = bullets + GameLogic.AMMO_RELOAD;
 			SoundManager.PlaySound ((int)SndIdGame.AMMO_PICK);
-            bullets = Mathf.Max(newBullets, GameLogic.MAX_AMMO);
+            bullets = Mathf.Min(newBullets, GameLogic.MAX_AMMO);
 
             if (newBullets > GameLogic.MAX_AMMO) {
                 return (int)Mathf.Abs(GameLogic.AMMO_RELOAD - (newBullets - GameLogic.MAX_AMMO));
