@@ -148,7 +148,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	}
 
 	public LevelPosition GetLevelPosition(GameObject obj, Level level) {
-        Vector3 objPosition = obj.transform.position;
+        Vector3 objPosition = obj.transform.localPosition;
 
         if (objPosition.x >= level.renderedMinX && objPosition.x <= level.renderedMaxX)
         {
