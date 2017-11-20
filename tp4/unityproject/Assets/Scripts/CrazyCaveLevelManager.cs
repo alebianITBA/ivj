@@ -111,8 +111,6 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 
 		boardHolders = newBoards;
 		levels = newLevels;
-
-
 	} 
 
 	public Level GetLevel() {
@@ -124,7 +122,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	}
 
 	public void AddZombieSpawningPoints(GameObject player) {
-		CrazyCaveLevelManager.Instance.GetLevel ().AddZombieSpawningPoints (zombieSpawningPoints, Drawer.Instance.GetLevelPosition (player));
+        CrazyCaveLevelManager.Instance.GetLevel ().AddZombieSpawningPoints (zombieSpawningPoints, Drawer.Instance.GetLevelPosition (player, CrazyCaveLevelManager.Instance.GetLevel ()));
 	}
 
 	private Level CreateLevel(int seed) {
