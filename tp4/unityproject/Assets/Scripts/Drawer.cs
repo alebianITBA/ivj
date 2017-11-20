@@ -127,7 +127,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	}
 
 	public GameObject CreatePlayer(LevelPosition position) {
-		player = NewObjectFromPrefab (playerPrefab, NewPlayerPosition(position));
+		player = NewObjectFromPrefab (playerPrefab, GetPosition(position));
 		return player;
 	}
 
@@ -135,7 +135,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		player.transform.parent = holder.transform;
 	}
 
-	private Vector3 NewPlayerPosition(LevelPosition position) {
+	public Vector3 GetPosition(LevelPosition position) {
 		return new Vector3 ((position.x * tileLength) + halfTileLength, (position.y * tileLength) + halfTileLength, 0);
 	}
 
@@ -228,12 +228,11 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		texture.SetPixel(playerPosition.x + 1, playerPosition.y + 1, MM_PLAYER_COLOR);
 
         // Paint zombies
-        foreach(Warrior w in WarriorManager.Instance.GetWarriors()) {
+		foreach(Warrior w in CrazyCaveLevelManager.Instance.GetLevel().GetWarriors()) {
             LevelPosition wPosition = GetLevelPosition (w.gameObject, level);
             // We are assuming that level was the center level
             if (wPosition.x >= 0 && wPosition.x < level.GetMap().GetLength(0)) {
                 if (wPosition.y >= 0 && wPosition.y < level.GetMap().GetLength(1)) {
-                    print ("Warrior " + wPosition.ToString());
                     texture.SetPixel(wPosition.x + 1, wPosition.y + 1, MM_WARRIOR_COLOR);
                 }
             }
@@ -260,4 +259,5 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
         BulletManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
         WarriorManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
     }
+
 }

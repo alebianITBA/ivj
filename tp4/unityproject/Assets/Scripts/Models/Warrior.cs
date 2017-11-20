@@ -11,6 +11,7 @@ public class Warrior : MonoBehaviour {
 	private bool walking;
 	private bool attacking;
 	public Sprite idle;
+	private Level level;
 
     // Use this for initialization
     void Start () {
@@ -31,6 +32,14 @@ public class Warrior : MonoBehaviour {
 		this.dead = false;
 		animator.SetBool ("attacking", false);
 		animator.SetBool ("walking", false);
+	}
+
+	public void SetLevel(Level level) {
+		this.level = level;
+	}
+
+	public Level GetLevel() {
+		return this.level;
 	}
 
 	// Update is called once per frame
@@ -56,8 +65,10 @@ public class Warrior : MonoBehaviour {
 			transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
 			animator.SetBool ("walking", true);
 			rb.AddForce(direction.normalized * GameLogic.Instance.WarriorVelocity());
+			checkOutside ();
 			return;
 		}
+		checkOutside ();
 		animator.SetBool ("walking", false);
     }
 
@@ -73,4 +84,30 @@ public class Warrior : MonoBehaviour {
             BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet>());
         }
     }
+
+	void checkOutside() {
+		Level.Direction direction = (Level.Direction) (-1);
+
+		if (transform.localPosition.x > Drawer.Instance.MaxVisibleX(level)) {
+			direction = Level.Direction.West;
+		}
+		if (transform.localPosition.x < 0) {
+			direction = Level.Direction.East;
+		}
+		if (transform.localPosition.y > Drawer.Instance.MaxVisibleY(level)) {
+			direction = Level.Direction.South;
+		}
+		if (transform.localPosition.y < 0) {
+			direction = Level.Direction.North;
+		}
+
+		if (direction != (Level.Direction) (-1)) {
+			print (direction);
+			print (transform.localPosition);
+			this.transform.SetParent(CrazyCaveLevelManager.Instance.GetHolder (Level.Direction.Center).transform);
+			this.level.RemoveWarrior (this);
+			this.level = CrazyCaveLevelManager.Instance.GetLevel (Level.Direction.Center);
+			this.level.AddWarrior (this);
+		}
+	}
 }

@@ -9,6 +9,7 @@ public abstract class Level {
 
 	protected Tile[,] map;
 	protected List<LevelPosition> zombieSpawns;
+	private HashSet<Warrior> warriors;
 
     public float renderedMinX;
     public float renderedMaxX;
@@ -16,12 +17,13 @@ public abstract class Level {
     public float renderedMaxY;
 
 	public Level() {
-		
+		this.warriors = new HashSet<Warrior> ();
 	}
 
 	public Level (Tile[,] map)
 	{
 		this.map = map;
+		this.warriors = new HashSet<Warrior> ();
 	}
 
 	public Tile[,] GetMap() {
@@ -270,5 +272,25 @@ public abstract class Level {
 		}
 
 		return availableTiles;
+	}
+
+	public void AddWarrior(Warrior warrior) {
+		warriors.Add (warrior);
+	}
+
+	public void RemoveWarrior(Warrior warrior) {
+		warriors.Remove (warrior);
+	}
+
+	public void recycleWarriors() {
+		List<Warrior> wrs = new List<Warrior> (warriors);
+		foreach (Warrior w in wrs) {
+			warriors.Remove (w);
+			WarriorManager.Instance.RecycleWarrior (w);
+		}
+	}
+
+	public HashSet<Warrior> GetWarriors() {
+		return warriors;
 	}
 }

@@ -57,6 +57,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 				boardHolders [dir].transform.position = Vector3.Scale (Level.GetPosition (dir), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
 			}
 			AddAccessories (levels[dir]);
+			levels[dir].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
 			Drawer.Instance.DrawTiles (levels[dir], boardHolders[dir], accessoriesHolder);
 		}
 
@@ -77,8 +78,8 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		boardHolders [Level.Direction.Center].name = newBoards [Level.GetOpposite (dir)].name;
 		newBoards [Level.GetOpposite(dir)] = boardHolders [Level.Direction.Center];
 		newLevels [Level.GetOpposite(dir)] = levels [Level.Direction.Center];
+		levels [Level.GetOpposite (dir)].recycleWarriors ();
 		Destroy (old);
-
 		boardHolders [dir].name = newBoards [Level.Direction.Center].name;
 		newBoards[Level.Direction.Center] = boardHolders[dir];
 		newLevels [Level.Direction.Center] = levels [dir];
@@ -95,6 +96,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 			boardHolders [Level.GetReplacement (dir, neigh)].name = newBoards [Level.GetOpposite (dir, neigh)].name;
 			newBoards [Level.GetOpposite (dir, neigh)] = boardHolders [Level.GetReplacement (dir, neigh)];
 			newLevels [Level.GetOpposite (dir, neigh)] = levels [Level.GetReplacement (dir, neigh)];
+			levels [Level.GetOpposite (dir, neigh)].recycleWarriors ();
 			Destroy (old);
 			boardHolders [neigh].name = newBoards [Level.GetReplacement (dir, neigh)].name;
 			newBoards [Level.GetReplacement (dir, neigh)] = boardHolders [neigh];
@@ -121,6 +123,14 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		return boardHolders[Level.Direction.Center];
 	}
 
+	public Level GetLevel(Level.Direction dir) {
+		return this.levels[dir];
+	}
+
+	public GameObject GetHolder(Level.Direction dir) {
+		return boardHolders[dir];
+	}
+
 	public void AddZombieSpawningPoints(GameObject player) {
         CrazyCaveLevelManager.Instance.GetLevel ().AddZombieSpawningPoints (zombieSpawningPoints, Drawer.Instance.GetLevelPosition (player, CrazyCaveLevelManager.Instance.GetLevel ()));
 	}
@@ -139,4 +149,5 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		level.AddHealthKit ();
 		level.AddSpecialBox ();
 	}
+		
 }

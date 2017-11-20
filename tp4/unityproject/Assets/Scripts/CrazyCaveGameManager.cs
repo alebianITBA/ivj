@@ -52,7 +52,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 			// We got out of the level so we create a new one
 			CrazyCaveLevelManager.Instance.CreateNewLevel (direction);
 			Drawer.Instance.RepositionPlayer (player, (Level.Direction)direction, CrazyCaveLevelManager.Instance.GetLevel(), CrazyCaveLevelManager.Instance.GetHolder());
-			CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (player);
+			//CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (player);
 		}
 	}
 }
