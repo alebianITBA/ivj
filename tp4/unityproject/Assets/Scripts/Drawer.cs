@@ -24,8 +24,11 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	private static Color MM_AMMO_SPAWN_COLOR = DARK_BLUE;
 	private static Color MM_HEALTH_SPAWN_COLOR = DARK_GREEN;
 	private static Color MM_SPECIAL_BOX_SPAWN_COLOR = PURPLE;
-
-	// Prefabs
+    private static Color TRANSPARENT_RED = new Color (1, 0, 0, 0);
+    private static Color OPAQUE_RED = new Color (1, 0, 0, MAX_ALPHA);
+    public static Color TRANSPARENT_WHITE = new Color (1, 1, 1, MAX_ALPHA);
+	
+    // Prefabs
 	public GameObject[] floorPrefabs;
 	public GameObject[] wallPrefabs;
 	public GameObject[] outerWallPrefabs;
@@ -45,7 +48,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public Text scoreText;
 	public Text lifeText;
 	public Text bulletsText;
-    public Text lossText;
+    public Text middleText;
     // DAMAGE
     public GameObject damagePanel;
     private static int DAMAGE_TTL = 500;
@@ -53,8 +56,6 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
     private static float MAX_ALPHA = 0.5f;
     private bool takingDamage = false;
     private System.DateTime damageStarted;
-    private static Color TRANSPARENT_RED = new Color (1, 0, 0, 0);
-    private static Color OPAQUE_RED = new Color (1, 0, 0, MAX_ALPHA);
 
 	private List<TimeDestroyable> destroyables;
 
@@ -84,8 +85,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		}
         if (character != null) {
             if (character.health <= 0) {
-                damagePanel.GetComponent<Image> ().color = OPAQUE_RED;
-                lossText.enabled = true;
+                ShowMiddleText ("YOU LOSS\nPRESS ESC TO CONTINUE", OPAQUE_RED);
             } else {
                 // Damage panel
                 if (takingDamage) {
@@ -264,7 +264,6 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
             if (w.IsAlive () && !w.inQueue) {
                 if (wPosition.x >= 0 && wPosition.x < level.GetMap ().GetLength (0)) {
                     if (wPosition.y >= 0 && wPosition.y < level.GetMap ().GetLength (1)) {
-                        print ("Warrior " + wPosition.ToString ());
                         texture.SetPixel (wPosition.x + 1, wPosition.y + 1, MM_WARRIOR_COLOR);
                     }
                 }
@@ -297,5 +296,20 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
     public void TookDamage() {
         takingDamage = true;
         damageStarted = System.DateTime.Now;
+    }
+
+    public void ShowMiddleText(string text, Color color) {
+        damagePanel.GetComponent<Image> ().color = color;
+        middleText.text = text;
+        middleText.enabled = true;
+    }
+
+    public void ShowMiddleText(string text) {
+        middleText.text = text;
+        middleText.enabled = true;
+    }
+
+    public void HideMiddleText() {
+        middleText.enabled = false;
     }
 }

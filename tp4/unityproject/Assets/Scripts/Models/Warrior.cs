@@ -50,6 +50,11 @@ public class Warrior : MonoBehaviour {
             }
             return;
         }
+
+        if (GameLogic.Instance.IsPaused ()) {
+            return;
+        }
+
 		Vector2 playerPosition = CrazyCaveGameManager.Instance.player.transform.position;
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;

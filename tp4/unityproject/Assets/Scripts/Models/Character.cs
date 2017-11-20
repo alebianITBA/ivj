@@ -13,6 +13,8 @@ public class Character : MonoBehaviour {
 	public int bullets;
 	[HideInInspector]
 	public int score;
+    [HideInInspector]
+    public bool paused = false;
 
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
@@ -27,6 +29,14 @@ public class Character : MonoBehaviour {
 	}
 
 	private void checkInput() {
+        if (paused) {
+            if (Input.GetKey (KeyCode.Escape)) {
+                Drawer.Instance.HideMiddleText ();
+                paused = false;
+            }
+            return;
+        }
+
         if (health > 0) {
             if (Input.GetKey (KeyCode.UpArrow)) {
                 applyImpulseForward ();
@@ -44,6 +54,10 @@ public class Character : MonoBehaviour {
             }
             if (Input.GetKey (KeyCode.Space)) {
                 Shoot ();
+            }
+            if (Input.GetKey (KeyCode.Escape)) {
+                Drawer.Instance.ShowMiddleText ("PAUSE\nPRESS ESC TO CONTINUE");
+                paused = true;
             }
         } else {
             if (Input.GetKey (KeyCode.Return) || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Escape)) {

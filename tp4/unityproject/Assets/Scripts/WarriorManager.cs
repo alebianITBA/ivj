@@ -39,14 +39,16 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
         System.TimeSpan ts = System.DateTime.Now - lastSpawn;
 		if (ts.TotalMilliseconds > GameLogic.Instance.ZombieTimeSpawn() && warriorPool.Count > 0)
         {
-            spawned++;
-            lastSpawn = System.DateTime.Now;
-			Warrior warrior = warriorPool.Dequeue();
-            warrior.inQueue = false;
-			warrior.transform.position = (Vector2)CrazyCaveGameManager.Instance.player.transform.position + getSpawnPosition(GameLogic.WARRIOR_SPAWN_DISTANCE);
-			warrior.gameObject.SetActive(true);
-            if (UnityEngine.Random.value < 0.05) {
-                SoundManager.PlayBackground((int)SndIdGame.ZOMBIE_SPAWN);
+            if (!GameLogic.Instance.IsPaused ()) {
+                spawned++;
+                lastSpawn = System.DateTime.Now;
+                Warrior warrior = warriorPool.Dequeue ();
+                warrior.inQueue = false;
+                warrior.transform.position = (Vector2)CrazyCaveGameManager.Instance.player.transform.position + getSpawnPosition (GameLogic.WARRIOR_SPAWN_DISTANCE);
+                warrior.gameObject.SetActive (true);
+                if (UnityEngine.Random.value < 0.05) {
+                    SoundManager.PlayBackground ((int)SndIdGame.ZOMBIE_SPAWN);
+                }
             }
         }
     }
