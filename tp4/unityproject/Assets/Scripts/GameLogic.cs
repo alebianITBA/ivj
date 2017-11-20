@@ -25,52 +25,47 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static float ZOMBIE_SPAWN_DISTANCE = 6.0f;
 	public static int DEFAULT_ZOMBIE_SPAWNING_PONTS = 5;
 	// GAME CONSTANTS
-	public static int SCORE_MULTIPLIER = 10;
+	public static int ZOMBIE_KILLED_SCORE = 10;
+	public static int SPECIAL_BOX_SCORE = 300;
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
     public static int PLAYERHEALTH = 100;
 	// ACCESSORIES
+	public static int HEALTH_KIT_HP = 20;
 	public static float HEALTH_KIT_PROBABILITY = 0.4f;
 	public static float SPECIAL_BOX_PROBABILITY = 0.2f;
 
 	// Game variables
 	public Text scoreText;
     public Text lifeText;
+	public Text bulletsText;
     public Character player;
-    int zombiesKilled;
 
-	override protected void Initialize () {
-		zombiesKilled = 0;
-	}
-
-	public void ZombieKilled() {
-		zombiesKilled++;
-	}
-
-	public int Score() {
-		return zombiesKilled * SCORE_MULTIPLIER;
+	public void SetPlayer(GameObject player) {
+		this.player = player.GetComponent<Character>();
 	}
 
 	public float ZombieVelocity() {
-		return ZOMBIE_VELOCITY + (ZOMBIE_VELOCITY_MULTIPLIER * zombiesKilled); 
+		return ZOMBIE_VELOCITY + (ZOMBIE_VELOCITY_MULTIPLIER * ScoreMultiplier()); 
 	}
 
 	public double ZombieTimeSpawn() {
-		double time = ZOMBIE_TIME_BETWEEN_SPAWNS - (ZOMBIE_TIME_SPAWN_MULTIPLIER * zombiesKilled);
-        if (time <= 0)
-        {
+		double time = ZOMBIE_TIME_BETWEEN_SPAWNS - (ZOMBIE_TIME_SPAWN_MULTIPLIER * ScoreMultiplier());
+        if (time <= 0) {
             return 0.0f;
         }
         return time;
 	}
 
-    public int GetCharacterRotationSpeed()
-    {
-        return CHARACTER_ROTATION_SPEED + (zombiesKilled * 1);
+    public int GetCharacterRotationSpeed() {
+		return CHARACTER_ROTATION_SPEED + (int)ScoreMultiplier();
     }
 
-    public float GetCharacterVelocity()
-    {
-        return (float)(CHARACTER_VELOCITY + (zombiesKilled * 1));
+    public float GetCharacterVelocity() {
+		return (float)(CHARACTER_VELOCITY + (int)ScoreMultiplier());
     }
+
+	private float ScoreMultiplier() {
+		return player.score / 10f;
+	}
 }

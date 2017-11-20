@@ -51,7 +51,6 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	}
 
 	void Start() {
-		print (Drawer.Instance.tileLength);
 		foreach (Level.Direction dir in Enum.GetValues(typeof(Level.Direction))) {
 			if (!levels.ContainsKey (dir)) {
 				levels.Add (dir, CreateLevel (seed + Level.GetSeedOffset (dir)));
@@ -63,7 +62,6 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 
 	}
 	public void CreateNewLevel(Level.Direction dir) {
-		print (dir);
 		Dictionary<Level.Direction, GameObject> newBoards = new Dictionary<Level.Direction, GameObject>();
 		foreach (Level.Direction d in boardHolders.Keys) {
 			newBoards.Add (d, boardHolders [d]);
@@ -93,7 +91,6 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		Drawer.Instance.DrawTiles (newLevels[dir], newBoards[dir],accessoriesHolder);
 
 		foreach (Level.Direction neigh in Level.GetNeighbours(dir)) {
-			print (neigh);
 			old = boardHolders [Level.GetOpposite (dir, neigh)];
 			boardHolders [Level.GetReplacement (dir, neigh)].name = newBoards [Level.GetOpposite (dir, neigh)].name;
 			newBoards [Level.GetOpposite (dir, neigh)] = boardHolders [Level.GetReplacement (dir, neigh)];

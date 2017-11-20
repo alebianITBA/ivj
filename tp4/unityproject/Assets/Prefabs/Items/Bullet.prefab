@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212664305813077938}
   - component: {fileID: 50692779704806894}
   - component: {fileID: 61974749308014690}
-  - component: {fileID: 114017140869055028}
+  - component: {fileID: 114802139121848412}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -88,7 +88,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 5.12}
   m_EdgeRadius: 0
---- !u!114 &114017140869055028
+--- !u!114 &114802139121848412
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1227293586078206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 174f625b094c6479fa38e28ca3e2a0e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 98f6c5515dfe3442f975d4065c26d476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212664305813077938
@@ -131,7 +131,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: db73b2328a6c2481bad0843ac0dfb78f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2a9c2eb72aac6453ebcf0f052c638ad8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

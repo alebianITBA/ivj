@@ -9,6 +9,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 		SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
 		//CrazyCaveLevelManager.Instance.CreateNewLevel (Level.Direction.Center);
 		player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.GetLevel().PlayerStartingPoint());
+		GameLogic.Instance.SetPlayer (player);
 		//CrazyCaveLevelManager.Instance.CreateNewLevel (initialSeed);
 		//player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.level.PlayerStartingPoint());
 		CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (player);

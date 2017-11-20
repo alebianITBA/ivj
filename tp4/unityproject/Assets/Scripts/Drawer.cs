@@ -49,46 +49,48 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 			for (int col = 0; col < level.GetMap().GetLength(1); col++) {
 				GameObject tileInstance = null;
 				Vector3 position = new Vector3 (row * tileLength, col * tileLength, 10);
-//				Vector3 midPosition = new Vector3 ((row * tileLength) + halfTileLength, (col * tileLength) + halfTileLength, 10);
 
 				switch (level.GetMap() [row, col]) {
 					case Level.Tile.Floor:
-					tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
 						break;
 					case Level.Tile.PlayerSpawn:
 						// TODO: Make a different floor sprite
-					tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), tilesHolder.transform);
+						tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), tilesHolder.transform);
 						break;
 					case Level.Tile.ZombieSpawn:
 						// TODO: Make a different floor sprite
-					tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), tilesHolder.transform);
+						tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), tilesHolder.transform);
 						break;
 					case Level.Tile.Wall:
-					tileInstance = NewObjectFromPrefab (RandomTile (wallPrefabs), tilesHolder.transform);
+						tileInstance = NewObjectFromPrefab (RandomTile (wallPrefabs), tilesHolder.transform);
 						break;
 					case Level.Tile.OuterWall:
-					tileInstance = NewObjectFromPrefab (RandomTile (outerWallPrefabs), tilesHolder.transform);
+						tileInstance = NewObjectFromPrefab (RandomTile (outerWallPrefabs), tilesHolder.transform);
 						break;
 					case Level.Tile.AmmoSpawn:
 						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-					GameObject ammo = NewObjectFromPrefab (ammoPrefab, tilesHolder.transform);
+						GameObject ammo = NewObjectFromPrefab (ammoPrefab, tilesHolder.transform);
 						ammo.transform.localPosition = position;
+						BulletManager.Instance.IgnoreColliders(ammo.GetComponent<Collider2D>());
 						break;
 					case Level.Tile.HealthKitSpawn:
-					tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-					GameObject healthKit = NewObjectFromPrefab (healthKitPrefab, tilesHolder.transform);
-					healthKit.transform.localPosition = position;
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
+						GameObject healthKit = NewObjectFromPrefab (healthKitPrefab, tilesHolder.transform);
+						healthKit.transform.localPosition = position;
+						BulletManager.Instance.IgnoreColliders(healthKit.GetComponent<Collider2D>());
 						break;
 					case Level.Tile.SpecialBoxSpawn:
-					tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-					GameObject box = NewObjectFromPrefab (specialBoxPrefab, tilesHolder.transform);
-					box.transform.localPosition = position;
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
+						GameObject box = NewObjectFromPrefab (specialBoxPrefab, tilesHolder.transform);
+						box.transform.localPosition = position;
+						BulletManager.Instance.IgnoreColliders(box.GetComponent<Collider2D>());
 						break;
 				}
 
-			if (tileInstance != null) {
-				//tileInstance.transform.parent = holder.transform;
-				tileInstance.transform.localPosition = position;
+				if (tileInstance != null) {
+					//tileInstance.transform.parent = holder.transform;
+					tileInstance.transform.localPosition = position;
 				}
 			}
 		}
@@ -97,109 +99,6 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public GameObject CreatePlayer(LevelPosition position) {
 		return NewObjectFromPrefab (playerPrefab, NewPlayerPosition(position));
 	}
-
-	// Given a player and the direction where it should appear, it resets it's position
-//	public void RepositionPlayer(GameObject player, Level.Direction direction, Level level) {
-//		LevelPosition np = null;
-//
-//		switch (direction) {
-//			case Level.Direction.South:
-//				np = new LevelPosition (Mathf.FloorToInt(player.transform.position.x * 100 % tileLength * 100), 0);
-//				break;
-//			case Level.Direction.North:
-//				np = new LevelPosition (Mathf.FloorToInt(player.transform.position.x * 100 % tileLength * 100), level.GetMap().GetLength(1) - 1);
-//				break;
-//			case Level.Direction.East:
-//				np = new LevelPosition (level.GetMap().GetLength(0) - 1, Mathf.FloorToInt(player.transform.position.y * 100 % tileLength * 100));
-//				break;
-//			case Level.Direction.West:
-//				np = new LevelPosition (0, Mathf.FloorToInt(player.transform.position.y * 100  % tileLength * 100));
-//				break;
-//		}
-//
-//		if (level.GetMap () [np.x, np.y] == Level.Tile.Wall) {
-//			int xd = 0;
-//			int yd = 0;
-//			bool looking = true;
-//
-//			switch (direction) {
-//				case Level.Direction.South:
-//					while (looking) {
-//						if ((np.x + xd) > level.GetMap ().GetLength (0) && (np.x - xd) < 0) {
-//							xd = 0;
-//							yd++;
-//						} else {
-//							if ((np.x + xd) < level.GetMap().GetLength(0) && level.GetMap () [np.x + xd, np.y + yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x + xd, np.y + yd);
-//								break;
-//							}
-//							if ((np.x - xd) >= 0 && level.GetMap () [np.x - xd, np.y + yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x - xd, np.y + yd);
-//								break;
-//							}
-//							xd++;
-//						}
-//					}
-//					break;
-//				case Level.Direction.North:
-//					while (looking) {
-//						if ((np.x + xd) > level.GetMap ().GetLength (0) && (np.x - xd) < 0) {
-//							xd = 0;
-//							yd++;
-//						} else {
-//							if ((np.x + xd) < level.GetMap().GetLength(0) && level.GetMap () [np.x + xd, np.y - yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x + xd, np.y - yd);
-//								break;
-//							}
-//							if ((np.x - xd) >= 0 && level.GetMap () [np.x - xd, np.y - yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x - xd, np.y - yd);
-//								break;
-//							}
-//							xd++;
-//						}
-//					}
-//					break;
-//				case Level.Direction.East:
-//					while (looking) {
-//						if ((np.y + yd) > level.GetMap ().GetLength (1) && (np.y - yd) < 0) {
-//							yd = 0;
-//							xd++;
-//						} else {
-//							if ((np.y + yd) < level.GetMap().GetLength(1) && level.GetMap () [np.x - xd, np.y + yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x - xd, np.y + yd);
-//								break;
-//							}
-//							if ((np.y - yd) >= 0 && level.GetMap () [np.x - xd, np.y - yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x - xd, np.y - yd);
-//								break;
-//							}
-//							xd++;
-//						}
-//					}
-//					break;
-//				case Level.Direction.West:
-//					while (looking) {
-//						if ((np.y + yd) > level.GetMap ().GetLength (1) && (np.y - yd) < 0) {
-//							yd = 0;
-//							xd++;
-//						} else {
-//							if ((np.y + yd) < level.GetMap().GetLength(1) && level.GetMap () [np.x + xd, np.y + yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x + xd, np.y + yd);
-//								break;
-//							}
-//							if ((np.y - yd) >= 0 && level.GetMap () [np.x + xd, np.y - yd] != Level.Tile.Wall) {
-//								np = new LevelPosition (np.x + xd, np.y - yd);
-//								break;
-//							}
-//							xd++;
-//						}
-//					}
-//					break;
-//			}	
-//		}
-//
-//		player.transform.position = NewPlayerPosition (np);
-//	}
 
 	public void RepositionPlayer(GameObject player, Level.Direction direction, Level level, GameObject holder) {
 		player.transform.parent = holder.transform;
