@@ -64,6 +64,7 @@ public class Warrior : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.name == "Bullet"  && !dead) {
 			dead = true;
+			animator.SetBool ("dead", true);
 			animator.SetBool("walking", false);
 			animator.SetBool ("attacking", false);
             died = System.DateTime.Now;
