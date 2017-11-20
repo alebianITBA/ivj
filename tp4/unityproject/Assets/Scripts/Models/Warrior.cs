@@ -44,9 +44,9 @@ public class Warrior : MonoBehaviour {
 		Vector2 playerPosition = CrazyCaveGameManager.Instance.player.transform.position;
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
-		RaycastHit2D hit = Physics2D.Raycast ((Vector2)transform.position + Vector2.Scale(direction,new Vector2(0.1f, 0.1f)), direction, 100.0f);
+		RaycastHit2D hit = Physics2D.Raycast ((Vector2)transform.position, direction, 100.0f);
 		if (hit.transform.gameObject.name.Equals("Player(Clone)")) {
-			if (hit.distance < 0.5f) {
+			if (hit.distance < 0.7f) {
 				animator.SetBool ("attacking", true);
 			} else {
 				animator.SetBool ("attacking", false);
