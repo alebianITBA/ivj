@@ -248,6 +248,7 @@ MonoBehaviour:
     type: 2}
   specialBoxPrefab: {fileID: 1069595084332262, guid: 47d2c1787bafc4b5998043fadcc7fc75,
     type: 2}
+  actionText: {fileID: 1538274804553272, guid: 84239c04ad4254a7fb2e8cb60cdd7fae, type: 2}
   tileLength: 0
   scoreText: {fileID: 1187244792}
   lifeText: {fileID: 1255672861}

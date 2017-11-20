@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Drawer : MonoBehaviourSingleton<Drawer> {
@@ -36,6 +37,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public GameObject ammoPrefab;
 	public GameObject healthKitPrefab;
 	public GameObject specialBoxPrefab;
+	public GameObject actionText;
 
 	private GameObject player;
 
@@ -47,7 +49,10 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public Text lifeText;
 	public Text bulletsText;
 
+	private List<TimeDestroyable> destroyables;
+
 	override protected void Initialize() {
+		this.destroyables = new List<TimeDestroyable> ();
 		tileLength = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x - 0.01f;
 		halfTileLength = tileLength / 2f;
 	}
@@ -57,6 +62,12 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 			scoreText.text = "Score: " + player.GetComponent<Character>().score.ToString();
 			lifeText.text = "Life: " + Mathf.Max(GameLogic.PLAYERHEALTH, player.GetComponent<Character>().health).ToString();
 			bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString();
+		}
+		for (int i = destroyables.Count - 1; i >= 0; i--) {
+			if (destroyables [i].Destroyable ()) {
+				Destroy (destroyables [i].obj);
+				destroyables.RemoveAt (i);
+			}
 		}
 	}
 
@@ -199,5 +210,13 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		texture.Apply();
 
 		minimap.GetComponent<GUITexture>().texture = texture;
+	}
+
+	public void CreateActionText(string text, Color color, Vector3 position) {
+		position.z = -10;
+		GameObject newText = NewObjectFromPrefab (actionText, position);
+		newText.GetComponent<TextMesh> ().text = text;
+		newText.GetComponent<TextMesh> ().color = color;
+		destroyables.Add (new TimeDestroyable(newText, 500));
 	}
 }
