@@ -45,6 +45,9 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
             warrior.inQueue = false;
 			warrior.transform.position = (Vector2)CrazyCaveGameManager.Instance.player.transform.position + getSpawnPosition(GameLogic.WARRIOR_SPAWN_DISTANCE);
 			warrior.gameObject.SetActive(true);
+            if (UnityEngine.Random.value < 0.05) {
+                SoundManager.PlayBackground((int)SndIdGame.ZOMBIE_SPAWN);
+            }
         }
     }
 

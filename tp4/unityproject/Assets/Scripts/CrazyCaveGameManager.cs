@@ -17,7 +17,7 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 
 	void Update() {
 		if (!playedBackground) {
-			SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
+            SoundManager.PlayMusic ((int)SndIdGame.BACKGROUND_MUSIC);
 			playedBackground = true;
 		}
 		CameraFollowPlayer ();

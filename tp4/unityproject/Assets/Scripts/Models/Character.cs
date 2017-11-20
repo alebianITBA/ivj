@@ -78,8 +78,9 @@ public class Character : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		int change;
 		switch (col.gameObject.name) {
-			case "Zombie":
-				TakeDamage ();
+            case "Zombie":
+                TakeDamage ();
+                SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
 				break;
 			case "Ammo(Clone)":
 				change = AddBullet ();
@@ -117,8 +118,8 @@ public class Character : MonoBehaviour {
 	private int AddBullet() {
 		if (bullets < GameLogic.MAX_AMMO) {
 			SoundManager.PlaySound ((int)SndIdGame.AMMO_PICK);
-			bullets++;
-			return 1;
+            bullets += GameLogic.AMMO_RELOAD;
+            return GameLogic.AMMO_RELOAD;
 		}
 		return 0;
 	}

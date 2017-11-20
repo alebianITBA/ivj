@@ -16,6 +16,10 @@ public class Warrior : MonoBehaviour {
     public GameObject container;
     public bool inQueue;
 
+    private bool sawPlayer = false;
+    private System.DateTime lastSeen;
+    private static int SOUND_SPACE = 5000;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -50,19 +54,32 @@ public class Warrior : MonoBehaviour {
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
 		RaycastHit2D hit = Physics2D.Raycast ((Vector2)transform.position, direction, 100.0f);
-		if (hit.transform.gameObject.name.Equals("Player(Clone)")) {
-			if (hit.distance < 0.7f) {
-				animator.SetBool ("attacking", true);
-			} else {
-				animator.SetBool ("attacking", false);
-			}
-			Vector2 velocity = this.rb.velocity;
-			float angle = Mathf.Atan2 (velocity.y, velocity.x);
-			transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
-			animator.SetBool ("walking", true);
-			rb.AddForce(direction.normalized * GameLogic.Instance.WarriorVelocity());
-			return;
-		}
+        if (hit.transform.gameObject.name.Equals ("Player(Clone)")) {
+            if (hit.distance < 0.7f) {
+                animator.SetBool ("attacking", true);
+            } else {
+                animator.SetBool ("attacking", false);
+            }
+
+            lastSeen = System.DateTime.Now;
+            if (!sawPlayer) {
+                sawPlayer = true;
+                if (UnityEngine.Random.value < 0.05) {
+                    SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_SEES_YOU);
+                }
+            }
+
+            Vector2 velocity = this.rb.velocity;
+            float angle = Mathf.Atan2 (velocity.y, velocity.x);
+            transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
+            animator.SetBool ("walking", true);
+            rb.AddForce (direction.normalized * GameLogic.Instance.WarriorVelocity ());
+            return;
+        } else {
+            if ((System.DateTime.Now - lastSeen).TotalMilliseconds > SOUND_SPACE) {
+                sawPlayer = false;
+            }
+        }
 		animator.SetBool ("walking", false);
     }
 
@@ -76,6 +93,7 @@ public class Warrior : MonoBehaviour {
             GetComponent<Collider2D> ().enabled = false;
 			GameLogic.Instance.WarriorKilled ();
             BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet>());
+            SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
         }
     }
 

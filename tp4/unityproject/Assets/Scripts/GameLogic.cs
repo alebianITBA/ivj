@@ -25,12 +25,13 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static int DEFAULT_ZOMBIE_SPAWNING_PONTS = 5;
 	// GAME CONSTANTS
 	public static int ZOMBIE_KILLED_SCORE = 10;
-	public static int SPECIAL_BOX_SCORE = 300;
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
     public static int PLAYERHEALTH = 100;
 	// ACCESSORIES
 	public static int HEALTH_KIT_HP = 20;
+    public static int SPECIAL_BOX_SCORE = 300;
+    public static int AMMO_RELOAD = 1;
 	public static float HEALTH_KIT_PROBABILITY = 0.4f;
 	public static float SPECIAL_BOX_PROBABILITY = 0.2f;
 
