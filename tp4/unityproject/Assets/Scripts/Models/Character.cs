@@ -91,11 +91,13 @@ public class Character : MonoBehaviour {
 				change = AddHealth (GameLogic.HEALTH_KIT_HP);
 				Drawer.Instance.CreateActionText (change.ToString(), Drawer.GREEN, col.gameObject.transform.position);
 				Destroy (col.gameObject);
+                SoundManager.PlaySound ((int)SndIdGame.HEALTH_TAKEN);
 				break;
 			case "SpecialBox(Clone)":
 				change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
 				Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
 				Destroy (col.gameObject);
+                SoundManager.PlaySound ((int)SndIdGame.SPECIAL_BOX_TAKEN);
 				break;
 		}
 	}
