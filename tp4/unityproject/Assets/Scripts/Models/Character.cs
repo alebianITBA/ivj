@@ -18,7 +18,7 @@ public class Character : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		animator = GetComponentInChildren<Animator> ();
 		health = GameLogic.PLAYERHEALTH;
-		bullets = GameLogic.MAX_AMMO;
+        bullets = GameLogic.STARTING_BULLETS_AMOUNT;
 		score = 0;
     }
 
@@ -117,9 +117,15 @@ public class Character : MonoBehaviour {
 
 	private int AddBullet() {
 		if (bullets < GameLogic.MAX_AMMO) {
+            int newBullets = bullets + GameLogic.AMMO_RELOAD;
 			SoundManager.PlaySound ((int)SndIdGame.AMMO_PICK);
-            bullets += GameLogic.AMMO_RELOAD;
-            return GameLogic.AMMO_RELOAD;
+            bullets = Mathf.Max(newBullets, GameLogic.MAX_AMMO);
+
+            if (newBullets > GameLogic.MAX_AMMO) {
+                return (int)Mathf.Abs(GameLogic.AMMO_RELOAD - (newBullets - GameLogic.MAX_AMMO));
+            } else {
+                return GameLogic.AMMO_RELOAD;
+            }
 		}
 		return 0;
 	}

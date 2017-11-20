@@ -17,7 +17,7 @@ public class BulletManager : MonoBehaviourSingleton<BulletManager> {
 
 	private void PrecreateObjects() {
 		bulletPool = new Queue<Bullet>();
-		for (int i = 0; i < GameLogic.TOTAL_BULLETS_AMOUNT; i++) {
+		for (int i = 0; i < GameLogic.STARTING_BULLETS_AMOUNT; i++) {
 			GameObject go = GameObject.Instantiate(bulletPrefab) as GameObject;
 			Bullet bul = go.GetComponent<Bullet>();
 			bul.SetManager (this);

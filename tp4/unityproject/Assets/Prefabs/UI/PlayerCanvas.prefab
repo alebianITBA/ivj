@@ -223,7 +223,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Bullets: 10'
+  m_Text: 'Bullets: 100/100'
 --- !u!114 &114587078249962530
 MonoBehaviour:
   m_ObjectHideFlags: 1

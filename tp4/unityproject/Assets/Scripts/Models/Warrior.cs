@@ -64,7 +64,7 @@ public class Warrior : MonoBehaviour {
             lastSeen = System.DateTime.Now;
             if (!sawPlayer) {
                 sawPlayer = true;
-                if (UnityEngine.Random.value < 0.05) {
+                if (UnityEngine.Random.value < 0.15) {
                     SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_SEES_YOU);
                 }
             }

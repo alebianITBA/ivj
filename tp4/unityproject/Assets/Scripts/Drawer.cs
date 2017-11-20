@@ -68,7 +68,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		if (player != null) {
 			scoreText.text = "Score: " + player.GetComponent<Character>().score.ToString();
 			lifeText.text = "Life: " + player.GetComponent<Character>().health.ToString();
-			bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString();
+            bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString() + "/" + GameLogic.MAX_AMMO.ToString();
 		}
 		for (int i = destroyables.Count - 1; i >= 0; i--) {
 			if (destroyables [i].Destroyable ()) {
