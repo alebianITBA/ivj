@@ -165,9 +165,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
                 if (y < 0) {
                     y = y + maxY;
                 }
-                if (obj.name == "Player(Clone)") {
-                    print (new LevelPosition (Mathf.FloorToInt (x / tileLength), Mathf.FloorToInt (y / tileLength)));
-                }
+
                 return new LevelPosition (Mathf.FloorToInt (x / tileLength), Mathf.FloorToInt (y / tileLength));
             }
         }
