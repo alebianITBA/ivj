@@ -67,10 +67,11 @@ public class Character : MonoBehaviour {
 		if (bullets > 0) {
 			if (BulletManager.Instance.Shoot (transform.GetChild (0).position, transform.eulerAngles, direction ())) {
 //				animator.SetTrigger("ShootTrigger");
+				SoundManager.PlaySound ((int)SndIdGame.SHOT);
 				bullets--;
 			}
 		} else {
-			// TODO: no shoot sound
+			SoundManager.PlaySound ((int)SndIdGame.NO_AMMO);
 		}
 	}
 
@@ -110,6 +111,7 @@ public class Character : MonoBehaviour {
 
 	private void AddBullet() {
 		if (bullets < GameLogic.MAX_AMMO) {
+			SoundManager.PlaySound ((int)SndIdGame.AMMO_PICK);
 			bullets++;
 		}
 	}

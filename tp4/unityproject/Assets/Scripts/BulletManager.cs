@@ -46,7 +46,6 @@ public class BulletManager : MonoBehaviourSingleton<BulletManager> {
 			bul.gameObject.SetActive(true);
 
 			bul.GetComponent<Rigidbody2D> ().AddForce (dir * GameLogic.BULLET_SPEED);
-			// TODO: add shoot sound
             return true;
 		}
         return false;
