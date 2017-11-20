@@ -15,13 +15,13 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static float CAMERA_DISTANCE = 10.0f;
 	// CHARACTER
 	public static int CHARACTER_ROTATION_SPEED = 200;
-	public static float CHARACTER_VELOCITY = 800.0f;
+	public static float CHARACTER_VELOCITY = 500.0f;
 	// ZOMBIES
-	public static float ZOMBIE_VELOCITY = 100f;
-	public static float ZOMBIE_SHOW_BODY = 3000.0f;
-	public static int ZOMBIE_AMOUNT = 20;
+	public static float ZOMBIE_VELOCITY = 200f;
+	public static float WARRIOR_SHOW_BODY = 3000.0f;
+	public static int WARRIOR_AMOUNT = 100;
 	public static double ZOMBIE_TIME_BETWEEN_SPAWNS = 1000.0f;
-	public static float ZOMBIE_SPAWN_DISTANCE = 6.0f;
+	public static float WARRIOR_SPAWN_DISTANCE = 6.0f;
 	public static int DEFAULT_ZOMBIE_SPAWNING_PONTS = 5;
 	// GAME CONSTANTS
 	public static int ZOMBIE_KILLED_SCORE = 10;
@@ -41,8 +41,12 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 		this.player = player.GetComponent<Character>();
 	}
 
-	public float ZombieVelocity() {
+	public float WarriorVelocity() {
 		return ZOMBIE_VELOCITY + (ZOMBIE_VELOCITY_MULTIPLIER * ScoreMultiplier()); 
+	}
+
+	public void WarriorKilled() {
+		return;
 	}
 
 	public double ZombieTimeSpawn() {

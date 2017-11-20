@@ -198,7 +198,7 @@ public abstract class Level {
 
 	public void AddZombieSpawningPoints(int amount, LevelPosition playerPosition) {
 		List<LevelPosition> availableTiles = GetAvailableTiles();
-		availableTiles.RemoveAll (item => playerPosition.Distance(item) < (int)GameLogic.ZOMBIE_SPAWN_DISTANCE);
+		availableTiles.RemoveAll (item => playerPosition.Distance(item) < (int)GameLogic.WARRIOR_SPAWN_DISTANCE);
 		zombieSpawns = new List<LevelPosition> ();
 
 		// Take "amount" random tiles from the available if possible
