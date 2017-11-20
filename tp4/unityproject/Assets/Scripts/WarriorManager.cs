@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WarriorManager : MonoBehaviour {
+public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
 
     public GameObject warriorPrefab;
     System.DateTime lastSpawn;
@@ -50,7 +50,7 @@ public class WarriorManager : MonoBehaviour {
 		warriorPool.Enqueue(warrior);
 		warrior.gameObject.SetActive(false);
 		warrior.SetAlive();
-		warrior.GetComponent<PolygonCollider2D> ().enabled = true;
+		warrior.GetComponent<Collider2D> ().enabled = true;
     }
 
 	private static Vector2 getSpawnPosition(float distance) {
@@ -60,4 +60,10 @@ public class WarriorManager : MonoBehaviour {
 		Vector2 dir = new Vector2 (x, y);
 		return dir.normalized * distance;
 	}
+
+    public void IgnoreColliders(Collider2D collider) {
+        foreach(Warrior w in warriorPool) {
+            Physics2D.IgnoreCollision (collider, w.GetComponent<Collider2D>());
+        }
+    }
 }

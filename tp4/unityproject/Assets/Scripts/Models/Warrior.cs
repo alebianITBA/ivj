@@ -45,7 +45,6 @@ public class Warrior : MonoBehaviour {
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
 		RaycastHit2D hit = Physics2D.Raycast ((Vector2)transform.position + Vector2.Scale(direction,new Vector2(0.1f, 0.1f)), direction, 100.0f);
-		print (hit.transform.gameObject.name);
 		if (hit.transform.gameObject.name.Equals("Player(Clone)")) {
 			if (hit.distance < 0.5f) {
 				animator.SetBool ("attacking", true);
@@ -54,7 +53,6 @@ public class Warrior : MonoBehaviour {
 			}
 			Vector2 velocity = this.rb.velocity;
 			float angle = Mathf.Atan2 (velocity.y, velocity.x);
-			print (Mathf.Rad2Deg * angle);
 			transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
 			animator.SetBool ("walking", true);
 			rb.AddForce(direction.normalized * GameLogic.Instance.WarriorVelocity());
@@ -69,8 +67,9 @@ public class Warrior : MonoBehaviour {
 			animator.SetBool("walking", false);
 			animator.SetBool ("attacking", false);
             died = System.DateTime.Now;
-			GetComponent<PolygonCollider2D> ().enabled = false;
+            GetComponent<Collider2D> ().enabled = false;
 			GameLogic.Instance.WarriorKilled ();
+            BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet>());
         }
     }
 }

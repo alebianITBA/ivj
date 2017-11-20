@@ -60,7 +60,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	void Update() {
 		if (player != null) {
 			scoreText.text = "Score: " + player.GetComponent<Character>().score.ToString();
-			lifeText.text = "Life: " + Mathf.Max(GameLogic.PLAYERHEALTH, player.GetComponent<Character>().health).ToString();
+			lifeText.text = "Life: " + player.GetComponent<Character>().health.ToString();
 			bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString();
 		}
 		for (int i = destroyables.Count - 1; i >= 0; i--) {
@@ -95,24 +95,18 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 					case Level.Tile.OuterWall:
 						tileInstance = NewObjectFromPrefab (RandomTile (outerWallPrefabs), tilesHolder.transform);
 						break;
-					case Level.Tile.AmmoSpawn:
-						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-						GameObject ammo = NewObjectFromPrefab (ammoPrefab, tilesHolder.transform);
-						ammo.transform.localPosition = position;
-						BulletManager.Instance.IgnoreColliders(ammo.GetComponent<Collider2D>());
+                    case Level.Tile.AmmoSpawn:
+                        tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
+                        CreateAccessory (ammoPrefab, tilesHolder.transform, position);
 						break;
 					case Level.Tile.HealthKitSpawn:
 						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-						GameObject healthKit = NewObjectFromPrefab (healthKitPrefab, tilesHolder.transform);
-						healthKit.transform.localPosition = position;
-						BulletManager.Instance.IgnoreColliders(healthKit.GetComponent<Collider2D>());
+                        CreateAccessory (healthKitPrefab, tilesHolder.transform, position);
 						break;
 					case Level.Tile.SpecialBoxSpawn:
 						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-						GameObject box = NewObjectFromPrefab (specialBoxPrefab, tilesHolder.transform);
-						box.transform.localPosition = position;
-						BulletManager.Instance.IgnoreColliders(box.GetComponent<Collider2D>());
-						break;
+                        CreateAccessory (specialBoxPrefab, tilesHolder.transform, position);
+                        break;
 				}
 
 				if (tileInstance != null) {
@@ -219,4 +213,11 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		newText.GetComponent<TextMesh> ().color = color;
 		destroyables.Add (new TimeDestroyable(newText, 500));
 	}
+
+    private void CreateAccessory(GameObject prefab, Transform transform, Vector3 position) {
+        GameObject obj = NewObjectFromPrefab (prefab, transform);
+        obj.transform.localPosition = position;
+        BulletManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
+        WarriorManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
+    }
 }

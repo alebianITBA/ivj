@@ -46,7 +46,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	}
 
 	public void WarriorKilled() {
-		return;
+        player.ZombieKilled ();
 	}
 
 	public double ZombieTimeSpawn() {

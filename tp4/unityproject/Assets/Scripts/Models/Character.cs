@@ -78,7 +78,7 @@ public class Character : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		int change;
 		switch (col.gameObject.name) {
-			case "ZombiePrefab":
+			case "Zombie":
 				TakeDamage ();
 				break;
 			case "Ammo(Clone)":
@@ -99,8 +99,8 @@ public class Character : MonoBehaviour {
 		}
 	}
 
-    private void OnCollisionStay2D(Collision2D collision) {
-        if (collision.gameObject.name == "ZombiePrefab") {
+    private void OnCollisionStay2D(Collision2D col) {
+        if (col.gameObject.name == "Zombie") {
             TakeDamage();
         }
     }
