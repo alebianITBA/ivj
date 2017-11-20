@@ -4,9 +4,9 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 	public GameObject mainCamera;
 	[HideInInspector]
 	public GameObject player;
+	private bool playedBackground = false;
 
 	void Start() {
-		SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
 		//CrazyCaveLevelManager.Instance.CreateNewLevel (Level.Direction.Center);
 		player = Drawer.Instance.CreatePlayer (CrazyCaveLevelManager.Instance.GetLevel().PlayerStartingPoint());
 		GameLogic.Instance.SetPlayer (player);
@@ -16,6 +16,10 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 	}
 
 	void Update() {
+		if (!playedBackground) {
+			SoundManager.PlayBackground ((int)SndIdGame.BACKGROUND_MUSIC);
+			playedBackground = true;
+		}
 		CameraFollowPlayer ();
 		CheckPlayerOutsideLevel ();
 		Drawer.Instance.DrawMinimap (CrazyCaveLevelManager.Instance.GetLevel(), player);
