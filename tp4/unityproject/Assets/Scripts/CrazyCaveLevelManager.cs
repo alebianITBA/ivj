@@ -26,7 +26,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	public int automataAfterDeathChance;
 	public float automataInitialWallChance;
 
-	private int initialSeed = 0;
+    public int initialSeed = 0;
 	private int seed;
 
 	void Awake() {

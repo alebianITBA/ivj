@@ -56,6 +56,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
     private static float MAX_ALPHA = 0.5f;
     private bool takingDamage = false;
     private System.DateTime damageStarted;
+    private Color previousPauseColor;
 
 	private List<TimeDestroyable> destroyables;
 
@@ -89,7 +90,9 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
             } else {
                 // Damage panel
                 if (takingDamage) {
-                    damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, OPAQUE_RED, DELTA_LERP * Time.deltaTime);
+                    if (damagePanel.GetComponent<Image> ().color.a < MAX_ALPHA) {
+                        damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, RED, DELTA_LERP * Time.deltaTime);
+                    }
 
                     if ((System.DateTime.Now - damageStarted).TotalMilliseconds > DAMAGE_TTL) {
                         takingDamage = false;
@@ -304,12 +307,15 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
         middleText.enabled = true;
     }
 
-    public void ShowMiddleText(string text) {
-        middleText.text = text;
+    public void PauseText() {
+        previousPauseColor = damagePanel.GetComponent<Image> ().color;
+        damagePanel.GetComponent<Image> ().color = TRANSPARENT_WHITE;
+        middleText.text = "PAUSE\nPRESS ESC TO CONTINUE";
         middleText.enabled = true;
     }
 
-    public void HideMiddleText() {
+    public void UnpauseText() {
+        damagePanel.GetComponent<Image> ().color = previousPauseColor;
         middleText.enabled = false;
     }
 }

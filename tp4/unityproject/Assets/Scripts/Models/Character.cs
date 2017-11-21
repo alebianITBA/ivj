@@ -31,7 +31,7 @@ public class Character : MonoBehaviour {
 	private void checkInput() {
         if (paused) {
             if (Input.GetKey (KeyCode.Escape)) {
-                Drawer.Instance.HideMiddleText ();
+                Drawer.Instance.UnpauseText();
                 paused = false;
             }
             return;
@@ -56,7 +56,7 @@ public class Character : MonoBehaviour {
                 Shoot ();
             }
             if (Input.GetKey (KeyCode.Escape)) {
-                Drawer.Instance.ShowMiddleText ("PAUSE\nPRESS ESC TO CONTINUE");
+                Drawer.Instance.PauseText ();
                 paused = true;
             }
         } else {
