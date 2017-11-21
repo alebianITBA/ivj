@@ -11,6 +11,12 @@ public enum SndIdGame : int
 	NO_AMMO = 1,
 	AMMO_PICK = 2,
 	SHOT = 3,
+    ZOMBIE_BITE = 4,
+    ZOMBIE_GOT_HIT = 5,
+    ZOMBIE_SEES_YOU = 6,
+    ZOMBIE_SPAWN = 7,
+    HEALTH_TAKEN = 8,
+    SPECIAL_BOX_TAKEN = 9,
 }
 
 /// <summary>
@@ -23,6 +29,12 @@ public class SoundListGame : SoundList
 		new SoundProp((int) SndIdGame.NO_AMMO, "no-ammo", 1, 100),
 		new SoundProp((int) SndIdGame.AMMO_PICK, "ammo-pick", 1, 100),
 		new SoundProp((int) SndIdGame.SHOT, "shot", 1, 80),
+        new SoundProp((int) SndIdGame.ZOMBIE_BITE, "zombie-bite", 1, 100),
+        new SoundProp((int) SndIdGame.ZOMBIE_SEES_YOU, "zombie-see-you", 1, 100),
+        new SoundProp((int) SndIdGame.ZOMBIE_GOT_HIT, "zombie-got-hit", 1, 100),
+        new SoundProp((int) SndIdGame.ZOMBIE_SPAWN, "zombie-spawn", 1, 60),
+        new SoundProp((int) SndIdGame.HEALTH_TAKEN, "health-taken", 1, 100),
+        new SoundProp((int) SndIdGame.SPECIAL_BOX_TAKEN, "box-taken", 1, 100),
 	};
 
 	new void Start()

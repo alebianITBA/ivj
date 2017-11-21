@@ -7,10 +7,10 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	// BULLET
 	public static float TIME_BETWEEN_SHOTS = 300.0f;
 	public static float BULLET_SPEED = 1000.0f;
-	public static int TOTAL_BULLETS_AMOUNT = 10;
-	public static float BULLET_TTL = TIME_BETWEEN_SHOTS * (TOTAL_BULLETS_AMOUNT - 1);
+	public static int STARTING_BULLETS_AMOUNT = 10;
+	public static float BULLET_TTL = TIME_BETWEEN_SHOTS * (STARTING_BULLETS_AMOUNT - 1);
 	public static int DEFAULT_AMMO_SPAWNING_PONTS = 2;
-	public static int MAX_AMMO = 10;
+	public static int MAX_AMMO = 100;
 	// CAMERA
 	public static float CAMERA_DISTANCE = 10.0f;
 	// CHARACTER
@@ -25,12 +25,13 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static int DEFAULT_ZOMBIE_SPAWNING_PONTS = 5;
 	// GAME CONSTANTS
 	public static int ZOMBIE_KILLED_SCORE = 10;
-	public static int SPECIAL_BOX_SCORE = 300;
 	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
     public static int PLAYERHEALTH = 100;
 	// ACCESSORIES
 	public static int HEALTH_KIT_HP = 20;
+    public static int SPECIAL_BOX_SCORE = 300;
+    public static int AMMO_RELOAD = 5;
 	public static float HEALTH_KIT_PROBABILITY = 0.4f;
 	public static float SPECIAL_BOX_PROBABILITY = 0.2f;
 

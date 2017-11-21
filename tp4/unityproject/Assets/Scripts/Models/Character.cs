@@ -18,7 +18,7 @@ public class Character : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		animator = GetComponentInChildren<Animator> ();
 		health = GameLogic.PLAYERHEALTH;
-		bullets = GameLogic.MAX_AMMO;
+        bullets = GameLogic.STARTING_BULLETS_AMOUNT;
 		score = 0;
     }
 
@@ -78,8 +78,9 @@ public class Character : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		int change;
 		switch (col.gameObject.name) {
-			case "Zombie":
-				TakeDamage ();
+            case "Zombie":
+                TakeDamage ();
+                SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
 				break;
 			case "Ammo(Clone)":
 				change = AddBullet ();
@@ -90,11 +91,13 @@ public class Character : MonoBehaviour {
 				change = AddHealth (GameLogic.HEALTH_KIT_HP);
 				Drawer.Instance.CreateActionText (change.ToString(), Drawer.GREEN, col.gameObject.transform.position);
 				Destroy (col.gameObject);
+                SoundManager.PlaySound ((int)SndIdGame.HEALTH_TAKEN);
 				break;
 			case "SpecialBox(Clone)":
 				change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
 				Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
 				Destroy (col.gameObject);
+                SoundManager.PlaySound ((int)SndIdGame.SPECIAL_BOX_TAKEN);
 				break;
 		}
 	}
@@ -107,6 +110,7 @@ public class Character : MonoBehaviour {
 
     private void TakeDamage(){
         this.health--;
+        Drawer.Instance.TookDamage ();
         if (health <= 0) {
 //            HighscoreController.instance.setLastScore(logic.Score());
 //            SceneManager.LoadScene(2);
@@ -115,9 +119,15 @@ public class Character : MonoBehaviour {
 
 	private int AddBullet() {
 		if (bullets < GameLogic.MAX_AMMO) {
+            int newBullets = bullets + GameLogic.AMMO_RELOAD;
 			SoundManager.PlaySound ((int)SndIdGame.AMMO_PICK);
-			bullets++;
-			return 1;
+            bullets = Mathf.Max(newBullets, GameLogic.MAX_AMMO);
+
+            if (newBullets > GameLogic.MAX_AMMO) {
+                return (int)Mathf.Abs(GameLogic.AMMO_RELOAD - (newBullets - GameLogic.MAX_AMMO));
+            } else {
+                return GameLogic.AMMO_RELOAD;
+            }
 		}
 		return 0;
 	}

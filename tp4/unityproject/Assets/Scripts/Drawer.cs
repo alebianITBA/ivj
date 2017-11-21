@@ -14,15 +14,12 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public static Color BLACK = new Color(0f, 0f, 0f);
 	public static Color WHITE = new Color(1f, 1f, 1f);
 	public static Color PURPLE = new Color(1f, 0f, 1f);
-
 	private static Color MM_BORDER_COLOR = YELLOW;
 	private static Color MM_WALL_COLOR = WHITE;
 	private static Color MM_OUTER_WALL_COLOR = WHITE;
 	private static Color MM_FLOOR_COLOR = BLACK;
-
 	private static Color MM_PLAYER_COLOR = GREEN;
     private static Color MM_WARRIOR_COLOR = RED;
-
     private static Color MM_WARRIOR_SPAWN_COLOR = DARK_RED;
 	private static Color MM_AMMO_SPAWN_COLOR = DARK_BLUE;
 	private static Color MM_HEALTH_SPAWN_COLOR = DARK_GREEN;
@@ -48,6 +45,15 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public Text scoreText;
 	public Text lifeText;
 	public Text bulletsText;
+    // DAMAGE
+    public GameObject damagePanel;
+    private static int DAMAGE_TTL = 500;
+    private static int DELTA_LERP = 10;
+    private static float MAX_ALPHA = 0.5f;
+    private bool takingDamage = false;
+    private System.DateTime damageStarted;
+    private static Color TRANSPARENT_RED = new Color (1, 0, 0, 0);
+    private static Color OPAQUE_RED = new Color (1, 0, 0, 1);
 
 	private List<TimeDestroyable> destroyables;
 
@@ -55,13 +61,14 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		this.destroyables = new List<TimeDestroyable> ();
 		tileLength = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x - 0.01f;
 		halfTileLength = tileLength / 2f;
+        damagePanel.GetComponent<Image> ().color = TRANSPARENT_RED;
 	}
 
 	void Update() {
 		if (player != null) {
 			scoreText.text = "Score: " + player.GetComponent<Character>().score.ToString();
 			lifeText.text = "Life: " + player.GetComponent<Character>().health.ToString();
-			bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString();
+            bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString() + "/" + GameLogic.MAX_AMMO.ToString();
 		}
 		for (int i = destroyables.Count - 1; i >= 0; i--) {
 			if (destroyables [i].Destroyable ()) {
@@ -69,6 +76,17 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 				destroyables.RemoveAt (i);
 			}
 		}
+        // Damage panel
+        if (takingDamage) {
+            if (damagePanel.GetComponent<Image> ().color.a < MAX_ALPHA) {
+                damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, OPAQUE_RED, DELTA_LERP * Time.deltaTime);
+            }
+            if ((System.DateTime.Now - damageStarted).TotalMilliseconds > DAMAGE_TTL) {
+                takingDamage = false;
+            }
+        } else {
+            damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, TRANSPARENT_RED, DELTA_LERP * Time.deltaTime);
+        }
 	}
 
 	public void DrawTiles(Level level, GameObject tilesHolder, GameObject accessoriesHolder) {
@@ -229,11 +247,13 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 
         // Paint zombies
 		foreach(Warrior w in CrazyCaveLevelManager.Instance.GetLevel().GetWarriors()) {
-            LevelPosition wPosition = GetLevelPosition (w.gameObject, level);
-            // We are assuming that level was the center level
-            if (wPosition.x >= 0 && wPosition.x < level.GetMap().GetLength(0)) {
-                if (wPosition.y >= 0 && wPosition.y < level.GetMap().GetLength(1)) {
-                    texture.SetPixel(wPosition.x + 1, wPosition.y + 1, MM_WARRIOR_COLOR);
+			if (w.IsAlive ()) {
+	            LevelPosition wPosition = GetLevelPosition (w.gameObject, level);
+	            // We are assuming that level was the center level
+	            if (wPosition.x >= 0 && wPosition.x < level.GetMap().GetLength(0)) {
+	                if (wPosition.y >= 0 && wPosition.y < level.GetMap().GetLength(1)) {
+	                    texture.SetPixel(wPosition.x + 1, wPosition.y + 1, MM_WARRIOR_COLOR);
+					}
                 }
             }
         }
@@ -259,5 +279,9 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
         BulletManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
         WarriorManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
     }
-
+		
+    public void TookDamage() {
+        takingDamage = true;
+        damageStarted = System.DateTime.Now;
+    }
 }

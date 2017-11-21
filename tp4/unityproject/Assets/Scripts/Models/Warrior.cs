@@ -8,16 +8,25 @@ public class Warrior : MonoBehaviour {
     public Animator animator;
     public System.DateTime died;
 	private bool dead;
+    [HideInInspector]
 	private bool walking;
 	private bool attacking;
 	public Sprite idle;
 	private Level level;
+
+    public GameObject container;
+    public bool inQueue;
+
+    private bool sawPlayer = false;
+    private System.DateTime lastSeen;
+    private static int SOUND_SPACE = 5000;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator> ();
         dead = false;
+        inQueue = true;
 		GetComponent<SpriteRenderer> ().sprite = idle;
 		animator.SetBool ("attacking", false);
 		animator.SetBool ("walking", false);
@@ -60,6 +69,15 @@ public class Warrior : MonoBehaviour {
 			} else {
 				animator.SetBool ("attacking", false);
 			}
+
+			lastSeen = System.DateTime.Now;
+			if (!sawPlayer) {
+				sawPlayer = true;
+				if (UnityEngine.Random.value < 0.15) {
+					SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_SEES_YOU);
+				}
+			}
+
 			Vector2 velocity = this.rb.velocity;
 			float angle = Mathf.Atan2 (velocity.y, velocity.x);
 			transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
@@ -67,6 +85,9 @@ public class Warrior : MonoBehaviour {
 			rb.AddForce(direction.normalized * GameLogic.Instance.WarriorVelocity());
 			checkOutside ();
 			return;
+		}
+		if ((System.DateTime.Now - lastSeen).TotalMilliseconds > SOUND_SPACE) {
+			sawPlayer = false;
 		}
 		checkOutside ();
 		animator.SetBool ("walking", false);
@@ -82,9 +103,10 @@ public class Warrior : MonoBehaviour {
             GetComponent<Collider2D> ().enabled = false;
 			GameLogic.Instance.WarriorKilled ();
             BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet>());
+            SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
         }
     }
-
+		
 	void checkOutside() {
 		Level.Direction direction = (Level.Direction) (-1);
 
@@ -110,4 +132,7 @@ public class Warrior : MonoBehaviour {
 			this.level.AddWarrior (this);
 		}
 	}
+    public bool IsAlive() {
+        return !dead;
+    }
 }

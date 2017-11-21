@@ -35,6 +35,8 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
             go.name = warriorPrefab.name;
             go.transform.parent = transform;
             go.SetActive(false);
+            warrior.container = go;
+            warrior.inQueue = true;
 			warriorPool.Enqueue(warrior);
         }
     }
@@ -53,6 +55,9 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
 			warrior.SetLevel (CrazyCaveLevelManager.Instance.GetLevel (dir));
 			CrazyCaveLevelManager.Instance.GetLevel (dir).AddWarrior (warrior);
 			warrior.gameObject.SetActive(true);
+            if (UnityEngine.Random.value < 0.05) {
+                SoundManager.PlayBackground((int)SndIdGame.ZOMBIE_SPAWN);
+            }
         }
     }
 
@@ -60,6 +65,7 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
     {
 		warrior.transform.SetParent (transform);
 		warriorPool.Enqueue(warrior);
+        warrior.inQueue = true;
 		warrior.gameObject.SetActive(false);
 		warrior.SetAlive();
 		warrior.GetComponent<Collider2D> ().enabled = true;
