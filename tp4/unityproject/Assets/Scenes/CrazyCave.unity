@@ -629,6 +629,7 @@ MonoBehaviour:
   automataAfterBirthChance: 5
   automataAfterDeathChance: -1
   automataInitialWallChance: 0.4
+  initialSeed: 2
 --- !u!4 &1777499407
 Transform:
   m_ObjectHideFlags: 0
