@@ -85,8 +85,9 @@ public class Character : MonoBehaviour {
 
 	private void Shoot() {
 		if (bullets > 0) {
-			if (BulletManager.Instance.Shoot (transform.GetChild (0).position, transform.eulerAngles, direction ())) {
-//				animator.SetTrigger("ShootTrigger");
+			if (BulletManager.Instance.CanShoot()) {
+				animator.SetTrigger("shootTrigger");
+				BulletManager.Instance.Shoot (transform.GetChild (0).position, transform.eulerAngles, direction ());
 				SoundManager.PlaySound ((int)SndIdGame.SHOT);
 				bullets--;
 			}
@@ -94,6 +95,30 @@ public class Character : MonoBehaviour {
 			SoundManager.PlaySound ((int)SndIdGame.NO_AMMO);
 		}
 	}
+		
+	void OnTriggerEnter2D(Collider2D col) {
+		int change;
+		switch (col.gameObject.name) {
+		case "Ammo(Clone)":
+			change = AddBullet ();
+			Drawer.Instance.CreateActionText (change.ToString(), Drawer.DARK_BLUE, col.gameObject.transform.position);
+			Destroy (col.gameObject);
+			break;
+		case "HealthKit(Clone)":
+			change = AddHealth (GameLogic.HEALTH_KIT_HP);
+			Drawer.Instance.CreateActionText (change.ToString(), Drawer.GREEN, col.gameObject.transform.position);
+			Destroy (col.gameObject);
+			SoundManager.PlaySound ((int)SndIdGame.HEALTH_TAKEN);
+			break;
+		case "SpecialBox(Clone)":
+			change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
+			Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
+			Destroy (col.gameObject);
+			SoundManager.PlaySound ((int)SndIdGame.SPECIAL_BOX_TAKEN);
+			break;
+		}
+	}
+
 
 	void OnCollisionEnter2D(Collision2D col) {
 		int change;
@@ -101,23 +126,6 @@ public class Character : MonoBehaviour {
             case "Zombie":
                 TakeDamage ();
                 SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
-				break;
-			case "Ammo(Clone)":
-				change = AddBullet ();
-				Drawer.Instance.CreateActionText (change.ToString(), Drawer.DARK_BLUE, col.gameObject.transform.position);
-				Destroy (col.gameObject);
-				break;
-			case "HealthKit(Clone)":
-				change = AddHealth (GameLogic.HEALTH_KIT_HP);
-				Drawer.Instance.CreateActionText (change.ToString(), Drawer.GREEN, col.gameObject.transform.position);
-				Destroy (col.gameObject);
-                SoundManager.PlaySound ((int)SndIdGame.HEALTH_TAKEN);
-				break;
-			case "SpecialBox(Clone)":
-				change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
-				Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
-				Destroy (col.gameObject);
-                SoundManager.PlaySound ((int)SndIdGame.SPECIAL_BOX_TAKEN);
 				break;
 		}
 	}

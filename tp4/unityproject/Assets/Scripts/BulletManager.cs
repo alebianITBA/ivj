@@ -51,6 +51,14 @@ public class BulletManager : MonoBehaviourSingleton<BulletManager> {
         return false;
 	}
 
+	public bool CanShoot() {
+		System.DateTime now = System.DateTime.Now;
+		System.TimeSpan ts = now - lastShootTime;
+		return ts.TotalMilliseconds > GameLogic.TIME_BETWEEN_SHOTS && bulletPool.Count > 0;
+
+	}
+
+
 	public void RecycleBullet(Bullet bul) {
 		bulletPool.Enqueue(bul);
 		bul.gameObject.SetActive(false);
