@@ -229,7 +229,8 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 						texture.SetPixel (x + 1, y + 1, MM_WALL_COLOR);
 						break;
 					case Level.Tile.ZombieSpawn:
-						texture.SetPixel(x + 1, y + 1, MM_WARRIOR_SPAWN_COLOR);
+//						texture.SetPixel(x + 1, y + 1, MM_WARRIOR_SPAWN_COLOR);
+                        texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
 						break;
 					case Level.Tile.AmmoSpawn:
 						texture.SetPixel(x + 1, y + 1, MM_AMMO_SPAWN_COLOR);
