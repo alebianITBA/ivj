@@ -12,6 +12,7 @@ public class Warrior : MonoBehaviour {
 	private bool walking;
 	private bool attacking;
 	public Sprite idle;
+	private Level level;
 
     public GameObject container;
     public bool inQueue;
@@ -42,6 +43,14 @@ public class Warrior : MonoBehaviour {
 		animator.SetBool ("walking", false);
 	}
 
+	public void SetLevel(Level level) {
+		this.level = level;
+	}
+
+	public Level GetLevel() {
+		return this.level;
+	}
+
 	// Update is called once per frame
 	void Update () {
         if (dead) {
@@ -59,32 +68,33 @@ public class Warrior : MonoBehaviour {
         Vector2 myPosition = transform.position;
         Vector2 direction = playerPosition - myPosition;
 		RaycastHit2D hit = Physics2D.Raycast ((Vector2)transform.position, direction, 100.0f);
-        if (hit.transform.gameObject.name.Equals ("Player(Clone)")) {
-            if (hit.distance < 0.7f) {
-                animator.SetBool ("attacking", true);
-            } else {
-                animator.SetBool ("attacking", false);
-            }
+		if (hit.transform.gameObject.name.Equals("Player(Clone)")) {
+			if (hit.distance < 0.7f) {
+				animator.SetBool ("attacking", true);
+			} else {
+				animator.SetBool ("attacking", false);
+			}
 
-            lastSeen = System.DateTime.Now;
-            if (!sawPlayer) {
-                sawPlayer = true;
-                if (UnityEngine.Random.value < 0.15) {
-                    SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_SEES_YOU);
-                }
-            }
+			lastSeen = System.DateTime.Now;
+			if (!sawPlayer) {
+				sawPlayer = true;
+				if (UnityEngine.Random.value < 0.15) {
+					SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_SEES_YOU);
+				}
+			}
 
-            Vector2 velocity = this.rb.velocity;
-            float angle = Mathf.Atan2 (velocity.y, velocity.x);
-            transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
-            animator.SetBool ("walking", true);
-            rb.AddForce (direction.normalized * GameLogic.Instance.WarriorVelocity ());
-            return;
-        } else {
-            if ((System.DateTime.Now - lastSeen).TotalMilliseconds > SOUND_SPACE) {
-                sawPlayer = false;
-            }
-        }
+			Vector2 velocity = this.rb.velocity;
+			float angle = Mathf.Atan2 (velocity.y, velocity.x);
+			transform.localRotation = Quaternion.Euler (0.0f, 0.0f, Mathf.Rad2Deg * angle - 90);
+			animator.SetBool ("walking", true);
+			rb.AddForce(direction.normalized * GameLogic.Instance.WarriorVelocity());
+			checkOutside ();
+			return;
+		}
+		if ((System.DateTime.Now - lastSeen).TotalMilliseconds > SOUND_SPACE) {
+			sawPlayer = false;
+		}
+		checkOutside ();
 		animator.SetBool ("walking", false);
     }
 
@@ -101,7 +111,32 @@ public class Warrior : MonoBehaviour {
             SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
         }
     }
+		
+	void checkOutside() {
+		Level.Direction direction = (Level.Direction) (-1);
 
+		if (transform.localPosition.x > Drawer.Instance.MaxVisibleX(level)) {
+			direction = Level.Direction.West;
+		}
+		if (transform.localPosition.x < 0) {
+			direction = Level.Direction.East;
+		}
+		if (transform.localPosition.y > Drawer.Instance.MaxVisibleY(level)) {
+			direction = Level.Direction.South;
+		}
+		if (transform.localPosition.y < 0) {
+			direction = Level.Direction.North;
+		}
+
+		if (direction != (Level.Direction) (-1)) {
+			print (direction);
+			print (transform.localPosition);
+			this.transform.SetParent(CrazyCaveLevelManager.Instance.GetHolder (Level.Direction.Center).transform);
+			this.level.RemoveWarrior (this);
+			this.level = CrazyCaveLevelManager.Instance.GetLevel (Level.Direction.Center);
+			this.level.AddWarrior (this);
+		}
+	}
     public bool IsAlive() {
         return !dead;
     }
