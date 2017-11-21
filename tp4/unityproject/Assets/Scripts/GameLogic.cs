@@ -69,4 +69,11 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	private float ScoreMultiplier() {
 		return player.score / 10f;
 	}
+
+    public bool IsPaused() {
+        if (player != null) {
+            return player.paused;
+        }
+        return false;
+    }
 }

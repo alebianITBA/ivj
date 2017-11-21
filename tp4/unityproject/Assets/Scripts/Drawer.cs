@@ -24,8 +24,11 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	private static Color MM_AMMO_SPAWN_COLOR = DARK_BLUE;
 	private static Color MM_HEALTH_SPAWN_COLOR = DARK_GREEN;
 	private static Color MM_SPECIAL_BOX_SPAWN_COLOR = PURPLE;
-
-	// Prefabs
+    private static Color TRANSPARENT_RED = new Color (1, 0, 0, 0);
+    private static Color OPAQUE_RED = new Color (1, 0, 0, MAX_ALPHA);
+    public static Color TRANSPARENT_WHITE = new Color (1, 1, 1, MAX_ALPHA);
+	
+    // Prefabs
 	public GameObject[] floorPrefabs;
 	public GameObject[] wallPrefabs;
 	public GameObject[] outerWallPrefabs;
@@ -45,6 +48,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public Text scoreText;
 	public Text lifeText;
 	public Text bulletsText;
+    public Text middleText;
     // DAMAGE
     public GameObject damagePanel;
     private static int DAMAGE_TTL = 500;
@@ -52,8 +56,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
     private static float MAX_ALPHA = 0.5f;
     private bool takingDamage = false;
     private System.DateTime damageStarted;
-    private static Color TRANSPARENT_RED = new Color (1, 0, 0, 0);
-    private static Color OPAQUE_RED = new Color (1, 0, 0, 1);
+    private Color previousPauseColor;
 
 	private List<TimeDestroyable> destroyables;
 
@@ -65,10 +68,15 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	}
 
 	void Update() {
-		if (player != null) {
-			scoreText.text = "Score: " + player.GetComponent<Character>().score.ToString();
-			lifeText.text = "Life: " + player.GetComponent<Character>().health.ToString();
-            bulletsText.text = "Bullets: " + player.GetComponent<Character>().bullets.ToString() + "/" + GameLogic.MAX_AMMO.ToString();
+        Character character = null;
+        if (player != null) {
+            character = player.GetComponent<Character> ();
+        }
+
+        if (character != null) {
+			scoreText.text = "Score: " + character.score.ToString();
+            lifeText.text = "Life: " + character.health.ToString();
+            bulletsText.text = "Bullets: " + character.bullets.ToString() + "/" + GameLogic.MAX_AMMO.ToString();
 		}
 		for (int i = destroyables.Count - 1; i >= 0; i--) {
 			if (destroyables [i].Destroyable ()) {
@@ -76,16 +84,23 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 				destroyables.RemoveAt (i);
 			}
 		}
-        // Damage panel
-        if (takingDamage) {
-            if (damagePanel.GetComponent<Image> ().color.a < MAX_ALPHA) {
-                damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, OPAQUE_RED, DELTA_LERP * Time.deltaTime);
+        if (character != null) {
+            if (character.health <= 0) {
+                ShowMiddleText ("YOU LOSS\nPRESS ESC TO CONTINUE", OPAQUE_RED);
+            } else {
+                // Damage panel
+                if (takingDamage) {
+                    if (damagePanel.GetComponent<Image> ().color.a < MAX_ALPHA) {
+                        damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, RED, DELTA_LERP * Time.deltaTime);
+                    }
+
+                    if ((System.DateTime.Now - damageStarted).TotalMilliseconds > DAMAGE_TTL) {
+                        takingDamage = false;
+                    }
+                } else {
+                    damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, TRANSPARENT_RED, DELTA_LERP * Time.deltaTime);
+                }
             }
-            if ((System.DateTime.Now - damageStarted).TotalMilliseconds > DAMAGE_TTL) {
-                takingDamage = false;
-            }
-        } else {
-            damagePanel.GetComponent<Image> ().color = Color.Lerp (damagePanel.GetComponent<Image> ().color, TRANSPARENT_RED, DELTA_LERP * Time.deltaTime);
         }
 	}
 
@@ -268,6 +283,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public void CreateActionText(string text, Color color, Vector3 position) {
 		position.z = -10;
 		GameObject newText = NewObjectFromPrefab (actionText, position);
+        newText.AddComponent (typeof(FlyingText));
 		newText.GetComponent<TextMesh> ().text = text;
 		newText.GetComponent<TextMesh> ().color = color;
 		destroyables.Add (new TimeDestroyable(newText, 500));
@@ -283,5 +299,23 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
     public void TookDamage() {
         takingDamage = true;
         damageStarted = System.DateTime.Now;
+    }
+
+    public void ShowMiddleText(string text, Color color) {
+        damagePanel.GetComponent<Image> ().color = color;
+        middleText.text = text;
+        middleText.enabled = true;
+    }
+
+    public void PauseText() {
+        previousPauseColor = damagePanel.GetComponent<Image> ().color;
+        damagePanel.GetComponent<Image> ().color = TRANSPARENT_WHITE;
+        middleText.text = "PAUSE\nPRESS ESC TO CONTINUE";
+        middleText.enabled = true;
+    }
+
+    public void UnpauseText() {
+        damagePanel.GetComponent<Image> ().color = previousPauseColor;
+        middleText.enabled = false;
     }
 }
