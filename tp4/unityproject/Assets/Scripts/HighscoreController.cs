@@ -5,11 +5,19 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 
-public class HighscoreController : MonoBehaviourSingleton<HighscoreController> {
+public class HighscoreController : MonoBehaviour {
     private List<Score> highscores = new List<Score> ();
 	private int lastScore;
 
-    override protected void Initialize() {
+	public static HighscoreController Instance = null;
+
+	void Awake() {
+		if (Instance == null) {
+			Instance = this;
+		} else if (Instance != this) {
+			Destroy (gameObject);
+		}
+
         DontDestroyOnLoad (gameObject);
         highscores = new List<Score> ();
         Load ();

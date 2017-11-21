@@ -11,3 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CrazyCave.unity
     guid: 9db24bd347329469396aeb5b3127dffa
+  - enabled: 1
+    path: Assets/Scenes/LostMenu.unity
+    guid: e696e0b1f3e5bcc469aaae6a0e1f6892
+  - enabled: 1
+    path: Assets/Scenes/Highscores.unity
+    guid: f3b48c1cd6ad743f2882bbf67067ad61

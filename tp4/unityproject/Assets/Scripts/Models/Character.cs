@@ -61,7 +61,8 @@ public class Character : MonoBehaviour {
             }
         } else {
             if (Input.GetKey (KeyCode.Return) || Input.GetKey (KeyCode.Space) || Input.GetKey (KeyCode.Escape)) {
-                 SceneManager.LoadScene(2);
+				HighscoreController.Instance.setLastScore (this.score);
+                SceneManager.LoadScene(2);
             }
         }
 	}
