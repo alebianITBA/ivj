@@ -44,19 +44,21 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
 		if (!GameLogic.Instance.IsPaused ()) {
 			System.TimeSpan ts = System.DateTime.Now - lastSpawn;
 			if (ts.TotalMilliseconds > GameLogic.Instance.ZombieTimeSpawn () && warriorPool.Count > 0) {
-				spawned++;
-				lastSpawn = System.DateTime.Now;
-				Warrior warrior = warriorPool.Dequeue ();
 				int i = UnityEngine.Random.Range (0, directions.Count);
 				Level.Direction dir = directions [i];
 				Vector2 spawnPos = getSpawnPosition (CrazyCaveLevelManager.Instance.GetLevel (dir));
-				warrior.transform.SetParent (CrazyCaveLevelManager.Instance.GetHolder (dir).transform);
-				warrior.transform.localPosition = spawnPos;
-				warrior.SetLevel (CrazyCaveLevelManager.Instance.GetLevel (dir));
-				CrazyCaveLevelManager.Instance.GetLevel (dir).AddWarrior (warrior);
-				warrior.gameObject.SetActive (true);
-				if (UnityEngine.Random.value < 0.05) {
-					SoundManager.PlayBackground ((int)SndIdGame.ZOMBIE_SPAWN);
+				if (Math.Abs (Vector2.Distance (spawnPos, CrazyCaveGameManager.Instance.player.transform.position)) > GameLogic.WARRIOR_SPAWN_DISTANCE) {
+					spawned++;
+					lastSpawn = System.DateTime.Now;
+					Warrior warrior = warriorPool.Dequeue ();
+					warrior.transform.SetParent (CrazyCaveLevelManager.Instance.GetHolder (dir).transform);
+					warrior.transform.localPosition = spawnPos;
+					warrior.SetLevel (CrazyCaveLevelManager.Instance.GetLevel (dir));
+					CrazyCaveLevelManager.Instance.GetLevel (dir).AddWarrior (warrior);
+					warrior.gameObject.SetActive (true);
+					if (UnityEngine.Random.value < 0.05) {
+						SoundManager.PlayBackground ((int)SndIdGame.ZOMBIE_SPAWN);
+					}
 				}
 			}
 		}
