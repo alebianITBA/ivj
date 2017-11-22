@@ -15,7 +15,14 @@ public class AutomataLevel : Level {
 	}
 
 	public override LevelPosition PlayerSpawningPoint(Direction direction) {
-		return playerSpawningPositions [direction];
+        for (int x = 0; x < map.GetLength (0); x++) {
+            for (int y = 0; y < map.GetLength (1); y++) {
+                if (map[x, y] == Tile.Floor) {
+                    return new LevelPosition (x, y);
+                }
+            }
+        }
+        return new LevelPosition (-1, -1);
 	}
 
 	private void CalculatePlayerSpawningPositions() {
@@ -27,8 +34,8 @@ public class AutomataLevel : Level {
 	}
 
 	private Level.Tile[,] GenerateMap(int rows, int cols, int initialRounds, int afterRounds, int initialBirth, int initialDeath, int afterBirth, int afterDeath, float initialWallChance, int seed) {
-		bool insertHealth = UnityEngine.Random.value < GameLogic.HEALTH_KIT_PROBABILITY;
-		bool insertBox = UnityEngine.Random.value < GameLogic.SPECIAL_BOX_PROBABILITY;
+//		bool insertHealth = UnityEngine.Random.value < GameLogic.HEALTH_KIT_PROBABILITY;
+//		bool insertBox = UnityEngine.Random.value < GameLogic.SPECIAL_BOX_PROBABILITY;
 
 		Level.Tile[,] map = GetRandomMap(rows, cols, initialWallChance, seed);
 
