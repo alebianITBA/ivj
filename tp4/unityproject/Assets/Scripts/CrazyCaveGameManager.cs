@@ -55,5 +55,13 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 			//CrazyCaveLevelManager.Instance.AddZombieSpawningPoints (player);
 		}
 	}
+
+	public void Generate() {
+		CrazyCaveLevelManager.Instance.Generate ();
+	}
+
+	public void ClearMap() {
+		CrazyCaveLevelManager.Instance.ClearMap ();
+	}
 }
 

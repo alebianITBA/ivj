@@ -105,6 +105,8 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	}
 
 	public void DrawTiles(Level level, GameObject tilesHolder, GameObject accessoriesHolder) {
+		tileLength = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x - 0.01f;
+		print (tileLength);
 		for (int row = 0; row < level.GetMap().GetLength(0); row++) {
 			for (int col = 0; col < level.GetMap().GetLength(1); col++) {
 				GameObject tileInstance = null;

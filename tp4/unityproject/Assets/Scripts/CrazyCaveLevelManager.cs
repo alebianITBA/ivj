@@ -150,4 +150,41 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		level.AddSpecialBox ();
 	}
 		
+
+	public void Generate() {
+		seed = initialSeed;
+		boardHolders = new Dictionary<Level.Direction, GameObject>();
+		levels = new Dictionary<Level.Direction, Level> ();
+		boardHolders.Add (Level.Direction.Center, new GameObject ("Center BoardHolder"));
+		boardHolders [Level.Direction.Center].transform.position = Level.GetPosition(Level.Direction.Center);
+		levels.Add (Level.Direction.Center, CreateLevel (seed));
+		boardHolders.Add(Level.Direction.NorthEast, new GameObject("NorthEast BoardHolder"));
+		boardHolders.Add(Level.Direction.North, new GameObject("North BoardHolder"));
+		boardHolders.Add(Level.Direction.NorthWest, new GameObject("NorthWest BoardHolder"));
+		boardHolders.Add(Level.Direction.SouthEast, new GameObject("SouthEast BoardHolder"));
+		boardHolders.Add(Level.Direction.South, new GameObject("South BoardHolder"));
+		boardHolders.Add(Level.Direction.SouthWest, new GameObject("SouthWest BoardHolder"));
+		boardHolders.Add(Level.Direction.East, new GameObject("East BoardHolder"));
+		boardHolders.Add(Level.Direction.West, new GameObject("West BoardHolder"));
+
+		this.accessoriesHolder = new GameObject ("AccessoriesHolder");
+
+		foreach (Level.Direction dir in Enum.GetValues(typeof(Level.Direction))) {
+			if (!levels.ContainsKey (dir)) {
+				levels.Add (dir, CreateLevel (seed + Level.GetSeedOffset (dir)));
+				boardHolders [dir].transform.position = Vector3.Scale (Level.GetPosition (dir), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
+			}
+			//AddAccessories (levels[dir]);
+			levels[dir].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+			Drawer.Instance.DrawTiles (levels[dir], boardHolders[dir], accessoriesHolder);
+		}
+	}
+
+	public void ClearMap() {
+		foreach (GameObject g in boardHolders.Values) {
+			DestroyImmediate (g);
+		}
+		DestroyImmediate (accessoriesHolder);
+	}
+
 }
