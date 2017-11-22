@@ -86,7 +86,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		}
         if (character != null) {
             if (character.health <= 0) {
-                ShowMiddleText ("YOU LOSS\nPRESS ESC TO CONTINUE", OPAQUE_RED);
+                ShowMiddleText ("YOU LOST\nPRESS ESC TO CONTINUE", OPAQUE_RED);
             } else {
                 // Damage panel
                 if (takingDamage) {
