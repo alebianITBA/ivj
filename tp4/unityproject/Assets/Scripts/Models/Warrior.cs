@@ -110,6 +110,22 @@ public class Warrior : MonoBehaviour {
             BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet>());
             SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
         }
+
+		if (col.gameObject.name == "Player"  && !dead) {
+			Character c = col.gameObject.GetComponent<Character> ();
+			print (c);
+			if (c.Melee) {
+				dead = true;
+				animator.SetBool ("dead", true);
+				animator.SetBool ("walking", false);
+				animator.SetBool ("attacking", false);
+				died = System.DateTime.Now;
+				GetComponent<Collider2D> ().enabled = false;
+				GameLogic.Instance.WarriorKilled ();
+				BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet> ());
+				SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
+			}
+		}
     }
 		
 	void checkOutside() {

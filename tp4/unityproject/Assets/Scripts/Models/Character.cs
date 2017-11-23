@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour {
 	Rigidbody2D rb;
-	Animator animator;
+	Animator gunAnimator;
+	Animator knifeAnimator;
 	public GameObject ShotFireRenderer;
 	[HideInInspector]
     public int health;
@@ -15,10 +16,13 @@ public class Character : MonoBehaviour {
 	public int score;
     [HideInInspector]
     public bool paused = false;
+	public bool Melee = false;
+	System.DateTime lastMeleeTime;
 
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
-		animator = GetComponentInChildren<Animator> ();
+		gunAnimator = transform.Find("ShotFire").GetComponent<Animator> ();
+		knifeAnimator = GetComponent<Animator> ();
 		health = GameLogic.PLAYERHEALTH;
         bullets = GameLogic.STARTING_BULLETS_AMOUNT;
 		score = 0;
@@ -55,6 +59,19 @@ public class Character : MonoBehaviour {
             if (Input.GetKey (KeyCode.Space)) {
                 Shoot ();
             }
+			if (Input.GetKey (KeyCode.LeftControl)) {
+				System.DateTime now = System.DateTime.Now;
+				System.TimeSpan ts = now - lastMeleeTime;
+				if (ts.TotalMilliseconds > GameLogic.TIME_BETWEEN_MELEE) {
+					lastMeleeTime = System.DateTime.Now;
+					knifeAnimator.SetTrigger ("melee");
+					Melee = true;
+				} else {
+					Melee = false;
+				}
+			} else {
+				Melee = false;
+			}
             if (Input.GetKey (KeyCode.Escape)) {
                 Drawer.Instance.PauseText ();
                 paused = true;
@@ -87,7 +104,7 @@ public class Character : MonoBehaviour {
 	private void Shoot() {
 		if (bullets > 0) {
 			if (BulletManager.Instance.CanShoot()) {
-				animator.SetTrigger("shootTrigger");
+				gunAnimator.SetTrigger("shootTrigger");
 				BulletManager.Instance.Shoot (transform.GetChild (0).position, transform.eulerAngles, direction ());
 				SoundManager.PlaySound ((int)SndIdGame.SHOT);
 				bullets--;
@@ -96,6 +113,7 @@ public class Character : MonoBehaviour {
 			SoundManager.PlaySound ((int)SndIdGame.NO_AMMO);
 		}
 	}
+
 		
 	void OnTriggerEnter2D(Collider2D col) {
 		int change;
@@ -124,16 +142,20 @@ public class Character : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		int change;
 		switch (col.gameObject.name) {
-            case "Zombie":
-                TakeDamage ();
-                SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
-				break;
+		case "Zombie":
+			if (!Melee) {
+				TakeDamage ();
+				SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
+			}
+			break;
 		}
 	}
 
     private void OnCollisionStay2D(Collision2D col) {
         if (col.gameObject.name == "Zombie") {
-            TakeDamage();
+			if (!Melee) {
+				TakeDamage ();
+			}
         }
     }
 

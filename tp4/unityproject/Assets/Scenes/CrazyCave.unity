@@ -618,8 +618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c670f23f43df42c481ef4a193c65a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelXSize: 30
-  levelYSize: 20
+  levelXSize: 20
+  levelYSize: 15
   zombieSpawningPoints: 5
   bulletSpawningPoints: 2
   automataInitialRounds: 4

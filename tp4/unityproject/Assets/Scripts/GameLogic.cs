@@ -6,6 +6,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	// GLOBAL CONSTANTS
 	// BULLET
 	public static float TIME_BETWEEN_SHOTS = 300.0f;
+	public static float TIME_BETWEEN_MELEE = 500.0f;
 	public static float BULLET_SPEED = 1000.0f;
 	public static int STARTING_BULLETS_AMOUNT = 10;
 	public static float BULLET_TTL = TIME_BETWEEN_SHOTS * (STARTING_BULLETS_AMOUNT - 1);
