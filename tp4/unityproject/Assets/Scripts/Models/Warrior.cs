@@ -111,10 +111,15 @@ public class Warrior : MonoBehaviour {
             SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
         }
 
-		if (col.gameObject.name == "Player"  && !dead) {
+		if (col.gameObject.name == "Player(Clone)"  && !dead) {
 			Character c = col.gameObject.GetComponent<Character> ();
-			print (c);
-			if (c.Melee) {
+			Vector2 playerPosition = CrazyCaveGameManager.Instance.player.transform.position;
+			Vector2 myPosition = transform.position;
+			Vector2 direction = playerPosition - myPosition;
+			float angle = Mathf.Rad2Deg * (Mathf.Atan2 (direction.y, direction.x)) % 360;
+			float playerAngle = c.transform.rotation.eulerAngles.z;
+			print (angle);
+			if (c.Melee && Mathf.Abs (((angle + 180) % 360) - playerAngle) < GameLogic.KNIFE_SPREAD) {
 				dead = true;
 				animator.SetBool ("dead", true);
 				animator.SetBool ("walking", false);
@@ -122,7 +127,6 @@ public class Warrior : MonoBehaviour {
 				died = System.DateTime.Now;
 				GetComponent<Collider2D> ().enabled = false;
 				GameLogic.Instance.WarriorKilled ();
-				BulletManager.Instance.RecycleBullet (col.gameObject.GetComponent<Bullet> ());
 				SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
 			}
 		}
@@ -145,8 +149,6 @@ public class Warrior : MonoBehaviour {
 		}
 
 		if (direction != (Level.Direction) (-1)) {
-			print (direction);
-			print (transform.localPosition);
 			this.transform.SetParent(CrazyCaveLevelManager.Instance.GetHolder (Level.Direction.Center).transform);
 			this.level.RemoveWarrior (this);
 			this.level = CrazyCaveLevelManager.Instance.GetLevel (Level.Direction.Center);

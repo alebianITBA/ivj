@@ -246,6 +246,8 @@ MonoBehaviour:
   - {fileID: 110520, guid: d668383fb4b624bc6958c4d65e20f131, type: 2}
   playerPrefab: {fileID: 1474156938808872, guid: da855db8f93334f6699c81dcd0e70f52,
     type: 2}
+  spawnPrefab: {fileID: 1707023749222314, guid: 86b15d4229d7bad4b8cd794db05aa7e7,
+    type: 2}
   minimap: {fileID: 1179989865}
   ammoPrefab: {fileID: 1467400688868474, guid: 3b37082cadf81415887b60afeaea633a, type: 2}
   healthKitPrefab: {fileID: 1161130136405202, guid: 4d7b163a180c0439e8ad1b6ce2f87dd3,

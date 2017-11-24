@@ -47,7 +47,8 @@ public class WarriorManager : MonoBehaviourSingleton<WarriorManager> {
 				int i = UnityEngine.Random.Range (0, directions.Count);
 				Level.Direction dir = directions [i];
 				Vector2 spawnPos = getSpawnPosition (CrazyCaveLevelManager.Instance.GetLevel (dir));
-				if (Math.Abs (Vector2.Distance (spawnPos, CrazyCaveGameManager.Instance.player.transform.position)) > GameLogic.WARRIOR_SPAWN_DISTANCE) {
+				Vector2 parentPos = CrazyCaveLevelManager.Instance.GetHolder (dir).transform.position;
+				if (Math.Abs (Vector2.Distance (parentPos + spawnPos, CrazyCaveGameManager.Instance.player.transform.position)) > GameLogic.WARRIOR_SPAWN_DISTANCE) {
 					spawned++;
 					lastSpawn = System.DateTime.Now;
 					Warrior warrior = warriorPool.Dequeue ();

@@ -30,6 +30,7 @@ public class Character : MonoBehaviour {
 
 	void Update () {
 		checkInput ();
+		print (Melee);
 	}
 
 	private void checkInput() {
@@ -66,8 +67,6 @@ public class Character : MonoBehaviour {
 					lastMeleeTime = System.DateTime.Now;
 					knifeAnimator.SetTrigger ("melee");
 					Melee = true;
-				} else {
-					Melee = false;
 				}
 			} else {
 				Melee = false;
@@ -143,19 +142,15 @@ public class Character : MonoBehaviour {
 		int change;
 		switch (col.gameObject.name) {
 		case "Zombie":
-			if (!Melee) {
-				TakeDamage ();
-				SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
-			}
+			TakeDamage ();
+			SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
 			break;
 		}
 	}
 
     private void OnCollisionStay2D(Collision2D col) {
         if (col.gameObject.name == "Zombie") {
-			if (!Melee) {
-				TakeDamage ();
-			}
+			TakeDamage ();
         }
     }
 

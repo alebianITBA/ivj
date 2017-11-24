@@ -57,7 +57,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 				boardHolders [dir].transform.position = Vector3.Scale (Level.GetPosition (dir), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
 			}
 			AddAccessories (levels[dir]);
-			levels[dir].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+			levels[dir].AddZombieSpawningPoints(GameLogic.SPAWNING_POINTS ,new LevelPosition(levelXSize/2, levelYSize/2));
 			Drawer.Instance.DrawTiles (levels[dir], boardHolders[dir], accessoriesHolder);
 		}
 
@@ -88,7 +88,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		newBoards[dir] =  newHolder;
 		newLevels[dir] =  CreateLevel (seed + Level.GetSeedOffset(dir));
 		AddAccessories (newLevels [dir]);
-		newLevels[dir].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+		newLevels[dir].AddZombieSpawningPoints(GameLogic.SPAWNING_POINTS,new LevelPosition(levelXSize/2, levelYSize/2));
 		Drawer.Instance.DrawTiles (newLevels[dir], newBoards[dir],accessoriesHolder);
 
 		foreach (Level.Direction neigh in Level.GetNeighbours(dir)) {
@@ -106,14 +106,30 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 			newBoards[neigh] =  newHolder;
 			newLevels[neigh] =  CreateLevel (seed + Level.GetSeedOffset(neigh));
 			AddAccessories (newLevels [neigh]);
-			newLevels[neigh].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+			newLevels[neigh].AddZombieSpawningPoints(GameLogic.SPAWNING_POINTS,new LevelPosition(levelXSize/2, levelYSize/2));
 			Drawer.Instance.DrawTiles (newLevels[neigh], newBoards[neigh], accessoriesHolder);
-		
+
 		}
 
 		boardHolders = newBoards;
 		levels = newLevels;
-	} 
+		switchNames ();
+	}
+
+	private void switchNames() {
+		boardHolders [Level.Direction.SouthEast].name = "SouthEast BoardHolder";
+		boardHolders [Level.Direction.SouthWest].name = "SouthWest BoardHolder";
+		boardHolders [Level.Direction.South].name = "South BoardHolder";
+
+		boardHolders [Level.Direction.NorthEast].name = "NorthEast BoardHolder";
+		boardHolders [Level.Direction.NorthWest].name = "NorthWest BoardHolder";
+		boardHolders [Level.Direction.North].name = "North BoardHolder";
+
+		boardHolders [Level.Direction.East].name = "East BoardHolder";
+		boardHolders [Level.Direction.West].name = "West BoardHolder";
+		boardHolders [Level.Direction.Center].name = "Center BoardHolder";
+
+	}
 
 	public Level GetLevel() {
 		return this.levels[Level.Direction.Center];

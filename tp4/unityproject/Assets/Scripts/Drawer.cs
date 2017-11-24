@@ -33,6 +33,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 	public GameObject[] wallPrefabs;
 	public GameObject[] outerWallPrefabs;
 	public GameObject playerPrefab;
+	public GameObject spawnPrefab;
 	public GameObject minimap;
 	public GameObject ammoPrefab;
 	public GameObject healthKitPrefab;
@@ -123,6 +124,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 					case Level.Tile.ZombieSpawn:
 						// TODO: Make a different floor sprite
 						tileInstance = NewObjectFromPrefab (RandomTile(floorPrefabs), tilesHolder.transform);
+						CreateAccessory (spawnPrefab, tilesHolder.transform, position);
 						break;
 					case Level.Tile.Wall:
 						tileInstance = NewObjectFromPrefab (RandomTile (wallPrefabs), tilesHolder.transform);
