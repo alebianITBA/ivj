@@ -27,7 +27,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static int DEFAULT_ZOMBIE_SPAWNING_PONTS = 5;
 	// GAME CONSTANTS
 	public static int ZOMBIE_KILLED_SCORE = 10;
-	public static int ZOMBIE_VELOCITY_MULTIPLIER = 5;
+	public static float ZOMBIE_VELOCITY_MULTIPLIER = 1.5f;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
     public static int PLAYERHEALTH = 100;
 	public static float KNIFE_SPREAD = 45.0f;
