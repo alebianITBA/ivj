@@ -113,13 +113,7 @@ public class Warrior : MonoBehaviour {
 
 		if (col.gameObject.name == "Player(Clone)"  && !dead) {
 			Character c = col.gameObject.GetComponent<Character> ();
-			Vector2 playerPosition = CrazyCaveGameManager.Instance.player.transform.position;
-			Vector2 myPosition = transform.position;
-			Vector2 direction = playerPosition - myPosition;
-			float angle = Mathf.Rad2Deg * (Mathf.Atan2 (direction.y, direction.x)) % 360;
-			float playerAngle = c.transform.rotation.eulerAngles.z;
-			print (angle);
-			if (c.Melee && Mathf.Abs (((angle + 180) % 360) - playerAngle) < GameLogic.KNIFE_SPREAD) {
+			if (c.Melee) {
 				dead = true;
 				animator.SetBool ("dead", true);
 				animator.SetBool ("walking", false);
@@ -128,6 +122,7 @@ public class Warrior : MonoBehaviour {
 				GetComponent<Collider2D> ().enabled = false;
 				GameLogic.Instance.WarriorKilled ();
 				SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_GOT_HIT);
+				c.LifeSteal ();
 			}
 		}
     }

@@ -30,7 +30,7 @@ public class GameLogic : MonoBehaviourSingleton<GameLogic> {
 	public static float ZOMBIE_VELOCITY_MULTIPLIER = 1.5f;
 	public static int ZOMBIE_TIME_SPAWN_MULTIPLIER = 10;
     public static int PLAYERHEALTH = 100;
-	public static float KNIFE_SPREAD = 45.0f;
+	public static int LIFE_STEAL_PER_HIT = 5;
 	// ACCESSORIES
 	public static int HEALTH_KIT_HP = 20;
     public static int SPECIAL_BOX_SCORE = 300;
