@@ -60,7 +60,7 @@ public class Character : MonoBehaviour {
             if (Input.GetKey (KeyCode.Space)) {
                 Shoot ();
             }
-            if (Input.GetKey (KeyCode.LeftShift)) {
+			if (Input.GetKey (KeyCode.LeftControl)) {
 				System.DateTime now = System.DateTime.Now;
 				System.TimeSpan ts = now - lastMeleeTime;
 				if (ts.TotalMilliseconds > GameLogic.TIME_BETWEEN_MELEE) {

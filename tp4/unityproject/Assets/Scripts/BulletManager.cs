@@ -10,8 +10,7 @@ public class BulletManager : MonoBehaviourSingleton<BulletManager> {
 	System.DateTime lastShootTime;
 	int shootNumber = 0;
 
-	// Use this for initialization
-	void Start () {
+	override protected void Initialize () {
 		PrecreateObjects ();
 	}
 
@@ -65,6 +64,10 @@ public class BulletManager : MonoBehaviourSingleton<BulletManager> {
 	}
 
 	public void IgnoreColliders(Collider2D collider) {
+		if (bulletPool == null) {
+			return;
+		}
+
 		foreach(Bullet b in bulletPool) {
 			Physics2D.IgnoreCollision (collider, b.GetComponent<Collider2D>());
 		}

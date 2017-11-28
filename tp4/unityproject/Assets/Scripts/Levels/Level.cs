@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Level {
 	public enum Tile { Empty, Wall, Floor, OuterWall, PlayerSpawn, ZombieSpawn, AmmoSpawn, HealthKitSpawn, SpecialBoxSpawn };
 	//public enum Direction { North, East, South, West };
-	public enum Direction { NorthEast, North, NorthWest, East, SouthEast, South, SouthWest, West, Center };
+	public enum Direction { Center, NorthEast, North, NorthWest, East, SouthEast, South, SouthWest, West };
 
 	protected Tile[,] map;
 	protected List<LevelPosition> zombieSpawns;
@@ -40,9 +40,7 @@ public abstract class Level {
 	protected Level.Tile[,] GetRandomMap(int rows, int cols, float wallChance, int seed) {
 		Level.Tile[,] map = new Level.Tile[rows, cols];
 
-		if (seed >= 0) {
-			UnityEngine.Random.InitState (seed);
-		}
+		UnityEngine.Random.InitState (seed);
 
 		for (int row = 0; row < map.GetLength(0); row++) {
 			for (int col = 0; col < map.GetLength(1); col++) {
