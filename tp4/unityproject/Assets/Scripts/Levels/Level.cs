@@ -10,6 +10,9 @@ public abstract class Level {
 	protected Tile[,] map;
 	protected List<LevelPosition> zombieSpawns;
 	private HashSet<Warrior> warriors;
+	private List<GameObject> ammos;
+	private List<GameObject> healtKits;
+	private List<GameObject> specialBoxes;
 
     public float renderedMinX;
     public float renderedMaxX;
@@ -18,12 +21,18 @@ public abstract class Level {
 
 	public Level() {
 		this.warriors = new HashSet<Warrior> ();
+		this.ammos = new List<GameObject> ();
+		this.healtKits = new List<GameObject> ();
+		this.specialBoxes = new List<GameObject> ();
 	}
 
 	public Level (Tile[,] map)
 	{
 		this.map = map;
 		this.warriors = new HashSet<Warrior> ();
+		this.ammos = new List<GameObject> ();
+		this.healtKits = new List<GameObject> ();
+		this.specialBoxes = new List<GameObject> ();
 	}
 
 	public Tile[,] GetMap() {
@@ -279,6 +288,18 @@ public abstract class Level {
 		warriors.Add (warrior);
 	}
 
+	public void AddAmmo(GameObject obj) {
+		ammos.Add (obj);
+	}
+
+	public void AddHealthKit(GameObject obj) {
+		healtKits.Add (obj);
+	}
+
+	public void AddSpecialBox(GameObject obj) {
+		specialBoxes.Add (obj);
+	}
+
 	public void RemoveWarrior(Warrior warrior) {
 		warriors.Remove (warrior);
 	}
@@ -293,5 +314,17 @@ public abstract class Level {
 
 	public HashSet<Warrior> GetWarriors() {
 		return warriors;
+	}
+
+	public List<GameObject> GetAmmos() {
+		return ammos;
+	}
+
+	public List<GameObject> GetHealthKits() {
+		return healtKits;
+	}
+
+	public List<GameObject> GetSpecialBoxes() {
+		return specialBoxes;
 	}
 }

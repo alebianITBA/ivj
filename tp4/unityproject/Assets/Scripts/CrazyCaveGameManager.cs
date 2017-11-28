@@ -22,6 +22,9 @@ public class CrazyCaveGameManager : MonoBehaviourSingleton<CrazyCaveGameManager>
 		}
 		CameraFollowPlayer ();
 		CheckPlayerOutsideLevel ();
+	}
+
+	void FixedUpdate() {
 		Drawer.Instance.DrawMinimap (CrazyCaveLevelManager.Instance.GetLevel(), player);
 	}
 
