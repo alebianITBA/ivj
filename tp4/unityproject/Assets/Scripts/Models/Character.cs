@@ -152,7 +152,7 @@ public class Character : MonoBehaviour {
         }
     }
 
-    private void TakeDamage(){
+    public void TakeDamage(){
         if (health > 0) {
             this.health--;
             Drawer.Instance.TookDamage ();

@@ -59,6 +59,11 @@ public class Warrior : MonoBehaviour {
             }
             return;
         }
+		float maxDistance = Mathf.Max (CrazyCaveLevelManager.Instance.levelXSize * 2, CrazyCaveLevelManager.Instance.levelYSize * 2) * Drawer.Instance.tileLength;
+		if (Vector2.Distance (transform.position, CrazyCaveGameManager.Instance.player.transform.position) > maxDistance) {
+			warriorManager.RecycleWarrior (this);
+			return;
+		}
 
         if (GameLogic.Instance.IsPaused ()) {
             return;
