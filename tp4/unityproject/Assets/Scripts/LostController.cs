@@ -20,7 +20,6 @@ public class LostController : MonoBehaviour {
 
 	public void Submit() {
 		if (input.text != null) {
-			print (input.text);
 			HighscoreController.Instance.SetScore (input.text, HighscoreController.Instance.getLastScore());
 			SceneManager.LoadScene (3);
 		}

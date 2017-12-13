@@ -30,7 +30,6 @@ public class Character : MonoBehaviour {
 
 	void Update () {
 		checkInput ();
-		print (Melee);
 	}
 
 	private void checkInput() {
@@ -60,7 +59,7 @@ public class Character : MonoBehaviour {
             if (Input.GetKey (KeyCode.Space)) {
                 Shoot ();
             }
-            if (Input.GetKey (KeyCode.LeftControl)) {
+			if (Input.GetKey (KeyCode.LeftControl)) {
 				System.DateTime now = System.DateTime.Now;
 				System.TimeSpan ts = now - lastMeleeTime;
 				if (ts.TotalMilliseconds > GameLogic.TIME_BETWEEN_MELEE) {
@@ -113,27 +112,26 @@ public class Character : MonoBehaviour {
 		}
 	}
 
-		
+
 	void OnTriggerEnter2D(Collider2D col) {
 		int change;
 		switch (col.gameObject.name) {
-		case "Ammo(Clone)":
-			change = AddBullet ();
-			Drawer.Instance.CreateActionText (change.ToString(), Drawer.DARK_BLUE, col.gameObject.transform.position);
-			Destroy (col.gameObject);
-			break;
-		case "HealthKit(Clone)":
-			change = AddHealth (GameLogic.HEALTH_KIT_HP);
-			Drawer.Instance.CreateActionText (change.ToString(), Drawer.GREEN, col.gameObject.transform.position);
-			Destroy (col.gameObject);
-			SoundManager.PlaySound ((int)SndIdGame.HEALTH_TAKEN);
-			break;
-		case "SpecialBox(Clone)":
-			change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
-			Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
-			Destroy (col.gameObject);
-			SoundManager.PlaySound ((int)SndIdGame.SPECIAL_BOX_TAKEN);
-			break;
+			case "Ammo(Clone)":
+				change = AddBullet ();
+				Drawer.Instance.CreateActionText (change.ToString(), Drawer.DARK_BLUE, col.gameObject.transform.position);
+				Destroy (col.gameObject);
+				break;
+			case "HealthKit(Clone)":
+				change = AddHealth (GameLogic.HEALTH_KIT_HP);
+				Destroy (col.gameObject);
+				SoundManager.PlaySound ((int)SndIdGame.HEALTH_TAKEN);
+				break;
+			case "SpecialBox(Clone)":
+				change = AddScore (GameLogic.SPECIAL_BOX_SCORE);
+				Drawer.Instance.CreateActionText (change.ToString(), Drawer.PURPLE, col.gameObject.transform.position);
+				Destroy (col.gameObject);
+				SoundManager.PlaySound ((int)SndIdGame.SPECIAL_BOX_TAKEN);
+				break;
 		}
 	}
 
@@ -141,10 +139,10 @@ public class Character : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		int change;
 		switch (col.gameObject.name) {
-		case "Zombie":
-			TakeDamage ();
-			SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
-			break;
+			case "Zombie":
+				TakeDamage ();
+				SoundManager.PlaySound ((int)SndIdGame.ZOMBIE_BITE);
+				break;
 		}
 	}
 
@@ -154,7 +152,7 @@ public class Character : MonoBehaviour {
         }
     }
 
-    private void TakeDamage(){
+    public void TakeDamage(){
         if (health > 0) {
             this.health--;
             Drawer.Instance.TookDamage ();
@@ -177,15 +175,19 @@ public class Character : MonoBehaviour {
 	}
 
 	private int AddHealth(int amount) {
+		int healedAmount = 0;
 		int newHealth = health + amount;
 		if (newHealth > GameLogic.PLAYERHEALTH) {
 			health = GameLogic.PLAYERHEALTH;
 			int reminder = newHealth - GameLogic.PLAYERHEALTH;
-			return Mathf.Abs (reminder - amount);
+			healedAmount = Mathf.Abs (reminder - amount);
 		} else {
 			health = newHealth;
-			return amount;
+			healedAmount = amount;
 		}
+
+		Drawer.Instance.CreateActionText (healedAmount.ToString(), Drawer.GREEN, transform.position);
+		return healedAmount;
 	}
 
 	private int AddScore(int amount) {
@@ -195,5 +197,9 @@ public class Character : MonoBehaviour {
 
 	public void ZombieKilled() {
 		AddScore (GameLogic.ZOMBIE_KILLED_SCORE);
+	}
+
+	public void LifeSteal() {
+		AddHealth (GameLogic.LIFE_STEAL_PER_HIT);
 	}
 }

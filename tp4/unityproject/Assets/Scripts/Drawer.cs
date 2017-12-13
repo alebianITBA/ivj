@@ -107,7 +107,6 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 
 	public void DrawTiles(Level level, GameObject tilesHolder, GameObject accessoriesHolder) {
 		tileLength = floorPrefabs[0].GetComponent<Renderer>().bounds.size.x - 0.01f;
-		print (tileLength);
 		for (int row = 0; row < level.GetMap().GetLength(0); row++) {
 			for (int col = 0; col < level.GetMap().GetLength(1); col++) {
 				GameObject tileInstance = null;
@@ -132,17 +131,20 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 					case Level.Tile.OuterWall:
 						tileInstance = NewObjectFromPrefab (RandomTile (outerWallPrefabs), tilesHolder.transform);
 						break;
-                    case Level.Tile.AmmoSpawn:
-                        tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-                        CreateAccessory (ammoPrefab, tilesHolder.transform, position);
+					case Level.Tile.AmmoSpawn:
+						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
+						GameObject ammo = CreateAccessory (ammoPrefab, tilesHolder.transform, position);
+						level.AddAmmo (ammo);
 						break;
 					case Level.Tile.HealthKitSpawn:
 						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-                        CreateAccessory (healthKitPrefab, tilesHolder.transform, position);
+						GameObject kit = CreateAccessory (healthKitPrefab, tilesHolder.transform, position);
+						level.AddHealthKit (kit);
 						break;
 					case Level.Tile.SpecialBoxSpawn:
 						tileInstance = NewObjectFromPrefab (RandomTile (floorPrefabs), tilesHolder.transform);
-                        CreateAccessory (specialBoxPrefab, tilesHolder.transform, position);
+						GameObject box = CreateAccessory (specialBoxPrefab, tilesHolder.transform, position);
+						level.AddSpecialBox (box);
                         break;
 				}
 
@@ -233,17 +235,16 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 						texture.SetPixel (x + 1, y + 1, MM_WALL_COLOR);
 						break;
 					case Level.Tile.ZombieSpawn:
-//						texture.SetPixel(x + 1, y + 1, MM_WARRIOR_SPAWN_COLOR);
                         texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
 						break;
 					case Level.Tile.AmmoSpawn:
-						texture.SetPixel(x + 1, y + 1, MM_AMMO_SPAWN_COLOR);
+						texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
 						break;
 					case Level.Tile.HealthKitSpawn:
-						texture.SetPixel(x + 1, y + 1, MM_HEALTH_SPAWN_COLOR);
+						texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
 						break;
 					case Level.Tile.SpecialBoxSpawn:
-						texture.SetPixel(x + 1, y + 1, MM_SPECIAL_BOX_SPAWN_COLOR);
+						texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
 						break;
 					default:
 						texture.SetPixel(x + 1, y + 1, MM_FLOOR_COLOR);
@@ -278,11 +279,32 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
             }
         }
 
+		// Paint accessories
+		PrintAccessories(level.GetAmmos(), level, texture, MM_AMMO_SPAWN_COLOR);
+		PrintAccessories(level.GetHealthKits(), level, texture, MM_HEALTH_SPAWN_COLOR);
+		PrintAccessories(level.GetSpecialBoxes(), level, texture, MM_SPECIAL_BOX_SPAWN_COLOR);
+
 		texture.filterMode = FilterMode.Point;
 		texture.wrapMode = TextureWrapMode.Clamp;
 		texture.Apply();
 
 		minimap.GetComponent<GUITexture>().texture = texture;
+	}
+
+	private void PrintAccessories(List<GameObject> list, Level level, Texture2D texture, Color color) {
+		foreach (GameObject elem in list) {
+			if (elem == null) {
+				list.Remove (elem);
+			} else {
+				LevelPosition elemPos = GetLevelPosition (elem, level);
+				// We are assuming that level was the center level
+				if (elemPos.x >= 0 && elemPos.x < level.GetMap ().GetLength (0)) {
+					if (elemPos.y >= 0 && elemPos.y < level.GetMap ().GetLength (1)) {
+						texture.SetPixel (elemPos.x + 1, elemPos.y + 1, color);
+					}
+				}
+			}
+		}
 	}
 
 	public void CreateActionText(string text, Color color, Vector3 position) {
@@ -294,11 +316,12 @@ public class Drawer : MonoBehaviourSingleton<Drawer> {
 		destroyables.Add (new TimeDestroyable(newText, 500));
 	}
 
-    private void CreateAccessory(GameObject prefab, Transform transform, Vector3 position) {
+	private GameObject CreateAccessory(GameObject prefab, Transform transform, Vector3 position) {
         GameObject obj = NewObjectFromPrefab (prefab, transform);
         obj.transform.localPosition = position;
         BulletManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
         WarriorManager.Instance.IgnoreColliders(obj.GetComponent<Collider2D>());
+		return obj;
     }
 		
     public void TookDamage() {

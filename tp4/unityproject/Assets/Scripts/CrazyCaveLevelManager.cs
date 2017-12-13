@@ -30,7 +30,11 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 	private int seed;
 
 	void Awake() {
-		this.seed = initialSeed;
+		if (initialSeed > 0) {
+			this.seed = initialSeed;
+		} else {
+			this.seed = UnityEngine.Random.Range (0, 1000000);
+		}
 		boardHolders = new Dictionary<Level.Direction, GameObject>();
 		levels = new Dictionary<Level.Direction, Level> ();
 		boardHolders.Add (Level.Direction.Center, new GameObject ("Center BoardHolder"));
@@ -168,7 +172,11 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 		
 
 	public void Generate() {
-		seed = initialSeed;
+		if (initialSeed > 0) {
+			this.seed = initialSeed;
+		} else {
+			this.seed = UnityEngine.Random.Range (0, 1000000);
+		}
 		boardHolders = new Dictionary<Level.Direction, GameObject>();
 		levels = new Dictionary<Level.Direction, Level> ();
 		boardHolders.Add (Level.Direction.Center, new GameObject ("Center BoardHolder"));
@@ -191,7 +199,7 @@ public class CrazyCaveLevelManager : MonoBehaviourSingleton<CrazyCaveLevelManage
 				boardHolders [dir].transform.position = Vector3.Scale (Level.GetPosition (dir), new Vector3 (levelXSize * Drawer.Instance.tileLength, levelYSize * Drawer.Instance.tileLength, 0));
 			}
 			//AddAccessories (levels[dir]);
-			levels[dir].AddZombieSpawningPoints(10,new LevelPosition(levelXSize/2, levelYSize/2));
+			levels[dir].AddZombieSpawningPoints(0,new LevelPosition(levelXSize/2, levelYSize/2));
 			Drawer.Instance.DrawTiles (levels[dir], boardHolders[dir], accessoriesHolder);
 		}
 	}
