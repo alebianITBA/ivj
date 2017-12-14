@@ -182,6 +182,11 @@ MonoBehaviour:
   - {fileID: 110520, guid: 6a78af12a82a849ae996dbdc551fc680, type: 2}
   - {fileID: 110520, guid: 903ea2024d05f455d89bc5e6a71f5bb2, type: 2}
   - {fileID: 110520, guid: 3c9033e2b161147058f728f1d9a505b0, type: 2}
+  basePrefab: {fileID: 1416590368707954, guid: 2f9f7bb2ffe4e415ca9b0c32faf3f89d, type: 2}
+  towerPrefab: {fileID: 1799867259783758, guid: 5408ac833615a45148f38951bea12826,
+    type: 2}
+  disabledMinionPrefab: {fileID: 1928779462568060, guid: bc47653d38880415680421a628fccc5e,
+    type: 2}
   tilesHolder: {fileID: 388821090}
   tileLength: 0
 --- !u!4 &1166778565
