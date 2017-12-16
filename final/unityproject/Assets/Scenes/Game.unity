@@ -183,7 +183,7 @@ MonoBehaviour:
   - {fileID: 110520, guid: 903ea2024d05f455d89bc5e6a71f5bb2, type: 2}
   - {fileID: 110520, guid: 3c9033e2b161147058f728f1d9a505b0, type: 2}
   basePrefab: {fileID: 1951512697579776, guid: 110644038b7ef4c05bdc92b933c6096c, type: 2}
-  towerPrefab: {fileID: 1799867259783758, guid: 5408ac833615a45148f38951bea12826,
+  towerPrefab: {fileID: 1842252933096982, guid: 5408ac833615a45148f38951bea12826,
     type: 2}
   minionSpawnPrefab: {fileID: 1928779462568060, guid: bc47653d38880415680421a628fccc5e,
     type: 2}
