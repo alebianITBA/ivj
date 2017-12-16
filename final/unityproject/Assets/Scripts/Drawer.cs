@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Drawer : MonoBehaviourSingleton<Drawer>
 {
+    // PREFABS
     public GameObject[] floorPrefabs;
     public GameObject[] wallPrefabs;
     public GameObject basePrefab;
     public GameObject towerPrefab;
     public GameObject minionSpawnPrefab;
+    public GameObject player1Prefab;
+    public GameObject player2Prefab;
+    public GameObject cameraPrefab;
+
     public GameObject tilesHolder;
 
     [HideInInspector]
@@ -74,12 +79,31 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
     {
         foreach (LevelPosition tile in towerTiles) {
             GameObject tower = NewObjectFromPrefab(towerPrefab, GetExactPosition(tile));
+            GameManager.Instance.AssignTeam(tower, tower.GetComponent<Tower>());
         }
         foreach (LevelPosition tile in baseTiles) {
-            GameObject tower = NewObjectFromPrefab(basePrefab, GetExactPosition(tile));
+            GameObject bas = NewObjectFromPrefab(basePrefab, GetExactPosition(tile));
+            GameManager.Instance.AssignTeam(bas, bas.GetComponent<Base>());
+            Champion champ;
+            if (bas.GetComponent<Team>().IsRED()) {
+                GameObject player1 = NewObjectFromPrefab(player1Prefab, new Vector3(0.31f, 3.1f, -1));
+                champ = player1.GetComponent<Champion>();
+                GameManager.Instance.AssignTeam(player1, champ);
+                GameObject cam = NewObjectFromPrefab(cameraPrefab, player1.transform.position);
+                champ.SetCamera(cam);
+            }
+            else {
+                GameObject player2 = NewObjectFromPrefab(player2Prefab, new Vector3(4.65f, 3.1f, -1));
+                champ = player2.GetComponent<Champion>();
+                GameManager.Instance.AssignTeam(player2, champ);
+                GameObject cam = NewObjectFromPrefab(cameraPrefab, player2.transform.position);
+                cam.GetComponent<Camera>().rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
+                champ.SetCamera(cam);
+            }
         }
         foreach (LevelPosition tile in minionTiles) {
-            GameObject tower = NewObjectFromPrefab(minionSpawnPrefab, GetExactPosition(tile));
+            GameObject minionSpawn = NewObjectFromPrefab(minionSpawnPrefab, GetExactPosition(tile));
+            GameManager.Instance.AssignTeam(minionSpawn, minionSpawn.GetComponent<MinionSpawn>());
         }
     }
 

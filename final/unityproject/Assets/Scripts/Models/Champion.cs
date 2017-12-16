@@ -2,19 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Champion : MonoBehaviour, Life<Champion>
+public class Champion : MonoBehaviour, Life<Champion>, Team
 {
+    protected int health;
+    protected Rigidbody2D rb;
+    public GameManager.Teams team;
+    protected GameObject camera;
 
-    private int health;
-
-    void Start ()
+    protected Vector2 direction ()
     {
-        this.health = Constants.PLAYER_MAX_BASE_HEALTH;
+        float angle = transform.localRotation.eulerAngles.z;
+        float x = Mathf.Cos(angle * Mathf.Deg2Rad);
+        float y = Mathf.Sin(angle * Mathf.Deg2Rad);
+        return new Vector2(x, y);
     }
 
-    void Update ()
+    public void SetCamera (GameObject camera)
     {
-		
+        this.camera = camera;
+    }
+
+    protected void applyImpulseForward ()
+    {
+        Vector2 forward = direction();
+        rb.AddForce(forward * GetVelocity());
+    }
+
+    protected void applyImpulseBackwards ()
+    {
+        Vector2 forward = direction();
+        rb.AddForce(-1 * forward * GetVelocity());
+    }
+
+    protected float GetVelocity ()
+    {
+        return Constants.PLAYER_BASE_VELOCITY;
     }
 
     public int Heal (int amount)
@@ -52,5 +74,25 @@ public class Champion : MonoBehaviour, Life<Champion>
     public int GetCurrentHealth ()
     {
         return this.health;
+    }
+
+    public bool IsRED ()
+    {
+        return this.team == GameManager.Teams.RED;
+    }
+
+    public bool IsBLUE ()
+    {
+        return this.team == GameManager.Teams.BLUE;
+    }
+
+    public GameManager.Teams GetTeam ()
+    {
+        return this.team;
+    }
+
+    public void SetTeam (GameManager.Teams team)
+    {
+        this.team = team;
     }
 }

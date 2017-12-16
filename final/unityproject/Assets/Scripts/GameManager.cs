@@ -4,14 +4,31 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
-	public TextAsset mapTextFile;
-	private Level level;
+    public enum Teams
+    {
+        RED,
+        BLUE}
 
-	void Start ()
-	{
-		this.level = new Level(mapTextFile);
-		Drawer.Instance.SetLevel(level);
-		Drawer.Instance.DrawMap();
-		Drawer.Instance.DrawObjectives();
-	}
+    ;
+
+    public TextAsset mapTextFile;
+    private Level level;
+
+    void Start ()
+    {
+        this.level = new Level(mapTextFile);
+        Drawer.Instance.SetLevel(level);
+        Drawer.Instance.DrawMap();
+        Drawer.Instance.DrawObjectives();
+    }
+
+    public void AssignTeam (GameObject obj, Team team)
+    {
+        if (obj.transform.position.x <= 2.48f) {
+            team.SetTeam(GameManager.Teams.RED);
+        }
+        else {
+            team.SetTeam(GameManager.Teams.BLUE);
+        }
+    }
 }

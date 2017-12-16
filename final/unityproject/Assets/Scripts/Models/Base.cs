@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Base : MonoBehaviour, Life<Base>
+public class Base : MonoBehaviour, Life<Base>, Team
 {
+    public GameManager.Teams team;
     private int health;
 
     void Start ()
@@ -41,5 +42,25 @@ public class Base : MonoBehaviour, Life<Base>
     public int GetCurrentHealth ()
     {
         return this.health;
+    }
+
+    public bool IsRED ()
+    {
+        return this.team == GameManager.Teams.RED;
+    }
+
+    public bool IsBLUE ()
+    {
+        return this.team == GameManager.Teams.BLUE;
+    }
+
+    public GameManager.Teams GetTeam ()
+    {
+        return this.team;
+    }
+
+    public void SetTeam (GameManager.Teams team)
+    {
+        this.team = team;
     }
 }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4415275594860848}
   - component: {fileID: 212368123920752384}
   - component: {fileID: 114353053358878478}
+  - component: {fileID: 60334180989901580}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -41,6 +42,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &60334180989901580
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1799867259783758}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.23, y: 0.33}
+    newSize: {x: 0.23, y: 0.33}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.035, y: 0.145}
+      - {x: -0.085, y: 0.114999995}
+      - {x: -0.095, y: -0.015}
+      - {x: -0.095, y: -0.16499999}
+      - {x: 0.114999995, y: -0.16499999}
+      - {x: 0.114999995, y: 0.13499999}
+      - {x: 0.105, y: 0.13499999}
 --- !u!114 &114353053358878478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -53,6 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: []
+  team: 0
 --- !u!212 &212368123920752384
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Minion : MonoBehaviour, Life<Minion>
+public class Minion : MonoBehaviour, Life<Minion>, Team
 {
     private int health;
+    public GameManager.Teams team;
 
     void Start ()
     {
@@ -40,5 +41,25 @@ public class Minion : MonoBehaviour, Life<Minion>
     public int GetCurrentHealth ()
     {
         return this.health;
+    }
+
+    public bool IsRED ()
+    {
+        return this.team == GameManager.Teams.RED;
+    }
+
+    public bool IsBLUE ()
+    {
+        return this.team == GameManager.Teams.BLUE;
+    }
+
+    public GameManager.Teams GetTeam ()
+    {
+        return this.team;
+    }
+
+    public void SetTeam (GameManager.Teams team)
+    {
+        this.team = team;
     }
 }
