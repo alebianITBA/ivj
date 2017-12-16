@@ -86,14 +86,14 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
             GameManager.Instance.AssignTeam(bas, bas.GetComponent<Base>());
             Champion champ;
             if (bas.GetComponent<Team>().IsRED()) {
-                GameObject player1 = NewObjectFromPrefab(player1Prefab, new Vector3(0.31f, 3.1f, -1));
+                GameObject player1 = NewObjectFromPrefab(player1Prefab, new Vector3(bas.transform.position.x - 0.31f, bas.transform.position.y, -1));
                 champ = player1.GetComponent<Champion>();
                 GameManager.Instance.AssignTeam(player1, champ);
                 GameObject cam = NewObjectFromPrefab(cameraPrefab, player1.transform.position);
                 champ.SetCamera(cam);
             }
             else {
-                GameObject player2 = NewObjectFromPrefab(player2Prefab, new Vector3(4.65f, 3.1f, -1));
+                GameObject player2 = NewObjectFromPrefab(player2Prefab, new Vector3(bas.transform.position.x + 0.31f, bas.transform.position.y, -1));
                 champ = player2.GetComponent<Champion>();
                 GameManager.Instance.AssignTeam(player2, champ);
                 GameObject cam = NewObjectFromPrefab(cameraPrefab, player2.transform.position);
