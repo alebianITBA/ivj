@@ -5,7 +5,8 @@ using UnityEngine;
 public class Base : MonoBehaviour, Life<Base>, Team
 {
     public GameManager.Teams team;
-    private int health;
+    private float health;
+    public GameObject healthBar;
 
     void Start ()
     {
@@ -15,18 +16,20 @@ public class Base : MonoBehaviour, Life<Base>, Team
 
     void Update ()
     {
-		
+        if (healthBar != null) {
+            healthBar.transform.localScale = new Vector3(GetCurrentHealth() / GetTotalHealth(), 1.0f, 1.0f);
+        }
     }
 
-    public int Heal (int amount)
+    public float Heal (float amount)
     {
-        return 0;
+        return 0.0f;
     }
 
-    public int TakeDamage (int amount)
+    public float TakeDamage (float amount)
     {
         if (health > 0) {
-            this.health--;
+            this.health -= amount;
             return amount;
         }
         else {
@@ -34,12 +37,12 @@ public class Base : MonoBehaviour, Life<Base>, Team
         }
     }
 
-    public int GetTotalHealth ()
+    public float GetTotalHealth ()
     {
         return Constants.BASE_MAX_BASE_HEALTH;
     }
 
-    public int GetCurrentHealth ()
+    public float GetCurrentHealth ()
     {
         return this.health;
     }

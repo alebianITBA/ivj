@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Champion : MonoBehaviour, Life<Champion>, Team
 {
-    protected int health;
+    protected float health;
     protected Rigidbody2D rb;
     public GameManager.Teams team;
     protected GameObject camera;
@@ -39,13 +39,13 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
         return Constants.PLAYER_BASE_VELOCITY;
     }
 
-    public int Heal (int amount)
+    public float Heal (float amount)
     {
-        int healedAmount = 0;
-        int newHealth = health + amount;
+        float healedAmount = 0;
+        float newHealth = health + amount;
         if (newHealth > GetTotalHealth()) {
             health = GetTotalHealth();
-            int reminder = newHealth - GetTotalHealth();
+            float reminder = newHealth - GetTotalHealth();
             healedAmount = Mathf.Abs(reminder - amount);
         }
         else {
@@ -55,23 +55,23 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
         return healedAmount;
     }
 
-    public int TakeDamage (int amount)
+    public float TakeDamage (float amount)
     {
         if (health > 0) {
-            this.health--;
+            this.health -= amount;
             return amount;
         }
         else {
-            return 0;
+            return 0.0f;
         }
     }
 
-    public int GetTotalHealth ()
+    public float GetTotalHealth ()
     {
         return Constants.PLAYER_MAX_BASE_HEALTH;
     }
 
-    public int GetCurrentHealth ()
+    public float GetCurrentHealth ()
     {
         return this.health;
     }

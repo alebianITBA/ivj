@@ -4,11 +4,11 @@ using UnityEngine;
 
 public interface Life<T>
 {
-    int Heal (int amount);
+    float Heal (float amount);
 
-    int TakeDamage (int amount);
+    float TakeDamage (float amount);
 
-    int GetTotalHealth ();
+    float GetTotalHealth ();
 
-    int GetCurrentHealth ();
+    float GetCurrentHealth ();
 }
