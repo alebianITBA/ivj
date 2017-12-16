@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4721518298517688}
   - component: {fileID: 212025218623230678}
   - component: {fileID: 114093370439389994}
+  - component: {fileID: 58950052008171672}
   m_Layer: 0
   m_Name: MinionSpawn
   m_TagString: Untagged
@@ -35,12 +36,27 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1928779462568060}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.7179475, y: 1.8983207, z: 0}
+  m_LocalPosition: {x: 5.7179475, y: 1.8983207, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &58950052008171672
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1928779462568060}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.045
 --- !u!114 &114093370439389994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -54,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeSprite: {fileID: 21300000, guid: a16d018e6ba2c4cd0b67b4ae9d10c9cf, type: 3}
   deactiveSprite: {fileID: 21300010, guid: a16d018e6ba2c4cd0b67b4ae9d10c9cf, type: 3}
+  team: 0
 --- !u!212 &212025218623230678
 SpriteRenderer:
   m_ObjectHideFlags: 1

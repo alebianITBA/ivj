@@ -95,4 +95,11 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
     {
         this.team = team;
     }
+
+    void OnCollisionEnter2D (Collision2D col)
+    {
+        if (col.gameObject.name == "MinionSpawn") {
+            col.gameObject.GetComponent<MinionSpawn>().Activate(GetComponent<Champion>());
+        }
+    }
 }

@@ -79,10 +79,12 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
     {
         foreach (LevelPosition tile in towerTiles) {
             GameObject tower = NewObjectFromPrefab(towerPrefab, GetExactPosition(tile));
+            tower.name = "Tower";
             GameManager.Instance.AssignTeam(tower, tower.GetComponent<Tower>());
         }
         foreach (LevelPosition tile in baseTiles) {
             GameObject bas = NewObjectFromPrefab(basePrefab, GetExactPosition(tile));
+            bas.name = "Base";
             GameManager.Instance.AssignTeam(bas, bas.GetComponent<Base>());
             Champion champ;
             if (bas.GetComponent<Team>().IsRED()) {
@@ -98,11 +100,14 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
                 GameManager.Instance.AssignTeam(player2, champ);
                 GameObject cam = NewObjectFromPrefab(cameraPrefab, player2.transform.position);
                 cam.GetComponent<Camera>().rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
+                cam.GetComponent<AudioListener>().enabled = false;
                 champ.SetCamera(cam);
             }
+            champ.name = "Player";
         }
         foreach (LevelPosition tile in minionTiles) {
             GameObject minionSpawn = NewObjectFromPrefab(minionSpawnPrefab, GetExactPosition(tile));
+            minionSpawn.name = "MinionSpawn";
             GameManager.Instance.AssignTeam(minionSpawn, minionSpawn.GetComponent<MinionSpawn>());
         }
     }

@@ -18,10 +18,12 @@ public class MinionSpawn : MonoBehaviour, Team
     {
     }
 
-    public void Activate ()
+    public void Activate (Champion champ)
     {
-        this.active = true;
-        GetComponent<SpriteRenderer>().sprite = activeSprite;
+        if (champ.GetTeam() == GetTeam()) {
+            this.active = true;
+            GetComponent<SpriteRenderer>().sprite = activeSprite;
+        }
     }
 
     public void Deactivate ()
