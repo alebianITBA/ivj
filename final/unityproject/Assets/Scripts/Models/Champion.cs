@@ -7,7 +7,7 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
     protected float health;
     protected Rigidbody2D rb;
     public GameManager.Teams team;
-    protected GameObject camera;
+    protected GameObject cam;
 
     protected Vector2 direction ()
     {
@@ -17,9 +17,17 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
         return new Vector2(x, y);
     }
 
-    public void SetCamera (GameObject camera)
+    protected Vector2 direction (float deviation)
     {
-        this.camera = camera;
+        float angle = transform.localRotation.eulerAngles.z + deviation;
+        float x = Mathf.Cos(angle * Mathf.Deg2Rad);
+        float y = Mathf.Sin(angle * Mathf.Deg2Rad);
+        return new Vector2(x, y);
+    }
+
+    public void SetCamera (GameObject cam)
+    {
+        this.cam = cam;
     }
 
     protected void applyImpulseForward ()
@@ -100,6 +108,11 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
     {
         if (col.gameObject.name == "MinionSpawn") {
             col.gameObject.GetComponent<MinionSpawn>().Activate(GetComponent<Champion>());
+        }
+        if (col.gameObject.name == "Bullet") {
+            Bullet bul = col.gameObject.GetComponent<Bullet>();
+            bul.Recycle();
+            TakeDamage(bul.GetDamage());
         }
     }
 }

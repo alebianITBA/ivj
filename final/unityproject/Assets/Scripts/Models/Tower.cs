@@ -66,4 +66,15 @@ public class Tower : MonoBehaviour, Life<Tower>, Team
     {
         this.team = team;
     }
+
+    void OnCollisionEnter2D (Collision2D col)
+    {
+        if (col.gameObject.name == "Bullet") {
+            Bullet bul = col.gameObject.GetComponent<Bullet>();
+            bul.Recycle();
+            if (bul.GetTeam() != GetTeam()) {
+                TakeDamage(bul.GetDamage() * 5);
+            }
+        }
+    }
 }

@@ -8,4 +8,5 @@
     // SPEED
     public static float PLAYER_BASE_VELOCITY = 500.0f;
     public static float PLAYER_BASE_ROTATION_SPEED = 300.0f;
+    public static float BULLET_SPEED = 300.0f;
 }
