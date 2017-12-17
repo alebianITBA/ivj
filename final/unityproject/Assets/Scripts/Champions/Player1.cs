@@ -67,6 +67,6 @@ public class Player1 : Champion
     {
         System.DateTime now = System.DateTime.Now;
         System.TimeSpan ts = now - lastShootTime;
-        return ts.TotalMilliseconds > TIME_BETWEEN_SHOTS && bulletManager.bulletPool.Count > 0;
+        return ts.TotalMilliseconds > TIME_BETWEEN_SHOTS && bulletManager.BulletsLeft() >= BULLETS_PER_SHOT;
     }
 }

@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour, Team
     void Update ()
     {
         if ((System.DateTime.Now - ShootedAt).TotalMilliseconds > 2000.0f) {
-            bulletManager.RecycleBullet(this);
+            Recycle();
         }
     }
 

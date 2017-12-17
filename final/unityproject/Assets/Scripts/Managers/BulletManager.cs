@@ -8,7 +8,7 @@ public class BulletManager
     private Transform parentTransform;
     private GameObject bulletPrefab;
     private GameManager.Teams team;
-    public Queue<Bullet> bulletPool;
+    private Queue<Bullet> bulletPool;
 
     public BulletManager (int amount, float bulletDamage, GameObject bulletPrefab, Transform parentTransform, GameManager.Teams team)
     {
@@ -64,5 +64,10 @@ public class BulletManager
         foreach (Bullet b in bulletPool) {
             Physics2D.IgnoreCollision(collider, b.GetComponent<Collider2D>());
         }
+    }
+
+    public int BulletsLeft ()
+    {
+        return bulletPool.Count;
     }
 }
