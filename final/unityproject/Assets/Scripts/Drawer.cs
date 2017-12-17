@@ -85,7 +85,14 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
         foreach (LevelPosition tile in baseTiles) {
             GameObject bas = NewObjectFromPrefab(basePrefab, GetExactPosition(tile));
             bas.name = "Base";
-            GameManager.Instance.AssignTeam(bas, bas.GetComponent<Base>());
+            Base baseScript = bas.GetComponent<Base>();
+            GameManager.Instance.AssignTeam(bas, baseScript);
+            if (baseScript.IsRED()) {
+                GameManager.Instance.REDBase = baseScript;
+            }
+            else {
+                GameManager.Instance.BLUEBase = baseScript;
+            }
             Champion champ;
             if (bas.GetComponent<Team>().IsRED()) {
                 GameObject player1 = NewObjectFromPrefab(player1Prefab, new Vector3(bas.transform.position.x - 0.31f, bas.transform.position.y, -1));
