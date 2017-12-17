@@ -6,11 +6,16 @@ public class Minion : MonoBehaviour, Life<Minion>, Team
 {
     private float health;
     public GameManager.Teams team;
+	private MinionManager manager;
 
     void Start ()
     {
         this.health = Constants.MINION_MAX_BASE_HEALTH;
     }
+
+	public void SetManager(MinionManager manager) {
+		this.manager = manager;
+	}
 
     void Update ()
     {
@@ -26,6 +31,9 @@ public class Minion : MonoBehaviour, Life<Minion>, Team
     {
         if (health > 0) {
             this.health -= amount;
+			if (health <= 0) {
+				manager.RecycleMinion (this);
+			}
             return amount;
         }
         else {

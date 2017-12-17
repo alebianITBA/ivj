@@ -8,10 +8,13 @@ public class MinionSpawn : MonoBehaviour, Team
     public Sprite activeSprite;
     public Sprite deactiveSprite;
     public GameManager.Teams team;
+	private MinionManager manager;
 
     void Start ()
     {
         this.active = false;
+		this.manager = GetComponent<MinionManager> ();
+		this.manager.SetTeam (this.team);
     }
 
     void Update ()
@@ -35,7 +38,7 @@ public class MinionSpawn : MonoBehaviour, Team
     public void ReleaseMinions ()
     {
         if (active) {
-            // TODO: add minion manager and release minions
+			manager.Spawn();
         }
     }
 
