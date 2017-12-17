@@ -11,13 +11,14 @@ public class Player1 : Champion
 
     public GameObject bulletPrefab;
     private BulletManager bulletManager;
+    public GameObject shootPointer;
 
     void Start ()
     {
         this.health = Constants.PLAYER_MAX_BASE_HEALTH;
         rb = GetComponent<Rigidbody2D>();
         int amount = (int)(Mathf.Ceil(1000.0f / TIME_BETWEEN_SHOTS) * BULLETS_PER_SHOT * 2.0f);
-        this.bulletManager = new BulletManager(amount, BULLET_DAMAGE, bulletPrefab, transform, GetTeam());
+        this.bulletManager = new BulletManager(amount, BULLET_DAMAGE, bulletPrefab, GetTeam());
         bulletManager.IgnoreColliders(GetComponent<Collider2D>());
     }
 
@@ -57,9 +58,22 @@ public class Player1 : Champion
     {
         if (CanShoot()) {
             lastShootTime = System.DateTime.Now;
-            bulletManager.Shoot(transform.position, transform.eulerAngles, direction(), transform.rotation);
-            bulletManager.Shoot(transform.position, transform.eulerAngles, direction(30.0f), transform.rotation);
-            bulletManager.Shoot(transform.position, transform.eulerAngles, direction(-30.0f), transform.rotation);
+            bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(), transform.rotation);
+            bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(15.0f), transform.rotation);
+            bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(-15.0f), transform.rotation);
+//            GameObject go = GameObject.Instantiate(bulletPrefab) as GameObject;
+//            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), go.GetComponent<Collider2D>());
+//            Bullet bul = go.GetComponent<Bullet>();
+//            bul.SetDamage(BULLET_DAMAGE);
+//            bul.SetTeam(team);
+//            go.name = "Bullet";
+//            go.SetActive(true);
+//            bul.ShootedAt = System.DateTime.Now;
+//            bul.transform.rotation = transform.rotation;
+//            bul.transform.position = transform.position;
+//            bul.transform.Rotate(0, 0, transform.eulerAngles.z - 90);
+//            bul.gameObject.SetActive(true);
+//            bul.GetComponent<Rigidbody2D>().AddForce(direction() * Constants.BULLET_SPEED);
         }
     }
 

@@ -5,16 +5,15 @@ using UnityEngine;
 public class BulletManager
 {
     private float bulletDamage;
-    private Transform parentTransform;
     private GameObject bulletPrefab;
     private GameManager.Teams team;
     private Queue<Bullet> bulletPool;
+    private List<GameObject> bulletObjects;
 
-    public BulletManager (int amount, float bulletDamage, GameObject bulletPrefab, Transform parentTransform, GameManager.Teams team)
+    public BulletManager (int amount, float bulletDamage, GameObject bulletPrefab, GameManager.Teams team)
     {
         this.bulletDamage = bulletDamage;
         this.bulletPrefab = bulletPrefab;
-        this.parentTransform = parentTransform;
         this.team = team;
         PrecreateObjects(amount);
     }
@@ -22,6 +21,7 @@ public class BulletManager
     private void PrecreateObjects (int amount)
     {
         bulletPool = new Queue<Bullet>();
+        bulletObjects = new List<GameObject>();
         for (int i = 0; i < amount; i++) {
             GameObject go = GameObject.Instantiate(bulletPrefab) as GameObject;
             Bullet bul = go.GetComponent<Bullet>();
@@ -32,9 +32,10 @@ public class BulletManager
                 Debug.LogError("Cannot fint the component Bullet in the bullet prefab.");
             }
             go.name = "Bullet";
-//            go.transform.parent = parentTransform;
             go.SetActive(false);
             bulletPool.Enqueue(bul);
+            bulletObjects.Add(go);
+            IgnoreColliders(go.GetComponent<Collider2D>());
         }
     }
 
@@ -61,7 +62,7 @@ public class BulletManager
             return;
         }
 
-        foreach (Bullet b in bulletPool) {
+        foreach (GameObject b in bulletObjects) {
             Physics2D.IgnoreCollision(collider, b.GetComponent<Collider2D>());
         }
     }

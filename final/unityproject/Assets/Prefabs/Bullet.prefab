@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4808625391447826}
   - component: {fileID: 212019258002379872}
-  - component: {fileID: 60757112174926238}
   - component: {fileID: 114418912412809644}
   - component: {fileID: 50887520955362522}
+  - component: {fileID: 61098019194134706}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -63,8 +63,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60757112174926238
-PolygonCollider2D:
+--- !u!61 &61098019194134706
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -85,12 +85,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.055, y: 0.04}
-      - {x: -0.055, y: -0.04}
-      - {x: 0.055, y: -0.04}
-      - {x: 0.055, y: 0.04}
+  serializedVersion: 2
+  m_Size: {x: 0.11, y: 0.08}
+  m_EdgeRadius: 0
 --- !u!114 &114418912412809644
 MonoBehaviour:
   m_ObjectHideFlags: 1

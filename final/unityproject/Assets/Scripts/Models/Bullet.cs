@@ -12,9 +12,9 @@ public class Bullet : MonoBehaviour, Team
 
     void Update ()
     {
-        if ((System.DateTime.Now - ShootedAt).TotalMilliseconds > 2000.0f) {
-            Recycle();
-        }
+//        if ((System.DateTime.Now - ShootedAt).TotalMilliseconds > 2000.0f) {
+//            Recycle();
+//        }
     }
 
     public void SetManager (BulletManager manager)

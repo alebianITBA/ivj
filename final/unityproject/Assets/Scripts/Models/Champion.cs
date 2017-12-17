@@ -108,12 +108,14 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
     {
         if (col.gameObject.name == "MinionSpawn") {
             col.gameObject.GetComponent<MinionSpawn>().Activate(GetComponent<Champion>());
-			col.gameObject.GetComponent<MinionSpawn> ().ReleaseMinions ();
+            col.gameObject.GetComponent<MinionSpawn>().ReleaseMinions();
         }
         if (col.gameObject.name == "Bullet") {
             Bullet bul = col.gameObject.GetComponent<Bullet>();
-            bul.Recycle();
-            TakeDamage(bul.GetDamage());
+            if (bul.GetTeam() != GetTeam()) {
+                bul.Recycle();
+                TakeDamage(bul.GetDamage());
+            }
         }
     }
 }

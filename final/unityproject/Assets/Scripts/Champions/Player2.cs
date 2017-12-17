@@ -10,13 +10,14 @@ public class Player2 : Champion
     public GameObject bulletPrefab;
     private BulletManager bulletManager;
     private System.DateTime lastShootTime;
+    public GameObject shootPointer;
 
     void Start ()
     {
         this.health = Constants.PLAYER_MAX_BASE_HEALTH;
         rb = GetComponent<Rigidbody2D>();
         int amount = (int)(Mathf.Ceil(1000.0f / TIME_BETWEEN_SHOTS) * BULLETS_PER_SHOT * 2.0f);
-        this.bulletManager = new BulletManager(amount, BULLET_DAMAGE, bulletPrefab, transform, GetTeam());
+        this.bulletManager = new BulletManager(amount, BULLET_DAMAGE, bulletPrefab, GetTeam());
         bulletManager.IgnoreColliders(GetComponent<Collider2D>());
     }
 
@@ -56,7 +57,7 @@ public class Player2 : Champion
     {
         if (CanShoot()) {
             lastShootTime = System.DateTime.Now;
-            bulletManager.Shoot(transform.position, transform.eulerAngles, direction(), transform.rotation);
+            bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(), transform.rotation);
         }
     }
 
