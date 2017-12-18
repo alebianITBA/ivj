@@ -120,7 +120,7 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
         if (col.gameObject.name == "Rocket") {
             Rocket rocket = col.gameObject.GetComponent<Rocket>();
             if (rocket.GetTeam() != GetTeam()) {
-                TakeDamage(bul.GetDamage());
+                TakeDamage(rocket.GetDamage());
             }
             rocket.Recycle();
         }
