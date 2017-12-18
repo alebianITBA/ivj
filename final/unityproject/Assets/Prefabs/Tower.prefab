@@ -46,6 +46,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1348292825493740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4795966509575626}
+  m_Layer: 0
+  m_Name: ShootPointer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1758082781587008
 GameObject:
   m_ObjectHideFlags: 1
@@ -105,11 +120,25 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1842252933096982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.3203583, y: 2.393158, z: 0}
+  m_LocalPosition: {x: 4.9099255, y: 3.6074798, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4795966509575626}
   - {fileID: 224017599889832172}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4795966509575626
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348292825493740}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.007, y: 0.077, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4713588956764164}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &60042761886149514
@@ -208,9 +237,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5188386b0c3b5496ba453b0639c5dcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites: []
   healthBar: {fileID: 1974218161718176}
   team: 0
+  alive: 0
+  shootPointer: {fileID: 1348292825493740}
+  rocketPrefab: {fileID: 1636926409466356, guid: d02130fb7b3df4c1a8f4b9ceef5ab37a,
+    type: 2}
+  leftSprite: {fileID: 21300000, guid: da0b8ee506c8140b086dc6a2dc0fb020, type: 3}
+  leftDownSprite: {fileID: 21300000, guid: f93b1fccbbc574b3cad4a44f23493608, type: 3}
+  leftUpSprite: {fileID: 21300000, guid: 4a779934f315b4e57a948e44dd48b099, type: 3}
+  rightSprite: {fileID: 21300000, guid: c6ab22a37cd764eadad77673914f8ebd, type: 3}
+  rightDownSprite: {fileID: 21300000, guid: 4af9ceb4ea16642dc806af0e3ff9286c, type: 3}
+  rightUpSprite: {fileID: 21300000, guid: 807240a8007f846848076bd4ead33b36, type: 3}
+  upSprite: {fileID: 21300000, guid: b8e96ab0342394e38a18ce1ed14dc426, type: 3}
+  downSprite: {fileID: 21300000, guid: 5ec0dadd285c34dcea7ffc3bb8ddfdd4, type: 3}
 --- !u!114 &114537165458069198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -369,7 +409,7 @@ RectTransform:
   - {fileID: 224246886458475140}
   - {fileID: 224768041888720484}
   m_Father: {fileID: 4713588956764164}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

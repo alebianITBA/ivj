@@ -365,6 +365,10 @@ MonoBehaviour:
   mapTextFile: {fileID: 4900000, guid: 8f9f5269b20c049ea83c8485ca28d626, type: 3}
   panel: {fileID: 1040967941}
   middleText: {fileID: 1074778323}
+  REDMinions: []
+  BLUEMinions: []
+  REDPlayers: []
+  BLUEPlayers: []
 --- !u!1 &1591766370
 GameObject:
   m_ObjectHideFlags: 0

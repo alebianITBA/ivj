@@ -2,46 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletManager
+public class RocketManager
 {
-    private float bulletDamage;
-    private GameObject bulletPrefab;
+    private GameObject rocketPrefab;
     private GameManager.Teams team;
-    private Queue<Bullet> bulletPool;
-    private List<GameObject> bulletObjects;
+    private Queue<Rocket> rocketPool;
+    private List<GameObject> rocketObjects;
 
-    public BulletManager (int amount, float bulletDamage, GameObject bulletPrefab, GameManager.Teams team)
+    public RocketManager (int amount, GameObject rocketPrefab, GameManager.Teams team)
     {
-        this.bulletDamage = bulletDamage;
-        this.bulletPrefab = bulletPrefab;
+        this.rocketPrefab = rocketPrefab;
         this.team = team;
         PrecreateObjects(amount);
     }
 
     private void PrecreateObjects (int amount)
     {
-        bulletPool = new Queue<Bullet>();
-        bulletObjects = new List<GameObject>();
+        rocketPool = new Queue<Rocket>();
+        rocketObjects = new List<GameObject>();
         for (int i = 0; i < amount; i++) {
-            GameObject go = GameObject.Instantiate(bulletPrefab) as GameObject;
-            Bullet bul = go.GetComponent<Bullet>();
+            GameObject go = GameObject.Instantiate(rocketPrefab) as GameObject;
+            Rocket bul = go.GetComponent<Rocket>();
             bul.SetManager(this);
-            bul.SetDamage(this.bulletDamage);
             bul.SetTeam(team);
             if (bul == null) {
-                Debug.LogError("Cannot fint the component Bullet in the bullet prefab.");
+                Debug.LogError("Cannot fint the component Rocket in the rocket prefab.");
             }
-            go.name = "Bullet";
+            go.name = "Rocket";
             go.SetActive(false);
-            bulletPool.Enqueue(bul);
-            bulletObjects.Add(go);
+            rocketPool.Enqueue(bul);
+            rocketObjects.Add(go);
             IgnoreColliders(go.GetComponent<BoxCollider2D>());
         }
     }
 
     public void Shoot (Vector2 pos, Vector3 rot, Vector2 dir, Quaternion rotation)
     {
-        Bullet bul = bulletPool.Dequeue();
+        Rocket bul = rocketPool.Dequeue();
         bul.ShootedAt = System.DateTime.Now;
         bul.transform.rotation = rotation;
         bul.transform.position = pos;
@@ -50,25 +47,26 @@ public class BulletManager
         bul.GetComponent<Rigidbody2D>().AddForce(dir * Constants.BULLET_SPEED);
     }
 
-    public void RecycleBullet (Bullet bul)
+    public void RecycleRocket (Rocket bul)
     {
-        bulletPool.Enqueue(bul);
+        rocketPool.Enqueue(bul);
         bul.gameObject.SetActive(false);
     }
 
     public void IgnoreColliders (Collider2D collider)
     {
-        if (bulletPool == null) {
+        if (rocketPool == null) {
             return;
         }
 
-        foreach (GameObject b in bulletObjects) {
+        foreach (GameObject b in rocketObjects) {
             Physics2D.IgnoreCollision(collider, b.GetComponent<BoxCollider2D>());
         }
     }
 
-    public int BulletsLeft ()
+    public int RocketsLeft ()
     {
-        return bulletPool.Count;
+        return rocketPool.Count;
     }
 }
+

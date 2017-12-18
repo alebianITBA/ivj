@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     public GameObject panel;
     public Text middleText;
+    public List<GameObject> REDMinions;
+    public List<GameObject> BLUEMinions;
+    public List<GameObject> REDPlayers;
+    public List<GameObject> BLUEPlayers;
 
     public Base BLUEBase { get; set; }
 
@@ -27,6 +31,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         this.level = new Level(mapTextFile);
         this.gameEnded = false;
+        REDMinions = new List<GameObject>();
+        BLUEMinions = new List<GameObject>();
+        REDPlayers = new List<GameObject>();
+        BLUEPlayers = new List<GameObject>();
         Drawer.Instance.SetLevel(level);
         Drawer.Instance.DrawMap();
         Drawer.Instance.DrawObjectives();

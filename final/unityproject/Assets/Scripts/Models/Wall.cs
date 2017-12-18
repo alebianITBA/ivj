@@ -9,5 +9,8 @@ public class Wall : MonoBehaviour
         if (col.gameObject.name == "Bullet") {
             col.gameObject.GetComponent<Bullet>().Recycle();
         }
+        if (col.gameObject.name == "Rocket") {
+            col.gameObject.GetComponent<Rocket>().Recycle();
+        }
     }
 }

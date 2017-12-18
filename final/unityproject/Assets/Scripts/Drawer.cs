@@ -100,6 +100,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
                 GameManager.Instance.AssignTeam(player1, champ);
                 GameObject cam = NewObjectFromPrefab(cameraPrefab, player1.transform.position);
                 champ.SetCamera(cam);
+                GameManager.Instance.REDPlayers.Add(player1);
             }
             else {
                 GameObject player2 = NewObjectFromPrefab(player2Prefab, new Vector3(bas.transform.position.x + 0.31f, bas.transform.position.y, -1));
@@ -109,6 +110,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
                 cam.GetComponent<Camera>().rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
                 cam.GetComponent<AudioListener>().enabled = false;
                 champ.SetCamera(cam);
+                GameManager.Instance.BLUEPlayers.Add(player2);
             }
             champ.name = "Player";
         }

@@ -117,5 +117,12 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
                 TakeDamage(bul.GetDamage());
             }
         }
+        if (col.gameObject.name == "Rocket") {
+            Rocket rocket = col.gameObject.GetComponent<Rocket>();
+            if (rocket.GetTeam() != GetTeam()) {
+                TakeDamage(bul.GetDamage());
+            }
+            rocket.Recycle();
+        }
     }
 }

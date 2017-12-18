@@ -18,7 +18,7 @@ public class Player2 : Champion
         rb = GetComponent<Rigidbody2D>();
         int amount = (int)(Mathf.Ceil(1000.0f / TIME_BETWEEN_SHOTS) * BULLETS_PER_SHOT * 2.0f);
         this.bulletManager = new BulletManager(amount, BULLET_DAMAGE, bulletPrefab, GetTeam());
-        bulletManager.IgnoreColliders(GetComponent<Collider2D>());
+        bulletManager.IgnoreColliders(GetComponent<PolygonCollider2D>());
     }
 
     void Update ()
