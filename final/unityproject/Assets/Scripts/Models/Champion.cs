@@ -5,16 +5,15 @@ using UnityEngine;
 public class Champion : MonoBehaviour, Life<Champion>, Team
 {
     protected float health;
+    protected bool alive = true;
+    protected System.DateTime deadAt;
     protected Rigidbody2D rb;
     public GameManager.Teams team;
     protected GameObject cam;
 
     void FixedUpdate ()
     {
-        Base myBase = IsRED() ? GameManager.Instance.REDBase : GameManager.Instance.BLUEBase;
-        if (Constants.CloseEnough(myBase.gameObject, gameObject)) {
-            Heal(1.0f);
-        }
+        RespawnIfDead();
     }
 
     protected Vector2 direction ()
@@ -74,8 +73,22 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
     public float TakeDamage (float amount)
     {
         if (health > 0) {
-            this.health -= amount;
-            return amount;
+            float damageDealed = 0.0f;
+            float newHealth = health - amount;
+            if (newHealth > 0.0f) {
+                this.health = newHealth;
+                damageDealed = amount;
+            }
+            else {
+                this.alive = false;
+                Disable();
+                this.deadAt = System.DateTime.Now;
+                TakeToBase();
+                SoundManager.PlaySound((int)SndIdGame.DEAD);
+                damageDealed = health;
+                health = 0.0f;
+            }
+            return damageDealed;
         }
         else {
             return 0.0f;
@@ -132,5 +145,40 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
             }
             rocket.Recycle();
         }
+    }
+
+    private void TakeToBase ()
+    {
+        gameObject.transform.position = IsRED() ? GameManager.Instance.RedTeamSpawn.GetCoordinates() : GameManager.Instance.BlueTeamSpawn.GetCoordinates();
+    }
+
+    protected void RespawnIfDead ()
+    {
+        if (alive) {
+            Base myBase = IsRED() ? GameManager.Instance.REDBase : GameManager.Instance.BLUEBase;
+            if (Constants.CloseEnough(myBase.gameObject, gameObject)) {
+                Heal(1.0f);
+            }
+        }
+        else {
+            if ((System.DateTime.Now - deadAt).TotalMilliseconds > 5000.0f) {
+                TakeToBase();
+                this.health = Constants.PLAYER_MAX_BASE_HEALTH;
+                Enable();
+                this.alive = true;
+            }
+        }
+    }
+
+    protected void Disable ()
+    {
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+    }
+
+    protected void Enable ()
+    {
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        gameObject.GetComponent<Collider2D>().enabled = true;
     }
 }

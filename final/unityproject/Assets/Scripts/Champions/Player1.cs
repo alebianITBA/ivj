@@ -24,7 +24,6 @@ public class Player1 : Champion
 
     void Update ()
     {
-        print(health);
         if (this.cam != null) {
             this.cam.transform.position = new Vector3(transform.position.x, transform.position.y, -100);
             this.cam.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
@@ -34,7 +33,7 @@ public class Player1 : Champion
 
     protected void checkInput ()
     {
-        if (GetCurrentHealth() > 0) {
+        if (alive) {
             if (Input.GetKey(KeyCode.W)) {
                 applyImpulseForward();
             }
@@ -62,6 +61,7 @@ public class Player1 : Champion
             bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(), transform.rotation);
             bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(15.0f), transform.rotation);
             bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(-15.0f), transform.rotation);
+            SoundManager.PlaySound((int)SndIdGame.PLAYER_1_SHOOT);
         }
     }
 

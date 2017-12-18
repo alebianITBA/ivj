@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public TextAsset mapTextFile;
     private Level level;
     private bool gameEnded;
+    private bool playedBackground = false;
 
     public GameObject panel;
     public Text middleText;
@@ -25,7 +26,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     public Base BLUEBase { get; set; }
 
+    public LevelPosition BlueTeamSpawn;
+
     public Base REDBase { get; set; }
+
+    public LevelPosition RedTeamSpawn;
 
     void Start ()
     {
@@ -42,6 +47,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     void Update ()
     {
+        if (!playedBackground) {
+            SoundManager.PlayMusic((int)SndIdGame.BACKGROUND_MUSIC);
+            playedBackground = true;
+        }
         if (!GameFinished()) {
             if (!REDBase.alive || !BLUEBase.alive) {
                 gameEnded = true;

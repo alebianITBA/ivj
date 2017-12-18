@@ -32,7 +32,7 @@ public class Player2 : Champion
 
     protected void checkInput ()
     {
-        if (GetCurrentHealth() > 0) {
+        if (alive) {
             if (Input.GetKey(KeyCode.UpArrow)) {
                 applyImpulseForward();
             }
@@ -58,6 +58,7 @@ public class Player2 : Champion
         if (CanShoot()) {
             lastShootTime = System.DateTime.Now;
             bulletManager.Shoot(shootPointer.transform.position, transform.eulerAngles, direction(), transform.rotation);
+            SoundManager.PlaySound((int)SndIdGame.PLAYER_2_SHOOT);
         }
     }
 

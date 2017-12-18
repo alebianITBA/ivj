@@ -116,31 +116,29 @@ public class Tower : MonoBehaviour, Life<Tower>, Team
     {
         if (CanShoot()) {
             if (IsBLUE()) {
-                foreach (GameObject player in GameManager.Instance.REDPlayers) {
-                    if (CloseEnoughToShoot(player)) {
-                        Shoot(player);
-                        return;
-                    }
-                }
                 foreach (GameObject minion in GameManager.Instance.REDMinions) {
                     if (CloseEnoughToShoot(minion)) {
                         Shoot(minion);
                         return;
                     }
                 }
-            }
-            else {
-                foreach (GameObject player in GameManager.Instance.BLUEPlayers) {
+                foreach (GameObject player in GameManager.Instance.REDPlayers) {
                     if (CloseEnoughToShoot(player)) {
                         Shoot(player);
                         return;
                     }
-                    else {
-                    }
                 }
+            }
+            else {
                 foreach (GameObject minion in GameManager.Instance.BLUEMinions) {
                     if (CloseEnoughToShoot(minion)) {
                         Shoot(minion);
+                        return;
+                    }
+                }
+                foreach (GameObject player in GameManager.Instance.BLUEPlayers) {
+                    if (CloseEnoughToShoot(player)) {
+                        Shoot(player);
                         return;
                     }
                 }
@@ -154,6 +152,7 @@ public class Tower : MonoBehaviour, Life<Tower>, Team
         rocketManager.Shoot(shootPointer.transform.position, transform.eulerAngles, dir, transform.rotation);
         lastShootTime = System.DateTime.Now;
         changeSprite(obj);
+        SoundManager.PlaySound((int)SndIdGame.ROCKET_SHOOT);
     }
 
     private void changeSprite (GameObject obj)

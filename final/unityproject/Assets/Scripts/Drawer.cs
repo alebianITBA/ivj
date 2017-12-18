@@ -18,7 +18,8 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
 
     [HideInInspector]
     public float tileLength;
-    private float halfTileLength;
+    [HideInInspector]
+    public float halfTileLength;
 
     private Level level;
     private List<LevelPosition> baseTiles;
@@ -62,6 +63,14 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
                         minionTiles.Add(new LevelPosition(row, col));
                         tileInstance = NewObjectFromPrefab(RandomTile(floorPrefabs), tilesHolder.transform);
                         break;
+                    case Level.Tile.BlueTeamSpawn:
+                        tileInstance = NewObjectFromPrefab(RandomTile(floorPrefabs), tilesHolder.transform);
+                        GameManager.Instance.BlueTeamSpawn = new LevelPosition(row, col);
+                        break;
+                    case Level.Tile.RedTeamSpawn:
+                        tileInstance = NewObjectFromPrefab(RandomTile(floorPrefabs), tilesHolder.transform);
+                        GameManager.Instance.RedTeamSpawn = new LevelPosition(row, col);
+                        break;
                     default:
                         tileInstance = NewObjectFromPrefab(RandomTile(floorPrefabs), tilesHolder.transform);
                         break;
@@ -95,7 +104,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
             }
             Champion champ;
             if (bas.GetComponent<Team>().IsRED()) {
-                GameObject player1 = NewObjectFromPrefab(player1Prefab, new Vector3(bas.transform.position.x - 0.31f, bas.transform.position.y, -1));
+                GameObject player1 = NewObjectFromPrefab(player1Prefab, GameManager.Instance.RedTeamSpawn.GetCoordinates());
                 champ = player1.GetComponent<Champion>();
                 GameManager.Instance.AssignTeam(player1, champ);
                 GameObject cam = NewObjectFromPrefab(cameraPrefab, player1.transform.position);
@@ -103,7 +112,7 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
                 GameManager.Instance.REDPlayers.Add(player1);
             }
             else {
-                GameObject player2 = NewObjectFromPrefab(player2Prefab, new Vector3(bas.transform.position.x + 0.31f, bas.transform.position.y, -1));
+                GameObject player2 = NewObjectFromPrefab(player2Prefab, GameManager.Instance.BlueTeamSpawn.GetCoordinates());
                 champ = player2.GetComponent<Champion>();
                 GameManager.Instance.AssignTeam(player2, champ);
                 GameObject cam = NewObjectFromPrefab(cameraPrefab, player2.transform.position);
@@ -123,12 +132,12 @@ public class Drawer : MonoBehaviourSingleton<Drawer>
 
     public Vector3 GetPositionAndHalf (LevelPosition position)
     {
-        return new Vector3((position.x * tileLength) + halfTileLength, (position.y * tileLength) + halfTileLength, 0);
+        return position.GetHalfCoordinates();
     }
 
     public Vector3 GetExactPosition (LevelPosition position)
     {
-        return new Vector3((position.x * tileLength), (position.y * tileLength), 0);
+        return position.GetCoordinates();
     }
 
     private GameObject NewObjectFromPrefab (GameObject prefab, Vector3 position)

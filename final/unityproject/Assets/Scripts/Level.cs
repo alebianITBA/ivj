@@ -10,7 +10,10 @@ public class Level
         Floor,
         BaseTower,
         MinionSpawn,
-        Tower}
+        Tower,
+        RedTeamSpawn,
+        BlueTeamSpawn,
+    }
 
     ;
 
@@ -51,6 +54,12 @@ public class Level
                         break;
                     case 'T':
                         t = Tile.Tower;
+                        break;
+                    case '1':
+                        t = Tile.RedTeamSpawn;
+                        break;
+                    case '2':
+                        t = Tile.BlueTeamSpawn;
                         break;
                     default:
                         t = Tile.Floor;

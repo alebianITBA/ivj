@@ -108,6 +108,95 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &353671933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 353671938}
+  - component: {fileID: 353671937}
+  - component: {fileID: 353671936}
+  - component: {fileID: 353671935}
+  - component: {fileID: 353671934}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &353671934
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353671933}
+  m_Enabled: 1
+--- !u!92 &353671935
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353671933}
+  m_Enabled: 1
+--- !u!124 &353671936
+Behaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353671933}
+  m_Enabled: 1
+--- !u!20 &353671937
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353671933}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
+--- !u!4 &353671938
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 353671933}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.47, y: 3.67, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &388821090
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +223,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1040967941
 GameObject:
@@ -289,6 +378,8 @@ GameObject:
   - component: {fileID: 1166778565}
   - component: {fileID: 1166778563}
   - component: {fileID: 1166778566}
+  - component: {fileID: 1166778567}
+  - component: {fileID: 1166778564}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -338,6 +429,24 @@ MonoBehaviour:
     type: 2}
   tilesHolder: {fileID: 388821090}
   tileLength: 0
+  halfTileLength: 0
+--- !u!114 &1166778564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1166778562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 577315e2aa72e41f29d7d5ae7f9e2776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundClips:
+  - {fileID: 8300000, guid: fac136e5b74934afe996f92d1f489b6b, type: 3}
+  - {fileID: 8300000, guid: 0de05a1721e4641c3a7f522dbb406644, type: 3}
+  - {fileID: 8300000, guid: a8cbcec9cc6204779b24424bdaeffb6e, type: 3}
+  - {fileID: 8300000, guid: 880a4907fe2d945449b1fe1b6a5f6d27, type: 3}
+  - {fileID: 8300000, guid: 9b3d1c9e34b874e18bd68275028b4645, type: 3}
 --- !u!4 &1166778565
 Transform:
   m_ObjectHideFlags: 0
@@ -349,7 +458,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1166778566
 MonoBehaviour:
@@ -369,6 +478,17 @@ MonoBehaviour:
   BLUEMinions: []
   REDPlayers: []
   BLUEPlayers: []
+--- !u!114 &1166778567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1166778562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fbe1cf37ee8d4621906a8ebab466b34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1591766370
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,7 +576,7 @@ RectTransform:
   m_Children:
   - {fileID: 1040967944}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -523,5 +643,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
