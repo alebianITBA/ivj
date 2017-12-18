@@ -195,8 +195,7 @@ public class Tower : MonoBehaviour, Life<Tower>, Team
 
     private bool CloseEnoughToShoot (GameObject obj)
     {
-        float distance = Vector2.Distance(obj.transform.position, shootPointer.transform.position);
-        return distance <= 0.72f;
+        return Constants.CloseEnough(obj, shootPointer);
     }
 
     private Vector2 direction (GameObject target)

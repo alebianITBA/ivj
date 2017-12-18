@@ -9,6 +9,14 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
     public GameManager.Teams team;
     protected GameObject cam;
 
+    void FixedUpdate ()
+    {
+        Base myBase = IsRED() ? GameManager.Instance.REDBase : GameManager.Instance.BLUEBase;
+        if (Constants.CloseEnough(myBase.gameObject, gameObject)) {
+            Heal(1.0f);
+        }
+    }
+
     protected Vector2 direction ()
     {
         float angle = transform.localRotation.eulerAngles.z;

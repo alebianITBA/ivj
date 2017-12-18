@@ -24,6 +24,7 @@ public class Player1 : Champion
 
     void Update ()
     {
+        print(health);
         if (this.cam != null) {
             this.cam.transform.position = new Vector3(transform.position.x, transform.position.y, -100);
             this.cam.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
