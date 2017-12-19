@@ -36,6 +36,7 @@ public class RocketManager
         }
     }
 
+	/*
     public void Shoot (Vector2 pos, Vector3 rot, Vector2 dir, Quaternion rotation)
     {
         Rocket bul = rocketPool.Dequeue();
@@ -46,11 +47,25 @@ public class RocketManager
         bul.gameObject.SetActive(true);
         bul.GetComponent<Rigidbody2D>().AddForce(dir * Constants.BULLET_SPEED);
     }
+	*/
+
+	public void Shoot (Vector2 pos, Vector2 to)
+	{
+		Rocket bul = rocketPool.Dequeue();
+		bul.ShootedAt = System.DateTime.Now;
+		bul.transform.position = pos;
+		Vector3 dir = (to - pos).normalized;
+		Debug.Log(Quaternion.FromToRotation(Vector3.right, to - pos).eulerAngles.z);
+		bul.transform.Rotate(0, 0, Quaternion.FromToRotation(Vector3.right, to - pos).eulerAngles.z);
+		bul.gameObject.SetActive (true);
+		bul.GetComponent<Rigidbody2D>().AddForce(dir * Constants.BULLET_SPEED);
+	}
 
     public void RecycleRocket (Rocket bul)
     {
         rocketPool.Enqueue(bul);
         bul.gameObject.SetActive(false);
+		bul.transform.rotation = Quaternion.Euler (Vector3.zero);
     }
 
     public void IgnoreColliders (Collider2D collider)

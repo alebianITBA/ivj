@@ -76,9 +76,15 @@ public class Minion : MonoBehaviour, Life<Minion>, Team
         if (col.gameObject.name == "Bullet") {
             Bullet bul = col.gameObject.GetComponent<Bullet>();
             bul.Recycle();
-            if (bul.GetTeam() != GetTeam()) {
-                TakeDamage(bul.GetDamage());
-            }
+            TakeDamage(bul.GetDamage());
         }
     }
+
+	void OnTriggerEnter2D (Collider2D col) {
+		if (col.gameObject.name == "Rocket") {
+			Rocket rocket = col.gameObject.GetComponent<Rocket>();
+			rocket.Recycle();
+			TakeDamage(rocket.GetDamage());
+		}
+	}
 }

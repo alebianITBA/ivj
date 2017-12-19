@@ -138,14 +138,17 @@ public class Champion : MonoBehaviour, Life<Champion>, Team
                 TakeDamage(bul.GetDamage());
             }
         }
-        if (col.gameObject.name == "Rocket") {
-            Rocket rocket = col.gameObject.GetComponent<Rocket>();
-            if (rocket.GetTeam() != GetTeam()) {
-                TakeDamage(rocket.GetDamage());
-            }
-            rocket.Recycle();
-        }
     }
+
+	void OnTriggerEnter2D(Collider2D col) {
+		if (col.gameObject.name == "Rocket") {
+			Rocket rocket = col.gameObject.GetComponent<Rocket>();
+			if (rocket.GetTeam() != GetTeam()) {
+				TakeDamage(rocket.GetDamage());
+			}
+			rocket.Recycle();
+		}
+	}
 
     private void TakeToBase ()
     {

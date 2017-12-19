@@ -149,9 +149,9 @@ public class Tower : MonoBehaviour, Life<Tower>, Team
     private void Shoot (GameObject obj)
     {
         Vector2 dir = direction(obj);
-        rocketManager.Shoot(shootPointer.transform.position, transform.eulerAngles, dir, transform.rotation);
+		changeSprite(obj);
+		rocketManager.Shoot(transform.position, obj.transform.position);
         lastShootTime = System.DateTime.Now;
-        changeSprite(obj);
         SoundManager.PlaySound((int)SndIdGame.ROCKET_SHOOT);
     }
 
